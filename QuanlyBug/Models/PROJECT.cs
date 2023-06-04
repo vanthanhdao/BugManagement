@@ -23,6 +23,10 @@ namespace QuanlyBug.Models
     
         public int ProjectID { get; set; }
         public string Name { get; set; }
+        public string Decription { get; set; }
+        public string DateCreate { get; set; }
+        public string PeopleCreate { get; set; }
+        public string EmailPeoCreate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BUG> BUGS { get; set; }

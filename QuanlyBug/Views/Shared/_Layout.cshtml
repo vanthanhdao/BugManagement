@@ -101,58 +101,79 @@
                 </div>
 
                 <div class="action_btns">
-                    <div class="one_half"><a href="#" id="login_form" class="btn">Đăng nhập</a></div>
-                    <div class="one_half last"><a href="#" id="register_form" class="btn">Đăng ký</a></div>
+                    <div class="one_half"><button id="login_form" class="btn">Đăng nhập</button></div>
+                    <div class="one_half last"><button id="register_form" class="btn">Đăng ký</button></div>
                 </div>
             </div>
 
             <!-- Username & Password Login form -->
             <div class="user_login">
-                <form>
-                    <label>Email</label>
-                    <input type="text" />
-                    <br />
+                @Html.ValidationSummary(true)
+                @using (Html.BeginForm("Login", "User", FormMethod.Post))
+                {
+                    <form>
+                        <label>Email</label>
+                        <input name="Email" type="email" />
+                        <br />
 
-                    <label>Mật khẩu</label>
-                    <input type="password" />
-                    <br />
+                        <label>Mật khẩu</label>
+                        <input name="Password" type="password" />
+                        <br />
 
-                    <div class="checkbox">
-                        <input id="remember" type="checkbox" />
-                        <label for="remember">Lưu mật khẩu</label>
-                    </div>
+                        <div class="checkbox">
+                            <input id="remember" type="checkbox" />
+                            <label for="remember">Lưu mật khẩu</label>
+                        </div>
 
-                    <div class="action_btns">
-                        <div class="one_half"><a href="#" class="btn back_btn"><i class="fa fa-angle-double-left"></i>Trở về</a></div>
-                        <div class="one_half last"><a href="#" class="btn btn_red">Đăng nhập</a></div>
-                    </div>
-                </form>
-
+                        <div class="action_btns">
+                            <div class="one_half"><button class="btn back_btn"><i class="fa fa-angle-double-left"></i>Trở về</button></div>
+                            <div class="one_half last"><button type="submit" class="btn btn_red">Đăng nhập</button></div>
+                        </div>
+                        <div>
+                            @ViewData["err1"]
+                            @ViewData["err2"]
+                            @ViewBag.Thongbao
+                        </div>
+                    </form>
+                }
                 <a href="#" class="forgot_password">Quên mật khẩu?</a>
             </div>
 
             <!-- Register Form -->
             <div class="user_register">
-                <form>
-                    <label>Họ tên</label>
-                    <input type="text" />
-                    <br />
+                @Html.ValidationSummary(true)
+                @using (Html.BeginForm("Register", "User", FormMethod.Post))
+                {
+                    <form>
+                        <label>Họ tên</label>
+                        <input name="FullName" type="text" />
+                        <br />
 
-                    <label>Email</label>
-                    <input type="email" />
-                    <br />
+                        <label>Email</label>
+                        <input name="Email" type="email" />
+                        <br />
 
-                    <label>Mật khẩu</label>
-                    <input type="password" />
-                    <br />
+                        <label>Mật khẩu</label>
+                        <input name="Password" type="password" />
+                        <br />
+
+                        <label>Nhập lại mật khẩu</label>
+                        <input name="RePassword" type="password" />
+                        <br />
+                        @ViewData["err1"]
+                        @ViewData["err2"]
+                        @ViewData["err3"]
+                        @ViewData["err4"]
+                        @ViewData["err5"]
+                        @ViewData["err6"]
 
 
-
-                    <div class="action_btns">
-                        <div class="one_half"><a href="#" class="btn back_btn"><i class="fa fa-angle-double-left"></i>Trở về</a></div>
-                        <div class="one_half last"><a href="#" class="btn btn_red">Đăng ký</a></div>
-                    </div>
-                </form>
+                        <div class="action_btns">
+                            <div class="one_half"><button class="btn back_btn"><i class="fa fa-angle-double-left"></i>Trở về</button></div>
+                            <div class="one_half last"><button type="submit" class="btn btn_red">Đăng ký</button></div>
+                        </div>
+                    </form>
+                }
             </div>
         </section>
     </div>

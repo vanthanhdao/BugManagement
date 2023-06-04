@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QuanlyBugModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QuanlyBugModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BUGS">
           <Key>
             <PropertyRef Name="BugID" />
@@ -34,6 +34,10 @@
           </Key>
           <Property Name="ProjectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Decription" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateCreate" Type="varchar" MaxLength="50" />
+          <Property Name="PeopleCreate" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailPeoCreate" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -127,8 +131,7 @@
             <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QuanlyBugModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -167,6 +170,10 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="BUGS" Relationship="Self.FK_BUGS_PROJECTS" FromRole="PROJECTS" ToRole="BUGS" />
           <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_PROJECTS" FromRole="PROJECTS" ToRole="PROJECTMBS" />
+          <Property Name="Decription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PeopleCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailPeoCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -296,6 +303,10 @@
           <EntitySetMapping Name="PROJECTS">
             <EntityTypeMapping TypeName="QuanlyBugModel.PROJECT">
               <MappingFragment StoreEntitySet="PROJECTS">
+                <ScalarProperty Name="EmailPeoCreate" ColumnName="EmailPeoCreate" />
+                <ScalarProperty Name="PeopleCreate" ColumnName="PeopleCreate" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="Decription" ColumnName="Decription" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
