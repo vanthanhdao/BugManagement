@@ -128,6 +128,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AboutController.cs" />
+    <Compile Include="Controllers\BUGsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PROJECTsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -1204,6 +1205,12 @@
     <Content Include="Views\PROJECTs\Details.cshtml" />
     <Content Include="Views\PROJECTs\Edit.cshtml" />
     <Content Include="Views\PROJECTs\Index.cshtml" />
+    <Content Include="Views\BUGs\Create.cshtml" />
+    <Content Include="Views\BUGs\Delete.cshtml" />
+    <Content Include="Views\BUGs\Details.cshtml" />
+    <Content Include="Views\BUGs\Edit.cshtml" />
+    <Content Include="Views\BUGs\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutBugs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

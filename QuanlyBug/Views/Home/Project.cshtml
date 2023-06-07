@@ -70,14 +70,16 @@
                                     @foreach (var item in Model)
                                     {
                                         <tbody>
-                                            <tr>
+                                          
+<tr>
                                                 <td>
+                                                      <a class="nav-link " href="@Url.Action("Index","BUGs", new { id = item.ProjectID })">
                                                     <span class="flag flag-country-us"></span>
-                                                    @item.Name
+                                                    @item.Name</a>
                                                 </td>
                                                 <td>
                                                     @item.Decription
-                                                </td>
+                                                </td>   
                                                 <td>
                                                     @item.DateCreate
                                                 </td>
@@ -97,6 +99,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
+                                            
                                         </tbody>
 
                                         using (Html.BeginForm("EditProject", "Home", new { id = item.ProjectID }, FormMethod.Post))
