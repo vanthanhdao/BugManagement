@@ -171,6 +171,7 @@
     <Content Include="Assets\css\animated.css" />
     <Content Include="Assets\css\fontawesome.css" />
     <Content Include="Assets\css\owl.css" />
+    <Content Include="Assets\css\style.css" />
     <Content Include="Assets\css\templatemo-chain-app-dev.css" />
     <Content Include="Assets\dist\css\demo.css" />
     <Content Include="Assets\dist\css\demo.min.css" />

@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<QuanlyBug.Models.PROJECT>
 
+@using QuanlyBug.Models
 @*@model QuanlyBug.Models.PROJECT*@
 @{
     ViewBag.Title = "Project";
@@ -69,12 +70,13 @@
                                     </thead>
                                     @foreach (var item in Model)
                                     {
+
                                         <tbody>
 
                                             <tr>
                                                 <td>
                                                     <a class="nav-link " href="@Url.Action("Index","BUGs", new { id = item.ProjectID })">
-                                                        <span class="flag flag-country-us"></span>
+
                                                         @item.Name
                                                     </a>
                                                 </td>
