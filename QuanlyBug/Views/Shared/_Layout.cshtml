@@ -144,35 +144,44 @@
                 @Html.ValidationSummary(true)
                 @using (Html.BeginForm("Register", "User", FormMethod.Post))
                 {
-                    <form>
-                        <label>Họ tên</label>
-                        <input name="FullName" type="text" />
-                        <br />
+                <form>
+                    <label>Họ tên</label>
+                    <input name="FullName" type="text" />
+                    <br />
 
-                        <label>Email</label>
-                        <input name="Email" type="email" />
-                        <br />
+                    <label>Email</label>
+                    <input name="Email" type="email" />
+                    <br />
 
-                        <label>Mật khẩu</label>
-                        <input name="Password" type="password" />
-                        <br />
+                    <label>Chức vụ</label>
+                    <select name="Priority" class="form-select">                       
+                            <option selected>Quản lý</option>
+                            <option selected>Nhân viên</option>
+                    </select>
+                    <br />
 
-                        <label>Nhập lại mật khẩu</label>
-                        <input name="RePassword" type="password" />
-                        <br />
-                        @ViewData["err1"]
-                        @ViewData["err2"]
-                        @ViewData["err3"]
-                        @ViewData["err4"]
-                        @ViewData["err5"]
-                        @ViewData["err6"]
+                    <label>Mật khẩu</label>
+                    <input name="Password" type="password" />
+                    <br />
+
+                    <label>Nhập lại mật khẩu</label>
+                    <input name="RePassword" type="password" />
+                    <br />
 
 
-                        <div class="action_btns">
-                            <div class="one_half"><button class="btn back_btn"><i class="fa fa-angle-double-left"></i>Trở về</button></div>
-                            <div class="one_half last"><button type="submit" class="btn btn_red">Đăng ký</button></div>
-                        </div>
-                    </form>
+                    @ViewData["err1"]
+                    @ViewData["err2"]
+                    @ViewData["err3"]
+                    @ViewData["err4"]
+                    @ViewData["err5"]
+                    @ViewData["err6"]
+
+
+                    <div class="action_btns">
+                        <div class="one_half"><button class="btn back_btn"><i class="fa fa-angle-double-left"></i>Trở về</button></div>
+                        <div class="one_half last"><button type="submit" class="btn btn_red">Đăng ký</button></div>
+                    </div>
+                </form>
                 }
             </div>
         </section>

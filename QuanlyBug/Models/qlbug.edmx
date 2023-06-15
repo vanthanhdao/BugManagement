@@ -27,6 +27,7 @@
           <Property Name="ProjectID" Type="int" />
           <Property Name="UserID" Type="int" />
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
+          <Property Name="BugID" Type="int" />
         </EntityType>
         <EntityType Name="PROJECTS">
           <Key>
@@ -84,6 +85,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ProjectMBS_BugID">
+          <End Role="BUGS" Type="Self.BUGS" Multiplicity="0..1" />
+          <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BUGS">
+              <PropertyRef Name="BugID" />
+            </Principal>
+            <Dependent Role="PROJECTMBS">
+              <PropertyRef Name="BugID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PROJECTMBS_PROJECTS">
           <End Role="PROJECTS" Type="Self.PROJECTS" Multiplicity="0..1" />
           <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
@@ -122,6 +135,10 @@
             <End Role="USERS" EntitySet="USERS" />
             <End Role="BUGS" EntitySet="BUGS" />
           </AssociationSet>
+          <AssociationSet Name="FK_ProjectMBS_BugID" Association="Self.FK_ProjectMBS_BugID">
+            <End Role="BUGS" EntitySet="BUGS" />
+            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
+          </AssociationSet>
           <AssociationSet Name="FK_PROJECTMBS_PROJECTS" Association="Self.FK_PROJECTMBS_PROJECTS">
             <End Role="PROJECTS" EntitySet="PROJECTS" />
             <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
@@ -150,6 +167,7 @@
           <Property Name="UpdatedAt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="PROJECT" Relationship="Self.FK_BUGS_PROJECTS" FromRole="BUGS" ToRole="PROJECTS" />
           <NavigationProperty Name="USER" Relationship="Self.FK_BUGS_USERS" FromRole="BUGS" ToRole="USERS" />
+          <NavigationProperty Name="PROJECTMBS" Relationship="QuanlyBugModel.FK_ProjectMBS_BugID" FromRole="BUG" ToRole="PROJECTMB" />
         </EntityType>
         <EntityType Name="PROJECTMB">
           <Key>
@@ -161,6 +179,8 @@
           <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PROJECT" Relationship="Self.FK_PROJECTMBS_PROJECTS" FromRole="PROJECTMBS" ToRole="PROJECTS" />
           <NavigationProperty Name="USER" Relationship="Self.FK_PROJECTMBS_USERS" FromRole="PROJECTMBS" ToRole="USERS" />
+          <Property Name="BugID" Type="Int32" />
+          <NavigationProperty Name="BUG" Relationship="QuanlyBugModel.FK_ProjectMBS_BugID" FromRole="PROJECTMB" ToRole="BUG" />
         </EntityType>
         <EntityType Name="PROJECT">
           <Key>
@@ -168,22 +188,12 @@
           </Key>
           <Property Name="ProjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BUGS" Relationship="Self.FK_BUGS_PROJECTS" FromRole="PROJECTS" ToRole="BUGS" />
-          <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_PROJECTS" FromRole="PROJECTS" ToRole="PROJECTMBS" />
           <Property Name="Decription" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="DateCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PeopleCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="EmailPeoCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="BUGS" Relationship="Self.FK_BUGS_PROJECTS" FromRole="PROJECTS" ToRole="BUGS" />
+          <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_PROJECTS" FromRole="PROJECTS" ToRole="PROJECTMBS" />
         </EntityType>
         <EntityType Name="USER">
           <Key>
@@ -250,7 +260,6 @@
           <EntitySet Name="BUGS" EntityType="Self.BUG" />
           <EntitySet Name="PROJECTMBS" EntityType="Self.PROJECTMB" />
           <EntitySet Name="PROJECTS" EntityType="Self.PROJECT" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="USERS" EntityType="Self.USER" />
           <AssociationSet Name="FK_BUGS_PROJECTS" Association="Self.FK_BUGS_PROJECTS">
             <End Role="PROJECTS" EntitySet="PROJECTS" />
@@ -268,7 +277,63 @@
             <End Role="USERS" EntitySet="USERS" />
             <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
           </AssociationSet>
+          <FunctionImport Name="GetAll" ReturnType="Collection(QuanlyBugModel.GetAll_Result)" />
+          <EntitySet Name="sysdiagrams" EntityType="QuanlyBugModel.sysdiagram" />
+          <AssociationSet Name="FK_ProjectMBS_BugID" Association="QuanlyBugModel.FK_ProjectMBS_BugID">
+            <End Role="BUG" EntitySet="BUGS" />
+            <End Role="PROJECTMB" EntitySet="PROJECTMBS" />
+          </AssociationSet>
         </EntityContainer>
+        <ComplexType Name="GetAll_Result">
+          <Property Type="Int32" Name="ProjectMembersID" Nullable="false" />
+          <Property Type="Int32" Name="ProjectID" Nullable="true" />
+          <Property Type="Int32" Name="UserID" Nullable="true" />
+          <Property Type="String" Name="Role" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="BugID" Nullable="true" />
+          <Property Type="Int32" Name="ProjectID1" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Decription" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="DateCreate" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="PeopleCreate" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmailPeoCreate" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="UserID1" Nullable="false" />
+          <Property Type="String" Name="Username" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ResetPass" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="BugID1" Nullable="false" />
+          <Property Type="Int32" Name="ProjectID2" Nullable="true" />
+          <Property Type="String" Name="Title" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="500" />
+          <Property Type="String" Name="Priority" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Status1" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="UserID2" Nullable="true" />
+          <Property Type="String" Name="CreatedAt" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="UpdatedAt" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_ProjectMBS_BugID">
+          <End Type="QuanlyBugModel.BUG" Role="BUG" Multiplicity="0..1" />
+          <End Type="QuanlyBugModel.PROJECTMB" Role="PROJECTMB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="BUG">
+              <PropertyRef Name="BugID" />
+            </Principal>
+            <Dependent Role="PROJECTMB">
+              <PropertyRef Name="BugID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -293,6 +358,7 @@
           <EntitySetMapping Name="PROJECTMBS">
             <EntityTypeMapping TypeName="QuanlyBugModel.PROJECTMB">
               <MappingFragment StoreEntitySet="PROJECTMBS">
+                <ScalarProperty Name="BugID" ColumnName="BugID" />
                 <ScalarProperty Name="ProjectMembersID" ColumnName="ProjectMembersID" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -303,23 +369,12 @@
           <EntitySetMapping Name="PROJECTS">
             <EntityTypeMapping TypeName="QuanlyBugModel.PROJECT">
               <MappingFragment StoreEntitySet="PROJECTS">
-                <ScalarProperty Name="EmailPeoCreate" ColumnName="EmailPeoCreate" />
-                <ScalarProperty Name="PeopleCreate" ColumnName="PeopleCreate" />
-                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
-                <ScalarProperty Name="Decription" ColumnName="Decription" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="QuanlyBugModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="Decription" ColumnName="Decription" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="PeopleCreate" ColumnName="PeopleCreate" />
+                <ScalarProperty Name="EmailPeoCreate" ColumnName="EmailPeoCreate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -332,6 +387,17 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="ResetPass" ColumnName="ResetPass" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="QuanlyBugModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

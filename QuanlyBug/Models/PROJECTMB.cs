@@ -18,8 +18,10 @@ namespace QuanlyBug.Models
         public Nullable<int> ProjectID { get; set; }
         public Nullable<int> UserID { get; set; }
         public string Role { get; set; }
+        public Nullable<int> BugID { get; set; }
     
         public virtual PROJECT PROJECT { get; set; }
         public virtual USER USER { get; set; }
+        public virtual BUG BUG { get; set; }
     }
 }

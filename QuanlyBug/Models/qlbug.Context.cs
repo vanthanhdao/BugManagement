@@ -12,6 +12,8 @@ namespace QuanlyBug.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class QuanlyBugEntities : DbContext
     {
@@ -28,7 +30,12 @@ namespace QuanlyBug.Models
         public virtual DbSet<BUG> BUGS { get; set; }
         public virtual DbSet<PROJECTMB> PROJECTMBS { get; set; }
         public virtual DbSet<PROJECT> PROJECTS { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<USER> USERS { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+    
+        public virtual ObjectResult<GetAll_Result> GetAll()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAll_Result>("GetAll");
+        }
     }
 }

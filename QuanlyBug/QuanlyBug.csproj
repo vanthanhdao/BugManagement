@@ -138,6 +138,10 @@
     <Compile Include="Models\BUG.cs">
       <DependentUpon>qlbug.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\GetAllClass.cs" />
+    <Compile Include="Models\GetAll_Result.cs">
+      <DependentUpon>qlbug.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PROJECT.cs">
       <DependentUpon>qlbug.tt</DependentUpon>
     </Compile>
@@ -586,6 +590,7 @@
     <Content Include="Assets\images\client-image.jpg" />
     <Content Include="Assets\images\footer-bg.png" />
     <Content Include="Assets\images\heading-line-dec.png" />
+    <Content Include="Assets\images\logo %282%29.png" />
     <Content Include="Assets\images\logo.png" />
     <Content Include="Assets\images\pricing-table-01.png" />
     <Content Include="Assets\images\pricing-table-02.png" />

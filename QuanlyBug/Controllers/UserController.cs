@@ -24,6 +24,7 @@ namespace QuanlyBug.Controllers
             var sPassword = collection["Password"];
             var sRePassword = collection["RePassword"];
             var sEmail = collection["Email"];
+            var sStatus = collection["Priority"];
             if (String.IsNullOrEmpty(sFullName))
             {
                 ViewData["err1"] = "*Tên không được để trống";
@@ -52,9 +53,18 @@ namespace QuanlyBug.Controllers
             {
                 try
                 {
+                   
                     kh.Username = sFullName;
                     kh.Email = sEmail;
                     kh.Password = sPassword;
+                    if (sStatus == "Nhân viên")
+                    {
+                        kh.Status = "Employee";
+                    }
+                    else if (sStatus == "Quản lý")
+                    {
+                        kh.Status = "Leader";
+                    }
                     db.USERS.Add(kh);
                     db.SaveChanges();
                 }
@@ -62,7 +72,7 @@ namespace QuanlyBug.Controllers
                 {
                     Console.WriteLine(e);
                 }
-                return RedirectToAction("Login", "User");
+                return RedirectToAction("Index", "About");
             }
             return RedirectToAction("Register", "User");
 
@@ -73,6 +83,7 @@ namespace QuanlyBug.Controllers
         {
             var sEmail = collection["Email"].ToString();
             var sPassword= collection["Password"].ToString();
+
             if (String.IsNullOrEmpty(sEmail))
             {
                 ViewData["err1"] = "*Email không được để trống";
@@ -105,6 +116,12 @@ namespace QuanlyBug.Controllers
         public ActionResult LoginLogout()
         {
             return PartialView();
+        }
+
+        public ActionResult Logout()
+        {
+            Session["TaiKhoan"] = null;
+            return RedirectToAction("Index","About");
         }
 
     }

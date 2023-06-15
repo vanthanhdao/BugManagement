@@ -1,10 +1,20 @@
 ﻿
+@using QuanlyBug.Models
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutBugs.cshtml";
+
+}
+
+@{
+    var user = ViewBag.user;
+    var projectmbs1 = ViewBag.projectmbs;
+    //var project1 = ViewBag.project;
+
 }
 
 <script src="~/Assets/dist/js/demo-theme.min.js?1684106062"></script>
+
 <div class="page">
 
     <!-- Body -->
@@ -21,177 +31,274 @@
                         </h2>
                     </div>
                     <!-- Page title actions -->
-                    <div class="col-auto ms-auto d-print-none">
-                        <div class="btn-list">
-                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-createBug">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                                Tạo lỗi mới
-                            </a>
-                            <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-createBug" aria-label="Create new report">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                            </a>
+                    @if (user.Status == "Leader")
+                    {
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-createBug">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                    Tạo lỗi mới
+                                </a>
+                                <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-createBug" aria-label="Create new report">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                    }
+
+
+
                 </div>
             </div>
         </div>
         <!-- Page body -->
         <div class="page-body">
             <div class="container-xl">
-                <div class="row row-deck row-cards">
+                <div class="row row-cards">
+
+
+                    <!-- From xác minh-->
                     <div class="col-sm-6 col-lg-3">
                         <div class="card">
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div style="font-size:20px;" class="subheader">Xác minh</div>
                                     <div class="ms-auto lh-1"></div>
+                                </div>
+                                <div style="margin-top:5px;" class="table-responsive">
+                                    <table class="table card-table table-vcenter text-nowrap datatable">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th style="font-weight:bold;">Tên Bug</th>
+                                                <th style="font-weight: bold; ">Mô tả Bug</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+                            @foreach (var item in Model)
+                            {
+
+                                //int idPro = int.Parse(ViewBag.IdPr);
+                                PROJECT project = (PROJECT)Session["IdProject"];
+                                if (item.Status == "xác minh" && item.ProjectID == ViewBag.id )
+                                {
 
 
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-editprojectback-@item.BugID">
+                                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.0 by - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M267.5 440.6c9.5 7.9 22.8 9.7 34.1 4.4s18.4-16.6 18.4-29V96c0-12.4-7.2-23.7-18.4-29s-24.5-3.6-34.1 4.4l-192 160L64 241V96c0-17.7-14.3-32-32-32S0 78.3 0 96V416c0 17.7 14.3 32 32 32s32-14.3 32-32V271l11.5 9.6 192 160z" /></svg>
+                                                </a>
+                                            </td>
+                                            <td>
 
+                                                @item.Title
 
+                                            </td>
+                                            <td>
+
+                                                @item.Description
+                                            </td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-editproject-@item.BugID">
+                                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.0 by- https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4l192 160L256 241V96c0-17.7 14.3-32 32-32s32 14.3 32 32V416c0 17.7-14.3 32-32 32s-32-14.3-32-32V271l-11.5 9.6-192 160z" /></svg>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    using (Html.BeginForm("Edit", "BUGs", new { id = item.BugID, idpro = item.ProjectID }, FormMethod.Post))
+                                    {
+                                        <div class="modal modal-blur fade" id="modal-editproject-@item.BugID" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Cập nhật thông tin dự án</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Tên lỗi</label>
+                                                            <input type="text" value="@item.Title" class="form-control" name="NameBug" placeholder="Tên lỗi">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Mô tả mới của lỗi</label>
+                                                            <textarea value class="form-control" name="description" rows="3">@item.Description</textarea>
+                                                        </div>
+
+                                                        <div class="row">
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                                            Hủy
+                                                        </a>
+                                                        <button type="submit" class="btn btn-primary ms-auto">
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+                                                                <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                                                <path d="M14 4l0 4l-6 0l0 -4"></path>
+                                                            </svg>
+                                                            Xong
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    using (Html.BeginForm("Editback", "BUGs", new { id = item.BugID, idpro = item.ProjectID }, FormMethod.Post))
+                                    {
+                                        <div class="modal modal-blur fade" id="modal-editprojectback-@item.BugID" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Cập nhật thông tin dự án</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Tên lỗi</label>
+                                                            <input type="text" value="@item.Title" class="form-control" name="NameBug" placeholder="Tên lỗi">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label class="form-label">Mô tả mới của lỗi</label>
+                                                            <textarea value class="form-control" name="description" rows="3">@item.Description</textarea>
+                                                        </div>
+
+                                                        <div class="row">
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                                            Hủy
+                                                        </a>
+                                                        <button type="submit" class="btn btn-primary ms-auto">
+                                                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                                <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
+                                                                <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                                                <path d="M14 4l0 4l-6 0l0 -4"></path>
+                                                            </svg>
+                                                            Xong
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                }
+                            }
+
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="table-responsive">
+                                        <table class="table card-table table-vcenter text-nowrap datatable">
+                                        </table>
                                     </div>
                                 </div>
-                            
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="table-responsive">
-                                            <table class="table card-table table-vcenter text-nowrap datatable">
-                                                @foreach (var item in Model)
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+        @using (Html.BeginForm("Create", "BUGs", new { id = ViewBag.id }, FormMethod.Post))
+        {
+            <div class="modal modal-blur fade" id="modal-createBug" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Tạo bug mới</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="mb-3">
+                                        <label class="form-label">Tên bug</label>
+                                        <div class="input-group input-group-flat">
+                                            <input type="text" class="form-control" name="NameBug" placeholder="Tên lỗi">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Độ ưu tiên</label>
+                                        <select name="Priority" class="form-select">
+                                            <option value="1" selected>Bình thường</option>
+                                            <option value="2">Cao</option>
+                                            <option value="3">Thấp</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div>
+                                        <label class="form-label">Mô tả</label>
+                                        <textarea name="description" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div>
+                                        <label class="form-label">Thành viên đã tham gia dự án</label>
+                                        <select name="Role" class="form-select" style="width:440px;">
+                                            @foreach (var projectmbs in ViewBag.projectmbs)
+                                            {
+                                                foreach (var project1 in ViewBag.project)
                                                 {
-                                                    if (item.Status == "xác minh")
+                                                    if (project1.ProjectID == projectmbs.ProjectID && projectmbs.ProjectID == projectmbs.ProjectID_PMB && ViewBag.id == projectmbs.ProjectID)
                                                     {
-
-                                                        <table class="table card-table table-vcenter text-nowrap datatable">
-                                                            <thead>
-                                                                <tr >
-                                                                    <th style="font-weight:bold;">Tên Bug</th>
-                                                                    <th style="font-weight:bold;">Mô tả Bug</th>
-                                                                    <th></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-
-                                                            <td>
-
-                                                                @item.Title
-
-                                                            </td>
-                                                            <td>
-
-                                                                @item.Description
-                                                            </td>
-                                                            <td>
-                                                                
-                                                                <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 320 512"><!--! Font Awesome Free 6.4.0 by- https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M52.5 440.6c-9.5 7.9-22.8 9.7-34.1 4.4S0 428.4 0 416V96C0 83.6 7.2 72.3 18.4 67s24.5-3.6 34.1 4.4l192 160L256 241V96c0-17.7 14.3-32 32-32s32 14.3 32 32V416c0 17.7-14.3 32-32 32s-32-14.3-32-32V271l-11.5 9.6-192 160z" /></svg>
-                                                            </td>
-                                                            </tbody>
-                                                        </table>
+                                                        <option selected>@projectmbs.Email</option>
                                                     }
                                                 }
 
-                                        </div>
+                                            }
+
+                                        </select>
                                     </div>
                                 </div>
-                            
+                            </div>
                         </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="subheader">Đang giải quyết</div>
-                                            <div class="ms-auto lh-1">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="subheader">Xác thực</div>
-                                            <div class="ms-auto lh-1">
-
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="subheader">Đã xong</div>
-                                            <div class="ms-auto lh-1">
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
 
 
 
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                Hủy
+                            </a>
+                            <button type="submit" class="btn btn-primary ms-auto">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                Tạo bug mới
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
 
-                            @using (Html.BeginForm("Create", "BUGs", new { id = ViewBag.Id }, FormMethod.Post))
-                            {
-                                <div class="modal modal-blur fade" id="modal-createBug" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Tạo bug mới</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-lg-8">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Tên bug</label>
-                                                            <div class="input-group input-group-flat">
-                                                                <input type="text" class="form-control" name="NameBug" placeholder="Tên lỗi">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Độ ưu tiên</label>
-                                                            <select name="Priority" class="form-select">
-                                                                <option value="1" selected>Bình thường</option>
-                                                                <option value="2">Cao</option>
-                                                                <option value="3">Thấp</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div>
-                                                            <label class="form-label">Mô tả</label>
-                                                            <textarea name="description" class="form-control" rows="3"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                            
-                                         
-                                            <div class="modal-footer">
-                                                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                                                    Hủy
-                                                </a>
-                                                <button type="submit" class="btn btn-primary ms-auto">
-                                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                                                    Tạo bug mới
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-
+</div>
+</div>
