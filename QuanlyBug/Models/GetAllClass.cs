@@ -11,6 +11,7 @@ namespace QuanlyBug.Models
         public string Title { get; set; }
 
         public string Decription { get; set; }
+        public string Decription_Bug { get; set; }
 
         public string Priority { get; set; }
 

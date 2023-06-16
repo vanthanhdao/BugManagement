@@ -16,7 +16,7 @@ namespace QuanlyBug.Controllers
 
 
         // GET: BUGs
-       
+
 
         public ActionResult Index(int? id)
         {
@@ -50,6 +50,30 @@ namespace QuanlyBug.Controllers
 
                        };
 
+            var data1 = from pmb in db.PROJECTMBS
+                        join p in db.PROJECTS on pmb.ProjectID equals p.ProjectID
+                        join u in db.USERS on pmb.UserID equals u.UserID
+                        join b in db.BUGS on pmb.BugID equals b.BugID
+                        select new GetAllClass
+                        {
+                            ProjectID = p.ProjectID,
+                            ProjectID_PMB = pmb.ProjectID,
+                            Name = p.Name,
+                            Decription = p.Decription,
+                            DateCreate = p.DateCreate,
+                            PeopleCreate = p.PeopleCreate,
+                            EmailPeoCreate = p.EmailPeoCreate,
+                            Role = pmb.Role,
+                            Email = u.Email,
+                            BugID = b.BugID,
+                            Status = b.Status,
+                            Title = b.Title,
+                            Decription_Bug = b.Description,
+                            UserID = u.UserID
+
+
+                        };
+
 
 
             var user = db.USERS.AsEnumerable().SingleOrDefault(n => n.UserID == kh.UserID);
@@ -65,7 +89,7 @@ namespace QuanlyBug.Controllers
             ViewBag.id = id;
             if (user != null && user.Status == "Employee")
             {
-                return View(data.AsEnumerable().SingleOrDefault(n => n.UserID == kh.UserID));
+                return View(data1.AsEnumerable().SingleOrDefault(n => n.UserID == kh.UserID));
             }
             return View(bug);
 
@@ -87,24 +111,13 @@ namespace QuanlyBug.Controllers
         }
         int GetID;
 
-        // GET: BUGs/Create
-        //public ActionResult Create()
-        //{
 
-
-        //    ViewBag.ProjectID = new SelectList(db.PROJECTS, "ProjectID", "Name");
-        //    ViewBag.UserID = new SelectList(db.USERS, "UserID", "Username");
-        //    return View();
-        //}
-
-        // POST: BUGs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
 
         [HttpPost]
-        public ActionResult Create(BUG bugs,PROJECTMB projectmbs, FormCollection f, int? id)
+        public ActionResult Create(BUG bugs, FormCollection f, int? id)
         {
             USER kh = (USER)Session["TaiKhoan"];
+
             bugs.Title = f["NameBug"];
             bugs.Description = f["description"];
             bugs.Priority = f["Priority"];
@@ -114,15 +127,25 @@ namespace QuanlyBug.Controllers
             bugs.UserID = kh.UserID;
             bugs.ProjectID = id;
             db.BUGS.Add(bugs);
-            //projectmbs.Role = f["Role"];
-            //db.PROJECTMBS.Add(projectmbs);
+            string role = f["Role"];
+            var userid = db.USERS.FirstOrDefault(b => b.Email == role);
+            int userid1 = userid.UserID; 
+            var projectmbs = db.PROJECTMBS.FirstOrDefault(b => b.UserID == userid1);
+            if (userid.UserID == projectmbs.UserID )
+            {
+                projectmbs.BugID = bugs.BugID;
+            }
             db.SaveChanges();
+
+
+            //db.SaveChanges();
             ViewBag.IdPr = id;
+
             return RedirectToAction("Index", "BUGs");
         }
 
         // GET: BUGs/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id) //id=1010
         {
             if (id == null)
             {
@@ -131,6 +154,7 @@ namespace QuanlyBug.Controllers
             BUG bUG = db.BUGS.Find(id);
             if (bUG == null)
             {
+
                 return HttpNotFound();
             }
             ViewBag.ProjectID = new SelectList(db.PROJECTS, "ProjectID", "Name", bUG.ProjectID);
@@ -163,7 +187,7 @@ namespace QuanlyBug.Controllers
                 else if (bugs.Status == "Xác thực") bugs.Status = "Đã xong";
                 db.SaveChanges();
                 ViewBag.IdPr = idpro;
-                return RedirectToAction("Index", "BUGs");
+                return RedirectToAction("Project", "Home");
             }
         }
         public ActionResult Editback(int? id)

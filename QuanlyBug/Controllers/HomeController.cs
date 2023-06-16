@@ -132,7 +132,7 @@ namespace QuanlyBug.Controllers
         {
             //USER acc = (USER)Session["TaiKhoan"];
             //string fromEmailAcc = acc.Email.ToString();
-
+  
             string toemailAcc = EmailStart;
             var fromEmail = new MailAddress("chuhaist123@gmail.com", "CHAIN");
             var toEmail = new MailAddress(toemailAcc);
