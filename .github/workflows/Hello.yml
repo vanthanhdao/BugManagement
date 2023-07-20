@@ -14,7 +14,7 @@ on:
 
 jobs:
   say-hello:
-    runs-on: window-latest
+    runs-on: ubuntu-latest
 
     steps:
      - run: echo Hello World
