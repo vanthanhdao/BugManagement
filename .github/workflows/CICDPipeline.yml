@@ -35,3 +35,8 @@ jobs:
         run: |
           echo "Bắt đầu giai đoạn triển khai..."
           # Lệnh để triển khai ứng dụng của bạn lên môi trường thực
+          
+      - name: Realease
+        run: |
+          echo "Bắt đầu giai đoạn build..."
+          # Lệnh để triển khai ứng dụng của bạn lên môi trường thực
