@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6ebb6c969d02454c97d9b0758a7e75d4" Name="Diagram1">
+        <EntityTypeShape EntityType="QuanlyBugEntitiesModel.BUGS" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanlyBugEntitiesModel.PROJECTMBS" Width="1.5" PointX="6" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanlyBugEntitiesModel.PROJECTS" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanlyBugEntitiesModel.USERS" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="QuanlyBugEntitiesModel.FK_BUGS_PROJECTS" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanlyBugEntitiesModel.FK_BUGS_USERS" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanlyBugEntitiesModel.FK_PROJECTMBS_PROJECTS" ManuallyRouted="false" />
+        <AssociationConnector Association="QuanlyBugEntitiesModel.FK_PROJECTMBS_USERS" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -10,7 +10,7 @@ namespace QuanlyBug.Controllers
 {
     public class UserController : Controller
     {
-        QuanlyBugEntities db = new QuanlyBugEntities();
+        QuanlyBugEntitiess db = new QuanlyBugEntitiess();
         // GET: User
         static int UserID = 0;
         public int getUserId()
@@ -18,7 +18,7 @@ namespace QuanlyBug.Controllers
             return UserID;
         }
         [HttpPost]
-        public ActionResult Register(FormCollection collection, USER kh)
+        public ActionResult Register(FormCollection collection, USERS kh)
         {
             var sFullName = collection["FullName"];
             var sPassword = collection["Password"];
@@ -94,7 +94,7 @@ namespace QuanlyBug.Controllers
             }
             else
             {
-                USER kh = db.USERS.SingleOrDefault(n => n.Email == sEmail && n.Password == sPassword);
+                USERS kh = db.USERS.SingleOrDefault(n => n.Email == sEmail && n.Password == sPassword);
                 if (kh != null)
                 {
                     ViewBag.ThongBao = "*Chúc mừng bạn đăng nhập thành công";

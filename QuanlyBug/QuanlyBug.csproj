@@ -135,39 +135,33 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\BUG.cs">
-      <DependentUpon>qlbug.tt</DependentUpon>
+    <Compile Include="Models\BUGS.cs">
+      <DependentUpon>QliBug.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GetAllClass.cs" />
-    <Compile Include="Models\GetAll_Result.cs">
-      <DependentUpon>qlbug.tt</DependentUpon>
+    <Compile Include="Models\PROJECTMBS.cs">
+      <DependentUpon>QliBug.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PROJECT.cs">
-      <DependentUpon>qlbug.tt</DependentUpon>
+    <Compile Include="Models\PROJECTS.cs">
+      <DependentUpon>QliBug.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PROJECTMB.cs">
-      <DependentUpon>qlbug.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\qlbug.Context.cs">
+    <Compile Include="Models\QliBug.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>qlbug.Context.tt</DependentUpon>
+      <DependentUpon>QliBug.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\qlbug.cs">
+    <Compile Include="Models\QliBug.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>qlbug.tt</DependentUpon>
+      <DependentUpon>QliBug.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\qlbug.Designer.cs">
+    <Compile Include="Models\QliBug.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>qlbug.edmx</DependentUpon>
+      <DependentUpon>QliBug.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>qlbug.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\USER.cs">
-      <DependentUpon>qlbug.tt</DependentUpon>
+    <Compile Include="Models\USERS.cs">
+      <DependentUpon>QliBug.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1151,15 +1145,15 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\qlbug.Context.tt">
+    <Content Include="Models\QliBug.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>qlbug.edmx</DependentUpon>
-      <LastGenOutput>qlbug.Context.cs</LastGenOutput>
+      <DependentUpon>QliBug.edmx</DependentUpon>
+      <LastGenOutput>QliBug.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\qlbug.tt">
+    <Content Include="Models\QliBug.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>qlbug.edmx</DependentUpon>
-      <LastGenOutput>qlbug.cs</LastGenOutput>
+      <DependentUpon>QliBug.edmx</DependentUpon>
+      <LastGenOutput>QliBug.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -1171,13 +1165,15 @@
     <Content Include="Assets\vendor\bootstrap\js\bootstrap.bundle.min.js.map" />
     <Content Include="Assets\vendor\jquery\jquery.min.map" />
     <Content Include="Assets\vendor\jquery\jquery.slim.min.map" />
-    <EntityDeploy Include="Models\qlbug.edmx">
+    <EntityDeploy Include="Models\QliBug.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>qlbug.Designer.cs</LastGenOutput>
+      <LastGenOutput>QliBug.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\qlbug.edmx.diagram">
-      <DependentUpon>qlbug.edmx</DependentUpon>
+    <Content Include="Models\QliBug.edmx.diagram">
+      <DependentUpon>QliBug.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\nh0cbin37-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\nh0cbin37-001-site1 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

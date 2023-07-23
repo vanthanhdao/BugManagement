@@ -12,13 +12,11 @@ namespace QuanlyBug.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Data.Entity.Core.Objects;
-    using System.Linq;
     
-    public partial class QuanlyBugEntities : DbContext
+    public partial class QuanlyBugEntitiess : DbContext
     {
-        public QuanlyBugEntities()
-            : base("name=QuanlyBugEntities")
+        public QuanlyBugEntitiess()
+            : base("name=QuanlyBugEntitiess")
         {
         }
     
@@ -27,15 +25,9 @@ namespace QuanlyBug.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<BUG> BUGS { get; set; }
-        public virtual DbSet<PROJECTMB> PROJECTMBS { get; set; }
-        public virtual DbSet<PROJECT> PROJECTS { get; set; }
-        public virtual DbSet<USER> USERS { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
-    
-        public virtual ObjectResult<GetAll_Result> GetAll()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetAll_Result>("GetAll");
-        }
+        public virtual DbSet<BUGS> BUGS { get; set; }
+        public virtual DbSet<PROJECTMBS> PROJECTMBS { get; set; }
+        public virtual DbSet<PROJECTS> PROJECTS { get; set; }
+        public virtual DbSet<USERS> USERS { get; set; }
     }
 }

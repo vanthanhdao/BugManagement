@@ -13,7 +13,7 @@ namespace QuanlyBug.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        private QuanlyBugEntities db = new QuanlyBugEntities();
+        private QuanlyBugEntitiess db = new QuanlyBugEntitiess();
 
         public ActionResult Index()
         {
@@ -24,7 +24,7 @@ namespace QuanlyBug.Controllers
         public ActionResult Project()
         {
 
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             var data = from pmb in db.PROJECTMBS
                        join p in db.PROJECTS on pmb.ProjectID equals p.ProjectID
                        join u in db.USERS on pmb.UserID equals u.UserID
@@ -70,9 +70,9 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProject(PROJECT project, FormCollection f)
+        public ActionResult CreateProject(PROJECTS project, FormCollection f)
         {
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             project.Name = f["NameProject"];
             project.Decription = f["DecriptionProject"];
             project.DateCreate = DateTime.Now.ToString();
@@ -128,7 +128,7 @@ namespace QuanlyBug.Controllers
 
 
         [HttpPost]
-        public ActionResult SendMailAddStart(string EmailStart, FormCollection f, PROJECTMB projectmb)
+        public ActionResult SendMailAddStart(string EmailStart, FormCollection f, PROJECTMBS projectmb)
         {
             //USER acc = (USER)Session["TaiKhoan"];
             //string fromEmailAcc = acc.Email.ToString();
