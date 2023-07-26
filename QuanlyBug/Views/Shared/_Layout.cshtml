@@ -140,41 +140,7 @@
             </div>
 
             <!-- Register Form -->
-            <div class="user_register">
-                @Html.ValidationSummary(true)
-                @using (Html.BeginForm("Register", "User", FormMethod.Post))
-                {
-                    <form>
-                        <label>Họ tên</label>
-                        <input name="FullName" type="text" />
-                        <br />
-
-                        <label>Email</label>
-                        <input name="Email" type="email" />
-                        <br />
-
-                        <label>Mật khẩu</label>
-                        <input name="Password" type="password" />
-                        <br />
-
-                        <label>Nhập lại mật khẩu</label>
-                        <input name="RePassword" type="password" />
-                        <br />
-                        @ViewData["err1"]
-                        @ViewData["err2"]
-                        @ViewData["err3"]
-                        @ViewData["err4"]
-                        @ViewData["err5"]
-                        @ViewData["err6"]
-
-
-                        <div class="action_btns">
-                            <div class="one_half"><button class="btn back_btn"><i class="fa fa-angle-double-left"></i>Trở về</button></div>
-                            <div class="one_half last"><button type="submit" class="btn btn_red">Đăng ký</button></div>
-                        </div>
-                    </form>
-                }
-            </div>
+           @* Kịch bản ở đây *@
         </section>
     </div>
 
@@ -212,7 +178,7 @@
                     <div class="footer-widget">
                         <h4>Liên hệ với chúng tôi</h4>
                         <p>Bình Dương</p>
-                        <p><a href="#">0929342783</a></p>
+                        <p><a href="#">0522900807</a></p>
                         <p><a href="#">TUNGM911@gmail.com</a></p>
                     </div>
                 </div>
