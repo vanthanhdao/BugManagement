@@ -1,10 +1,4 @@
-/*
 
-TemplateMo 570 Chain App Dev
-
-https://templatemo.com/tm-570-chain-app-dev
-
-*/
 
 /* ---------------------------------------------
 Table of contents
@@ -889,72 +883,60 @@ preloader
 Banner Style
 --------------------------------------------- 
 */
-
 .main-banner {
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  padding: 250px 120px 150px 120px;
-  position: relative;
-  overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    padding: 250px 120px 150px 120px;
+    position: relative;
+    overflow: hidden;
+
 }
 
-.main-banner:after {
-  content: '';
-  background-image: url(../images/slider-left-dec.png);
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
 
-.main-banner .left-content {
-  margin-right: 15px;
-}
+    .main-banner .left-content {
+        margin-right: 15px;
+    }
 
-.main-banner .left-content h2 {
-  z-index: 2;
-  position: relative;
-  font-weight: 700;
-  line-height: 70px;
-  font-size: 50px;
-  margin-bottom: 20px;
-}
+        .main-banner .left-content h2 {
+            z-index: 2;
+            position: relative;
+            font-weight: 700;
+            line-height: 70px;
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
 
-.main-banner .left-content p {
-  margin-bottom: 45px;
-  color: #2a2a2a;
-  font-weight: 400;
-}
+        .main-banner .left-content p {
+            margin-bottom: 45px;
+            color: #2a2a2a;
+            font-weight: 400;
+        }
 
-.main-banner .left-content .first-button {
-  margin-right: 15px;
-}
+        .main-banner .left-content .first-button {
+            margin-right: 15px;
+        }
 
-.main-banner .left-content .white-button {
-  display: inline-block;
-}
+        .main-banner .left-content .white-button {
+            display: inline-block;
+        }
 
-.main-banner .right-image {
-  text-align: center;
-  position: relative;
-  z-index: 20;
-}
+    .main-banner .right-image {
+        text-align: center;
+        position: relative;
+        z-index: 20;
+    }
 
-.main-banner .right-image img {
-  max-width: 710px;
-}
+        .main-banner .right-image img {
+            max-width: 710px;
+        }
 
-.main-banner .left-content .white-button a {
-  background-color: #4b8ef1;
-  color: #fff !important;
-}
+    .main-banner .left-content .white-button a {
+        background-color: #4b8ef1;
+        color: #fff !important;
+    }
 
-/* 
+/*/* 
 ---------------------------------------------
 Services Style
 --------------------------------------------- 
@@ -978,7 +960,7 @@ Services Style
 
 .services:after {
   content: '';
-  background-image: url(../images/services-left-dec.png);
+ /* background-image: url(../images/services-left-dec.png);*/
   background-repeat: no-repeat;
   position: absolute;
   left: 0;
@@ -990,7 +972,7 @@ Services Style
 
 .services:before {
   content: '';
-  background-image: url(../images/services-right-dec.png);
+/*  background-image: url(../images/services-right-dec.png);*/
   background-repeat: no-repeat;
   position: absolute;
   right: 0;
@@ -1665,7 +1647,7 @@ footer #search button:hover {
 .footer-widget ul li a {
   font-size: 15px;
   color: #fff;
-  transition: all .3s;;
+  transition: all .3s;
 }
 
 .footer-widget a:hover {
@@ -1698,7 +1680,7 @@ PopUp
 
 #lean_overlay {
   position: fixed;
-  z-index: 100;
+  z-index: 1000;
   top: 0px;
   left: 0px;
   height: 100%;
@@ -1755,7 +1737,7 @@ a.btn_red {
 
 .one_half.last {
   width: 45%;
-  margin-left: 5%;
+  
 }
 /* Popup Styles*/
 
@@ -1976,9 +1958,9 @@ responsive
   .header-area {
     background-color: #fff;
   }
-  .main-banner:after {
+/*  .main-banner:after {
     display: none;
-  } 
+  } */
   .main-banner .left-content h2 {
     color: #2a2a2a;
     margin-right: 0;
@@ -2023,7 +2005,7 @@ responsive
   }
   .about-left-image img {
     margin-right: 0px;
-    margin-bottom: 45px;;
+    margin-bottom: 45px;
   }
   .services .naccs .menu div {
     font-size: 15px;
@@ -2215,4 +2197,7 @@ responsive
   form#contact {
     padding: 30px;
   }
+
 }
+
+

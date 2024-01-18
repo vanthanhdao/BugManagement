@@ -1,8 +1,9 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿
+@{
+    ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
-   
 }
+
 
 
 <div class="main-banner" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
@@ -14,15 +15,22 @@
 
 
                         <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                            <form action="/User/Login" method="post" class="needs-validation" style="width: 23rem;" novalidate>
+                            <form action="/User/Register" method="post" class="needs-validation" style="width: 23rem;" novalidate>
 
-                                <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;text-align:center">Đăng nhập</h3>
+                                <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;text-align:center">Đăng ký</h3>
+
+                                <div class="form-outline mb-4">
+                                    <label for="validationCustom01" class="form-label">Họ và tên</label>
+                                    <input name="Fullname" type="text" class="form-control" id="fullnameInput" required>
+                                    <div class="invalid-feedback">
+                                        <span class="validation-message-fullname"></span>
+                                    </div>
+                                </div>
 
                                 <div class="form-outline mb-4">
                                     <label for="validationCustom01" class="form-label">Email</label>
-                                    <input name="Email" type="email" class="form-control" id="emailInput"   required>
-
-                                    <div class="invalid-feedback">
+                                    <input name="Email" type="email" class="form-control" id="emailInput" required>
+                                    <div class="invalid-feedback" id="checkEmail">
                                         <span class="validation-message-email"></span>
                                     </div>
                                 </div>
@@ -30,18 +38,26 @@
                                 <div class="form-outline mb-4">
                                     <label for="validationCustom01" class="form-label">Mật khẩu</label>
                                     <input name="Password" type="password" class="form-control" id="passwordInput" minlength="6" required>
-                                    <div class="invalid-feedback">
+                                    <div class="invalid-feedback" id="checkPassword">
                                         <span class="validation-message-password"></span>
                                     </div>
-                                    <p id="tempMessage" style="color: #DC3545; margin-top: 10px; margin-left:10px;"> @ViewBag.Message </p>
                                 </div>
+
+                                <div class="form-outline mb-4">
+                                    <label for="validationCustom01" class="form-label">Nhập lại mật khẩu</label>
+                                    <input type="password" class="form-control" id="rePasswordInput" minlength="6" required>
+                                    <div class="invalid-feedback" id="checkRePassword">
+                                        <span class="validation-message-repassword"></span>
+                                    </div>
+                                    <p id="tempMessage" style="text-align:center; color: #DC3545; margin-top: 10px; margin-left:10px;"> @ViewBag.Message </p>
+                                </div>
+
 
                                 <div class="pt-1 mb-4">
-                                    <button class="btn d-grid gap-2 col-6 mx-auto" type="submit">Login</button>
+                                    <button class="btn d-grid gap-2 col-6 mx-auto" type="submit">Đăng ký</button>
                                 </div>
 
-                                <p style="text-align:center;"><a class="text-muted" href="/User/ForgotPassword">Quên mật khẩu?</a></p>
-                                <p style="text-align:center;">Bạn chưa có tài khoản? <a href="/User/Register" class="link-info">Đăng ký mới tại đây</a></p>
+                                <p style="text-align:center;">Bạn đã có tài khoản? <a href="/About/Index" class="link-info">Quay lại trang đăng nhập</a></p>
 
                             </form>
 
@@ -159,6 +175,8 @@
 
 
 
+
+
 <script>
     (() => {
         'use strict'
@@ -169,17 +187,30 @@
         const validationMessageEmail = document.querySelector('.validation-message-email');
         const passwordInput = document.getElementById("passwordInput");
         const validationMessagePass = document.querySelector('.validation-message-password');
+        const fullnameInput = document.getElementById("fullnameInput");
+        const validationMessageFullname = document.querySelector('.validation-message-fullname');
+        const rePasswordInput = document.getElementById("rePasswordInput");
+        const validationMessageRePassword = document.querySelector('.validation-message-repassword');
+
+
 
         // Loop over them and prevent submission
         Array.from(forms).forEach(form => {
             form.addEventListener('submit', event => {
-                if (!form.checkValidity()) {                  
+                if (!form.checkValidity() || (passwordInput.value !== rePasswordInput.value) ) {
                     event.preventDefault()
                     event.stopPropagation()
+                    if (fullnameInput.value.trim() === '') validationMessageFullname.textContent = 'Vui lòng nhập họ và tên'
                     if (emailInput.value.trim() === '') validationMessageEmail.textContent = 'Vui lòng nhập địa chỉ email'
                     else validationMessageEmail.textContent = 'Email không đúng định dạng'
-                    if (passwordInput.value.trim() === '') validationMessagePass.textContent = 'Vui lòng nhập mật khẩu';  
-                    else validationMessagePass.textContent = 'Mật khẩu ít nhất 6 ký tự';  
+                    if (passwordInput.value.trim() === '') validationMessagePass.textContent = 'Vui lòng nhập mật khẩu';
+                    else validationMessagePass.textContent = 'Mật khẩu ít nhất 6 ký tự';
+
+                    if (rePasswordInput.value.trim() === '') {
+                        validationMessageRePassword.textContent = 'Vui lòng nhập lại mật khẩu'
+                    } else if (passwordInput.value !== rePasswordInput.value) {
+                        validationMessageRePassword.textContent = 'Nhập lại mật khẩu không trùng khớp';
+                    } else validationMessageRePassword.textContent = 'Mật khẩu ít nhất 6 ký tự';
                 }
                 form.classList.add('was-validated')
             }, false)
@@ -187,7 +218,6 @@
     })()
 
 </script>
-
 
 
 <script>

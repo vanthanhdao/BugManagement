@@ -10,18 +10,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
-    <title>Chain App Dev - App Landing Page HTML5 Template</title>
+    <title>Chain </title>
 
     <!-- Bootstrap core CSS -->
     <link href="~/Assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!--
-
-    TemplateMo 570 Chain App Dev
-
-    https://templatemo.com/tm-570-chain-app-dev
-
-    -->
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="~/Assets/css/templatemo-chain-app-dev.css">
@@ -61,7 +54,7 @@
                             <li class="scroll-to-section"><a href="#top" class="active">Trang chủ</a></li>
                             <li class="scroll-to-section"><a href="#about">Giới thiệu</a></li>
                             <li class="scroll-to-section"><a href="#newsletter">Thông tin liên hệ</a></li>
-                            <li><div class="gradient-button"><a id="modal_trigger" href="#modal"><i class="fa fa-sign-in-alt"></i> Đăng nhập</a></div></li>
+                            <li><div class="gradient-button"></div></li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -73,110 +66,6 @@
         </div>
     </header>
     <!-- ***** Header Area End ***** -->
-
-    <div id="modal" class="popupContainer" style="display:none;">
-        <div class="popupHeader">
-            <span class="header_title">Login</span>
-            <span class="modal_close"><i class="fa fa-times"></i></span>
-        </div>
-
-        <section class="popupBody">
-            <!-- Social Login -->
-            <div class="social_login">
-                <div class="">
-                    <a href="#" class="social_box fb">
-                        <span class="icon"><i class="fab fa-facebook"></i></span>
-                        <span class="icon_title">Facebook</span>
-
-                    </a>
-
-                    <a href="#" class="social_box google">
-                        <span class="icon"><i class="fab fa-google-plus"></i></span>
-                        <span class="icon_title">Google</span>
-                    </a>
-                </div>
-
-                <div class="centeredText">
-                    <span>Hoặc sử dụng Email</span>
-                </div>
-
-                <div class="action_btns">
-                    <div class="one_half"><button id="login_form" class="btn">Đăng nhập</button></div>
-                    <div class="one_half last"><button id="register_form" class="btn">Đăng ký</button></div>
-                </div>
-            </div>
-
-            <!-- Username & Password Login form -->
-            <div class="user_login">
-                @Html.ValidationSummary(true)
-                @using (Html.BeginForm("Login", "User", FormMethod.Post))
-                {
-                    <form>
-                        <label>Email</label>
-                        <input name="Email" type="email" />
-                        <br />
-
-                        <label>Mật khẩu</label>
-                        <input name="Password" type="password" />
-                        <br />
-
-                        <div class="checkbox">
-                            <input id="remember" type="checkbox" />
-                            <label for="remember">Lưu mật khẩu</label>
-                        </div>
-
-                        <div class="action_btns">
-                            <div class="one_half"><button class="btn back_btn"><i class="fa fa-angle-double-left"></i>Trở về</button></div>
-                            <div class="one_half last"><button type="submit" class="btn btn_red">Đăng nhập</button></div>
-                        </div>
-                        <div>
-                            @ViewData["err1"]
-                            @ViewData["err2"]
-                            @ViewBag.Thongbao
-                        </div>
-                    </form>
-                }
-                <a href="#" class="forgot_password">Quên mật khẩu?</a>
-            </div>
-
-            <!-- Register Form -->
-            <div class="user_register">
-                @Html.ValidationSummary(true)
-                @using (Html.BeginForm("Register", "User", FormMethod.Post))
-                {
-                    <form>
-                        <label>Họ tên</label>
-                        <input name="FullName" type="text" />
-                        <br />
-
-                        <label>Email</label>
-                        <input name="Email" type="email" />
-                        <br />
-
-                        <label>Mật khẩu</label>
-                        <input name="Password" type="password" />
-                        <br />
-
-                        <label>Nhập lại mật khẩu</label>
-                        <input name="RePassword" type="password" />
-                        <br />
-                        @ViewData["err1"]
-                        @ViewData["err2"]
-                        @ViewData["err3"]
-                        @ViewData["err4"]
-                        @ViewData["err5"]
-                        @ViewData["err6"]
-
-
-                        <div class="action_btns">
-                            <div class="one_half"><button class="btn back_btn"><i class="fa fa-angle-double-left"></i>Trở về</button></div>
-                            <div class="one_half last"><button type="submit" class="btn btn_red">Đăng ký</button></div>
-                        </div>
-                    </form>
-                }
-            </div>
-        </section>
-    </div>
 
 
     @RenderBody()
@@ -269,6 +158,7 @@
         </div>
     </footer>
 
+ 
 
     <!-- Scripts -->
     <script src="~/Assets/vendor/jquery/jquery.min.js"></script>
@@ -278,6 +168,11 @@
     <script src="~/Assets/js/imagesloaded.js"></script>
     <script src="~/Assets/js/popup.js"></script>
     <script src="~/Assets/js/custom.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
 
 
     @Scripts.Render("~/bundles/jquery")

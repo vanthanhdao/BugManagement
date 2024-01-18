@@ -1,109 +1,128 @@
-﻿@model IEnumerable<QuanlyBug.Models.PROJECT>
+﻿@model IEnumerable<QuanlyBug.Models.ProjectList>
 
-@using QuanlyBug.Models
-@*@model QuanlyBug.Models.PROJECT*@
+
+
 @{
     ViewBag.Title = "Project";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
 
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <!-- Page pre-title -->
 
-
-
-<div class="page">
-
-    <!-- Body -->
-    <div class="page-wrapper">
-        <!-- Page header -->
-        <div class="page-header d-print-none">
-            <div class="container-xl">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        <!-- Page pre-title -->
-
-                        <h2 class="page-title">
-                            Dự án
-                        </h2>
-                    </div>
-                    <!-- Page title actions -->
-                    <div class="col-auto ms-auto d-print-none">
-                        <div class="btn-list">
-                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-createproject">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                                Tạo mới dự án
-                            </a>
-                            <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-createproject" aria-label="Create new report">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                            </a>
-                        </div>
+                    <h2 class="page-title">
+                        Dự án
+                    </h2>
+                </div>
+                <!-- Page title actions -->
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        @*<span class="d-none d-sm-inline">
+                                <a href="#" class="btn">
+                                    New view
+                                </a>
+                            </span>*@
+                        <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-createproject">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                            Tạo mới dự án
+                        </a>
+                        <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Page body -->
-        <div class="page-body">
-            <div class="container-xl">
-                <div class="row row-deck row-cards">
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row row-deck row-cards">
+                <div class="col-12">
+                    <div class="card">
 
-                    @*Invoice*@
-                    <div class="col-12">
-                        <div class="card">
-
-                            <div class="table-responsive">
-
-
-                                <table class="table card-table table-vcenter text-nowrap datatable">
-                                    <thead>
-                                        <tr>
-
-                                            <th>Tên dự án</th>
-                                            <th>Mô tả dự án</th>
-                                            <th>Ngày tạo</th>
-                                            <th>Người tạo</th>
-                                            <th>Email</th>
-
-                                            <th></th>
-
-                                        </tr>
-                                    </thead>
+                        @*<div class="card-body border-bottom py-3">
+                                <div class="d-flex">
+                                    <div class="text-muted">
+                                        Show
+                                        <div class="mx-2 d-inline-block">
+                                            <input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
+                                        </div>
+                                        entries
+                                    </div>
+                                    <div class="ms-auto text-muted">
+                                        Search:
+                                        <div class="ms-2 d-inline-block">
+                                            <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="table-responsive">
+                            <table class="table card-table table-vcenter text-nowrap datatable">
+                                <thead>
+                                    <tr>
+                                        <th class="w-1"></th>
+                                        <th>Tên dự án</th>
+                                        <th>Mô tả dự án</th>
+                                        <th>Người tạo dự án</th>
+                                        <th>Ngày tạo dự án</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     @foreach (var item in Model)
                                     {
+                                        <tr>
+                                            <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
+                                            <td>
+                                                /
+                                                <a href="#" class="ms-1" aria-label="Open website">
+                                                    @item.Name
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 15l6 -6"></path><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"></path><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"></path></svg>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @item.Decription
+                                            </td>
+                                            <td>
+                                                <span class="flag flag-country-us"></span>
+                                                @item.EmailPeoCreate
+                                            </td>
+                                            <td>@item.DateCreate</td>
+                                            <td class="text-end">
 
-                                        <tbody>
+                                                <a class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown" aria-expanded="true">
+                                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-menu-deep" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M4 6h16" /><path d="M7 12h13" /><path d="M10 18h10" /></svg>
+                                                    </span>
+                                                </a>
 
-                                            <tr>
-                                                <td>
-                                                    <a class="nav-link " href="@Url.Action("Index","BUGs", new { id = item.ProjectID })">
-
-                                                        @item.Name
+                                                <div class="dropdown-menu dropdown-menu-end">
+                                                    <a class="dropdown-item" href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })">
+                                                        Xem dự án
                                                     </a>
-                                                </td>
-                                                <td>
-                                                    @item.Decription
-                                                </td>
-                                                <td>
-                                                    @item.DateCreate
-                                                </td>
-                                                <td>
-                                                    @item.PeopleCreate
-                                                </td>
-                                                <td>
-                                                    @item.EmailPeoCreate
-                                                </td>
-                                                <td class="text-end">
-                                                    <a href="#" style="padding-right:20px;" data-bs-toggle="modal" data-bs-target="#modal-editproject-@item.ProjectID">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512"><!--! Font Awesome Free 6.4.0 by - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z" /></svg>
-                                                    </a>
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal-deleteproject-@item.ProjectID">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z" /></svg>
+                                                    @if (item.Role == "admin")
+                                                    {
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-editproject-@item.ProjectID">
+                                                            Cập nhật dự án
+                                                        </a>
+                                                        <a class="dropdown-item text-pink" href="#" data-bs-toggle="modal" data-bs-target="#modal-deleteproject-@item.ProjectID">
+                                                            Xóa dự án
+                                                        </a>
+                                                    }
 
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                                </div>
 
-                                        </tbody>
+                                            </td>
+                                        </tr>
 
                                         using (Html.BeginForm("EditProject", "Home", new { id = item.ProjectID }, FormMethod.Post))
                                         {
@@ -111,20 +130,17 @@
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Cập nhật thông tin dự án</h5>
+                                                            <h5 class="modal-title">Cập nhật dự án</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <label class="form-label">Tên dự án</label>
-                                                                <input type="text" value="@item.Name" class="form-control" name="NameProject" placeholder="Tên dự án của bạn">
+                                                                <input type="text" class="form-control" name="NameProject" value="@item.Name">
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label class="form-label">Mô tả dự án</label>
-                                                                <textarea value class="form-control" name="DecriptionProject" rows="3">@item.Decription</textarea>
-                                                            </div>
-
-                                                            <div class="row">
+                                                                <textarea class="form-control" name="DecriptionProject" rows="3" placeholder="Mô tả dự án của bạn">@item.Decription</textarea>
                                                             </div>
 
                                                         </div>
@@ -135,13 +151,8 @@
                                                             </a>
                                                             <button type="submit" class="btn btn-primary ms-auto">
                                                                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"></path>
-                                                                    <path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                                                    <path d="M14 4l0 4l-6 0l0 -4"></path>
-                                                                </svg>
-                                                                Lưu
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                                Gửi
                                                             </button>
                                                         </div>
                                                     </div>
@@ -149,27 +160,23 @@
                                             </div>
                                         }
 
-
-                                        using (Html.BeginForm("DeleteProject", "Home", new { id = item.ProjectID }, FormMethod.Post))
+                                        using (Html.BeginForm("DeleteProject", "Home", new { id = item.ProjectID }, FormMethod.Post, new { @class = "deleteForm" }))
                                         {
                                             <div class="modal modal-blur fade" id="modal-deleteproject-@item.ProjectID" tabindex="-1" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Xác nhận xóa dự án của bạn !</h5>
+                                                            <h5 class="modal-title">Xóa dự án</h5>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <label class="form-label">Tên dự án</label>
-                                                                <input type="text" value="@item.Name" class="form-control" name="NameProject" placeholder="Tên dự án của bạn" readonly>
+                                                                <input type="text" class="form-control" name="NameProject" value="@item.Name" disabled>
                                                             </div>
                                                             <div class="mb-3">
-                                                                <label class="form-label">Mô tả dự án</label>
-                                                                <textarea class="form-control" name="DecriptionProject" rows="3" readonly>@item.Decription</textarea>
-                                                            </div>
-
-                                                            <div class="row">
+                                                                <label class="form-label" id="lableComfirm">Xác nhận xóa</label>
+                                                                <input type="text" class="form-control" name="NameProject" oninput="updateValue(this,'@item.Name')" id="inputConfirm">
                                                             </div>
 
                                                         </div>
@@ -180,11 +187,8 @@
                                                             </a>
                                                             <button type="submit" class="btn btn-primary ms-auto">
                                                                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                                    <path d="M5 12l5 5l10 -10"></path>
-                                                                </svg>
-                                                                Đồng ý
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                                Gửi
                                                             </button>
                                                         </div>
                                                     </div>
@@ -193,22 +197,42 @@
                                         }
 
 
+
                                     }
-                                </table>
 
-
-                            </div>
-
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card-footer d-flex align-items-center">
+                            <p class="m-0 text-muted">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
+                            <ul class="pagination m-0 ms-auto">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M15 6l-6 6l6 6" /></svg>
+                                        prev
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item active"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">
+                                        next <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 6l6 6l-6 6" /></svg>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-
     </div>
-</div>
 
+</div>
 
 
 @using (Html.BeginForm("CreateProject", "Home", FormMethod.Post))
@@ -230,7 +254,7 @@
                         <textarea class="form-control" name="DecriptionProject" rows="3" placeholder="Mô tả dự án của bạn"></textarea>
                     </div>
 
-                    <div class="row">
+                    <!--<div class="row">
                         <div class="col-lg-8">
                             <div class="mb-3">
                                 <label class="form-label">Thêm người</label>
@@ -245,14 +269,14 @@
                         <div class="col-lg-4">
                             <div class="mb-3">
                                 <br />
-                                <button type="submit" class="btn btn-action ms-auto" style="margin-top:10px">
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                <button type="submit" class="btn btn-action ms-auto" style="margin-top:10px">-->
+                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                    <!--<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
                                 </button>
                             </div>
                         </div>
 
-                    </div>
+                    </div>-->
 
                 </div>
 
@@ -263,7 +287,7 @@
                     <button type="submit" class="btn btn-primary ms-auto">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        Tạo mới dự án
+                        Gửi
                     </button>
                 </div>
             </div>
@@ -272,4 +296,41 @@
 }
 
 
+<script>
+    function updateValue(inputElement, name) {
+        var value = inputElement.value;
+        const lable = document.getElementById("lableComfirm");
 
+        // Kiểm tra điều kiện và thiết lập màu sắc
+        if (value && name && value === name) {
+            inputElement.style.borderColor = "";
+            lable.style.color = "";
+        } else {
+            inputElement.style.borderColor = "red";
+            inputElement.style.backgroundImage = "url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232fb344' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='20 6 9 17 4 12'%3e%3c/polyline%3e%3c/svg%3e)";
+            inputElement.style.backgroundRepeat = "no-repeat";
+            inputElement.style.backgroundPosition = "right calc(0.3571428572em + 0.28125rem) center";
+            inputElement.style.backgroundSize = "calc(0.7142857143em + 0.5625rem) calc(0.7142857143em + 0.5625rem)";
+            lable.style.color = "red";
+        }
+    }
+
+
+    (() => {
+        'use strict'
+        const form = document.querySelector('.deleteForm');
+        const inputComfim = document.getElementById("inputComfim")
+        form.addEventListener('submit', event => {
+            var inputs = form.getElementsByTagName('input');
+            if (inputComfim == "") {
+                for (var i = 0; i < inputs.length; i++) {
+                    var input = inputs[i];
+                    if (input.style.borderColor == 'red') {
+                        event.preventDefault();
+                    }
+                }
+            } else event.preventDefault();
+        }, false)
+    })()
+
+</script>
