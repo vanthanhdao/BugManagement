@@ -14,6 +14,8 @@ namespace QuanlyBug.Controllers
 
         public ActionResult Index()
         {
+            var message = TempData["Messagelogin"] as string;
+            ViewBag.Message = message;
             return View();
         }
 

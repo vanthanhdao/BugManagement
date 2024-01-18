@@ -141,6 +141,7 @@
     <Compile Include="Models\PROJECT.cs">
       <DependentUpon>qlbug.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProjectList.cs" />
     <Compile Include="Models\PROJECTMB.cs">
       <DependentUpon>qlbug.tt</DependentUpon>
     </Compile>
@@ -159,6 +160,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>qlbug.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\ResetPassword.cs" />
     <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>qlbug.tt</DependentUpon>
     </Compile>
@@ -585,6 +587,7 @@
     <Content Include="Assets\images\about-right-dec.png" />
     <Content Include="Assets\images\client-bg.png" />
     <Content Include="Assets\images\client-image.jpg" />
+    <Content Include="Assets\images\demo.jpg" />
     <Content Include="Assets\images\footer-bg.png" />
     <Content Include="Assets\images\heading-line-dec.png" />
     <Content Include="Assets\images\logo.png" />
@@ -607,7 +610,6 @@
     <Content Include="Assets\images\services-left-dec.png" />
     <Content Include="Assets\images\services-right-dec.png" />
     <Content Include="Assets\images\slider-dec.png" />
-    <Content Include="Assets\images\slider-left-dec.png" />
     <Content Include="Assets\images\white-logo.png" />
     <Content Include="Assets\js\animation.js" />
     <Content Include="Assets\js\custom.js" />
@@ -1174,6 +1176,9 @@
     <Content Include="Models\qlbug.edmx.diagram">
       <DependentUpon>qlbug.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\Quanlybug - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Quanlybug - Web Deploy1.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -1212,6 +1217,11 @@
     <Content Include="Views\BUGs\Edit.cshtml" />
     <Content Include="Views\BUGs\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutBugs.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\User\ForgotPassword.cshtml" />
+    <Content Include="Views\User\ResetPassword.cshtml" />
+    <Content Include="Views\Home\ProjectList.cshtml" />
+    <Content Include="Views\Home\Team.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

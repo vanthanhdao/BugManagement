@@ -1,0 +1,61 @@
+﻿
+@model IEnumerable<QuanlyBug.Models.ProjectList>
+
+<li class="nav-item ">
+    <a class="nav-link " data-bs-toggle="modal" data-bs-target="#modal-addmember" href="#">
+        <span class="nav-link-icon d-md-none d-lg-inline-block">
+            <!-- Download SVG icon from http://tabler-icons.io/i/package -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users-group" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" /><path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M17 10h2a2 2 0 0 1 2 2v1" /><path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M3 13v-1a2 2 0 0 1 2 -2h2" /></svg>
+        </span>
+        <span class="nav-link-title">
+            Nhóm
+        </span>
+    </a>
+</li>
+
+
+@using (Html.BeginForm("AddMember", "Home", FormMethod.Post))
+{
+    <div class="modal modal-blur fade" id="modal-addmember" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm thành viên vào dự án của bạn</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-3 align-items-end">
+                        <div class="col">
+                            <label class="form-label">Tên hoặc Email</label>
+                            <input type="text" class="form-control" name="nameOrEmail" >
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Chọn dự án</label>
+                        <select class="form-select" name="nameProject">
+                            @foreach (var item in Model)
+                            {
+                                if(item.Role == "admin")
+                                {
+                                    <option >@item.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label class="form-label">Phân quyền</label>
+                        <select class="form-select" name="role">
+                            <option value="1">Tester</option>
+                            <option value="2">Developer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
