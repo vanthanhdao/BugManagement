@@ -16,7 +16,7 @@ namespace QuanlyBug.Controllers
     public class HomeController : Controller
     {
         // GET: Home
-        private QuanlyBugEntities db = new QuanlyBugEntities();
+        private QuanlyBugDataEntities db = new QuanlyBugDataEntities();
 
         //public  string CalculateSHA256Hash(string input)
         //{
@@ -43,7 +43,7 @@ namespace QuanlyBug.Controllers
 
         public ActionResult Project()
         {
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
             {
                 var data = from pm in db.PROJECTMBS
@@ -71,10 +71,10 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProject(PROJECT project, PROJECTMB projectmb, FormCollection f)
+        public ActionResult CreateProject(PROJECTS project, PROJECTMBS projectmb, FormCollection f)
         {
 
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
             {
                 string name = f["NameProject"];
@@ -192,7 +192,7 @@ namespace QuanlyBug.Controllers
 
         public ActionResult Team()
         {
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
             {
                 var data = from pm in db.PROJECTMBS

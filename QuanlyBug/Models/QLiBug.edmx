@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QuanlyBugDataModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BUGS">
+          <Key>
+            <PropertyRef Name="BugID" />
+          </Key>
+          <Property Name="BugID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="Priority" Type="nvarchar" MaxLength="50" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="CreatedAt" Type="varchar" MaxLength="50" />
+          <Property Name="UpdatedAt" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PROJECTMBS">
+          <Key>
+            <PropertyRef Name="ProjectMembersID" />
+          </Key>
+          <Property Name="ProjectMembersID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="Role" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PROJECTS">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Decription" Type="nvarchar" MaxLength="50" />
+          <Property Name="DateCreate" Type="nvarchar" MaxLength="50" />
+          <Property Name="PeopleCreate" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailPeoCreate" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="USERS">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="ResetPass" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_BUGS_PROJECTS">
+          <End Role="PROJECTS" Type="Self.PROJECTS" Multiplicity="0..1" />
+          <End Role="BUGS" Type="Self.BUGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECTS">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="BUGS">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BUGS_USERS">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
+          <End Role="BUGS" Type="Self.BUGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="BUGS">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECTMBS_PROJECTS">
+          <End Role="PROJECTS" Type="Self.PROJECTS" Multiplicity="0..1" />
+          <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECTS">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="PROJECTMBS">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECTMBS_USERS">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
+          <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PROJECTMBS">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuanlyBugDataModelStoreContainer">
+          <EntitySet Name="BUGS" EntityType="Self.BUGS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PROJECTMBS" EntityType="Self.PROJECTMBS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PROJECTS" EntityType="Self.PROJECTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USERS" EntityType="Self.USERS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_BUGS_PROJECTS" Association="Self.FK_BUGS_PROJECTS">
+            <End Role="PROJECTS" EntitySet="PROJECTS" />
+            <End Role="BUGS" EntitySet="BUGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BUGS_USERS" Association="Self.FK_BUGS_USERS">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="BUGS" EntitySet="BUGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECTMBS_PROJECTS" Association="Self.FK_PROJECTMBS_PROJECTS">
+            <End Role="PROJECTS" EntitySet="PROJECTS" />
+            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECTMBS_USERS" Association="Self.FK_PROJECTMBS_USERS">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QuanlyBugDataModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BUGS">
+          <Key>
+            <PropertyRef Name="BugID" />
+          </Key>
+          <Property Name="BugID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="CreatedAt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedAt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PROJECTS" Relationship="Self.FK_BUGS_PROJECTS" FromRole="BUGS" ToRole="PROJECTS" />
+          <NavigationProperty Name="USERS" Relationship="Self.FK_BUGS_USERS" FromRole="BUGS" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="PROJECTMBS">
+          <Key>
+            <PropertyRef Name="ProjectMembersID" />
+          </Key>
+          <Property Name="ProjectMembersID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PROJECTS" Relationship="Self.FK_PROJECTMBS_PROJECTS" FromRole="PROJECTMBS" ToRole="PROJECTS" />
+          <NavigationProperty Name="USERS" Relationship="Self.FK_PROJECTMBS_USERS" FromRole="PROJECTMBS" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="PROJECTS">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Decription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PeopleCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailPeoCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BUGS" Relationship="Self.FK_BUGS_PROJECTS" FromRole="PROJECTS" ToRole="BUGS" />
+          <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_PROJECTS" FromRole="PROJECTS" ToRole="PROJECTMBS" />
+        </EntityType>
+        <EntityType Name="USERS">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ResetPass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BUGS" Relationship="Self.FK_BUGS_USERS" FromRole="USERS" ToRole="BUGS" />
+          <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_USERS" FromRole="USERS" ToRole="PROJECTMBS" />
+        </EntityType>
+        <Association Name="FK_BUGS_PROJECTS">
+          <End Role="PROJECTS" Type="Self.PROJECTS" Multiplicity="0..1" />
+          <End Role="BUGS" Type="Self.BUGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECTS">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="BUGS">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BUGS_USERS">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
+          <End Role="BUGS" Type="Self.BUGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="BUGS">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECTMBS_PROJECTS">
+          <End Role="PROJECTS" Type="Self.PROJECTS" Multiplicity="0..1" />
+          <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECTS">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="PROJECTMBS">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECTMBS_USERS">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
+          <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PROJECTMBS">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuanlyBugDataEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BUGS" EntityType="Self.BUGS" />
+          <EntitySet Name="PROJECTMBS" EntityType="Self.PROJECTMBS" />
+          <EntitySet Name="PROJECTS" EntityType="Self.PROJECTS" />
+          <EntitySet Name="USERS" EntityType="Self.USERS" />
+          <AssociationSet Name="FK_BUGS_PROJECTS" Association="Self.FK_BUGS_PROJECTS">
+            <End Role="PROJECTS" EntitySet="PROJECTS" />
+            <End Role="BUGS" EntitySet="BUGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BUGS_USERS" Association="Self.FK_BUGS_USERS">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="BUGS" EntitySet="BUGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECTMBS_PROJECTS" Association="Self.FK_PROJECTMBS_PROJECTS">
+            <End Role="PROJECTS" EntitySet="PROJECTS" />
+            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECTMBS_USERS" Association="Self.FK_PROJECTMBS_USERS">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QuanlyBugDataModelStoreContainer" CdmEntityContainer="QuanlyBugDataEntities">
+          <EntitySetMapping Name="BUGS">
+            <EntityTypeMapping TypeName="QuanlyBugDataModel.BUGS">
+              <MappingFragment StoreEntitySet="BUGS">
+                <ScalarProperty Name="BugID" ColumnName="BugID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PROJECTMBS">
+            <EntityTypeMapping TypeName="QuanlyBugDataModel.PROJECTMBS">
+              <MappingFragment StoreEntitySet="PROJECTMBS">
+                <ScalarProperty Name="ProjectMembersID" ColumnName="ProjectMembersID" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PROJECTS">
+            <EntityTypeMapping TypeName="QuanlyBugDataModel.PROJECTS">
+              <MappingFragment StoreEntitySet="PROJECTS">
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Decription" ColumnName="Decription" />
+                <ScalarProperty Name="DateCreate" ColumnName="DateCreate" />
+                <ScalarProperty Name="PeopleCreate" ColumnName="PeopleCreate" />
+                <ScalarProperty Name="EmailPeoCreate" ColumnName="EmailPeoCreate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERS">
+            <EntityTypeMapping TypeName="QuanlyBugDataModel.USERS">
+              <MappingFragment StoreEntitySet="USERS">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="ResetPass" ColumnName="ResetPass" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

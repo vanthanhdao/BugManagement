@@ -12,7 +12,7 @@ namespace QuanlyBug.Controllers
 {
     public class PROJECTsController : Controller
     {
-        private QuanlyBugEntities db = new QuanlyBugEntities();
+        private QuanlyBugDataEntities db = new QuanlyBugDataEntities();
 
         // GET: PROJECTs
         public ActionResult Index()
@@ -27,7 +27,7 @@ namespace QuanlyBug.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PROJECT pROJECT = db.PROJECTS.Find(id);
+            PROJECTS pROJECT = db.PROJECTS.Find(id);
             if (pROJECT == null)
             {
                 return HttpNotFound();
@@ -46,7 +46,7 @@ namespace QuanlyBug.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProjectID,Name,Decription,DateCreate")] PROJECT pROJECT)
+        public ActionResult Create([Bind(Include = "ProjectID,Name,Decription,DateCreate")] PROJECTS pROJECT)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace QuanlyBug.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PROJECT pROJECT = db.PROJECTS.Find(id);
+            PROJECTS pROJECT = db.PROJECTS.Find(id);
             if (pROJECT == null)
             {
                 return HttpNotFound();
@@ -78,7 +78,7 @@ namespace QuanlyBug.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProjectID,Name,Decription,DateCreate")] PROJECT pROJECT)
+        public ActionResult Edit([Bind(Include = "ProjectID,Name,Decription,DateCreate")] PROJECTS pROJECT)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace QuanlyBug.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PROJECT pROJECT = db.PROJECTS.Find(id);
+            PROJECTS pROJECT = db.PROJECTS.Find(id);
             if (pROJECT == null)
             {
                 return HttpNotFound();
@@ -109,7 +109,7 @@ namespace QuanlyBug.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            PROJECT pROJECT = db.PROJECTS.Find(id);
+            PROJECTS pROJECT = db.PROJECTS.Find(id);
             db.PROJECTS.Remove(pROJECT);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -12,7 +12,7 @@ namespace QuanlyBug.Controllers
 {
     public class BUGsController : Controller
     {
-        private QuanlyBugEntities db = new QuanlyBugEntities();
+        private QuanlyBugDataEntities db = new QuanlyBugDataEntities();
         
 
         // GET: BUGs
@@ -24,7 +24,7 @@ namespace QuanlyBug.Controllers
                 ViewBag.IdPr = bugs.ProjectID.ToString();
                 Session["IdProject"] = bugs;
             }
-            var bUGS = db.BUGS.Include(b => b.PROJECT).Include(b => b.USER);
+            var bUGS = db.BUGS.Include(b => b.PROJECTS).Include(b => b.USERS);
             return View(bUGS.ToList());
         }
 
@@ -35,7 +35,7 @@ namespace QuanlyBug.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BUG bUG = db.BUGS.Find(id);
+            BUGS bUG = db.BUGS.Find(id);
             if (bUG == null)
             {
                 return HttpNotFound();
@@ -59,9 +59,9 @@ namespace QuanlyBug.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         
-        public ActionResult Create(BUG bugs, FormCollection f, int? id)
+        public ActionResult Create(BUGS bugs, FormCollection f, int? id)
         {
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             bugs.Title = f["NameBug"];
             bugs.Description = f["description"];
             bugs.Priority = f["Priority"];
@@ -83,7 +83,7 @@ namespace QuanlyBug.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BUG bUG = db.BUGS.Find(id);
+            BUGS bUG = db.BUGS.Find(id);
             if (bUG == null)
             {
                 return HttpNotFound();
@@ -127,7 +127,7 @@ namespace QuanlyBug.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BUG bUG = db.BUGS.Find(id);
+            BUGS bUG = db.BUGS.Find(id);
             if (bUG == null)
             {
                 return HttpNotFound();
@@ -172,7 +172,7 @@ namespace QuanlyBug.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BUG bUG = db.BUGS.Find(id);
+            BUGS bUG = db.BUGS.Find(id);
             if (bUG == null)
             {
                 return HttpNotFound();
@@ -185,7 +185,7 @@ namespace QuanlyBug.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            BUG bUG = db.BUGS.Find(id);
+            BUGS bUG = db.BUGS.Find(id);
             db.BUGS.Remove(bUG);
             db.SaveChanges();
             return RedirectToAction("Index");

@@ -10,7 +10,7 @@ namespace QuanlyBug.Controllers
     public class AboutController : Controller
     {
         // GET: About
-        private QuanlyBugEntities db = new QuanlyBugEntities();
+        private QuanlyBugDataEntities db = new QuanlyBugDataEntities();
 
         public ActionResult Index()
         {

@@ -12,7 +12,7 @@ namespace QuanlyBug.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BUG
+    public partial class BUGS
     {
         public int BugID { get; set; }
         public Nullable<int> ProjectID { get; set; }
@@ -24,7 +24,7 @@ namespace QuanlyBug.Models
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
     
-        public virtual PROJECT PROJECT { get; set; }
-        public virtual USER USER { get; set; }
+        public virtual PROJECTS PROJECTS { get; set; }
+        public virtual USERS USERS { get; set; }
     }
 }
