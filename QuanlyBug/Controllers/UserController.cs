@@ -20,13 +20,16 @@ namespace QuanlyBug.Controllers
         public ActionResult Register()
         {
             var message = TempData["MessageRegister"] as string;
+            //string email = Request.QueryString["email"];
             ViewBag.Message = message;
+            //ViewBag.email = email;
             return View();
         }
 
         [HttpPost]
         public ActionResult Register(FormCollection collection, USER kh)
         {
+
             var sFullName = collection["FullName"];
             var sPassword = collection["Password"];
             var sEmail = collection["Email"];
@@ -199,6 +202,12 @@ namespace QuanlyBug.Controllers
         public ActionResult LoginLogout()
         {
             return PartialView();
+        }
+
+        public ActionResult LogOut()
+        {
+            Session["Taikhoan"] = null;
+            return RedirectToAction("Index", "About");
         }
 
     }

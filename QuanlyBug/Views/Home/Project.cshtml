@@ -1,10 +1,15 @@
 ﻿@model IEnumerable<QuanlyBug.Models.ProjectList>
 
 
-
 @{
     ViewBag.Title = "Project";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+@using QuanlyBug.Models
+@{
+    USER kh = (USER)Session["TaiKhoan"];
+
 }
 
 <div class="page-wrapper">
@@ -27,11 +32,15 @@
                                     New view
                                 </a>
                             </span>*@
-                        <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-createproject">
-                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
-                            Tạo mới dự án
-                        </a>
+
+                        @if (kh.Status == "admin" || kh.Status == "Product Manager")
+                        {
+                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-createproject">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
+                                Tạo mới dự án
+                            </a>
+                        }
                         <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
                             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 5l0 14"></path><path d="M5 12l14 0"></path></svg>
@@ -109,7 +118,7 @@
                                                     <a class="dropdown-item" href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })">
                                                         Xem dự án
                                                     </a>
-                                                    @if (item.Role == "admin")
+                                                    @if (item.Role == "creater")
                                                     {
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-editproject-@item.ProjectID">
                                                             Cập nhật dự án
@@ -160,7 +169,7 @@
                                             </div>
                                         }
 
-                                        using (Html.BeginForm("DeleteProject", "Home", new { id = item.ProjectID }, FormMethod.Post, new { @class = "deleteForm" }))
+                                        using (Html.BeginForm("DeleteProject", "Home", new { id = item.ProjectID }, FormMethod.Post, new { @class = "deleteForm", @novalidate = "novalidate" }))
                                         {
                                             <div class="modal modal-blur fade" id="modal-deleteproject-@item.ProjectID" tabindex="-1" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
@@ -176,7 +185,7 @@
                                                             </div>
                                                             <div class="mb-3">
                                                                 <label class="form-label" id="lableComfirm">Xác nhận xóa</label>
-                                                                <input type="text" class="form-control" name="NameProject" oninput="updateValue(this,'@item.Name')" id="inputConfirm">
+                                                                <input type="text" class="form-control" name="NameProject" oninput="updateValue(this,'@item.Name')" id="inputConfirm" required>
                                                             </div>
 
                                                         </div>
@@ -235,7 +244,7 @@
 </div>
 
 
-@using (Html.BeginForm("CreateProject", "Home", FormMethod.Post))
+@using (Html.BeginForm("CreateProject", "Home", FormMethod.Post, new { @class = "createForm", @novalidate = "novalidate" }))
 {
     <div class="modal modal-blur fade" id="modal-createproject" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -247,11 +256,11 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label">Tên dự án</label>
-                        <input type="text" class="form-control" name="NameProject" placeholder="Tên dự án của bạn">
+                        <input type="text" class="form-control" name="NameProject" id="NameProject" placeholder="Tên dự án của bạn" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Mô tả dự án</label>
-                        <textarea class="form-control" name="DecriptionProject" rows="3" placeholder="Mô tả dự án của bạn"></textarea>
+                        <textarea class="form-control" name="DecriptionProject" id="DecriptionProject" rows="3" placeholder="Mô tả dự án của bạn" required></textarea>
                     </div>
 
                     <!--<div class="row">
@@ -299,38 +308,76 @@
 <script>
     function updateValue(inputElement, name) {
         var value = inputElement.value;
-        const lable = document.getElementById("lableComfirm");
-
         // Kiểm tra điều kiện và thiết lập màu sắc
-        if (value && name && value === name) {
+        if (value === name) {
+            inputElement.setCustomValidity("");
             inputElement.style.borderColor = "";
-            lable.style.color = "";
         } else {
+            inputElement.setCustomValidity("This field is invalid");
             inputElement.style.borderColor = "red";
-            inputElement.style.backgroundImage = "url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%232fb344' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='20 6 9 17 4 12'%3e%3c/polyline%3e%3c/svg%3e)";
-            inputElement.style.backgroundRepeat = "no-repeat";
-            inputElement.style.backgroundPosition = "right calc(0.3571428572em + 0.28125rem) center";
-            inputElement.style.backgroundSize = "calc(0.7142857143em + 0.5625rem) calc(0.7142857143em + 0.5625rem)";
-            lable.style.color = "red";
         }
     }
 
 
     (() => {
         'use strict'
-        const form = document.querySelector('.deleteForm');
-        const inputComfim = document.getElementById("inputComfim")
-        form.addEventListener('submit', event => {
-            var inputs = form.getElementsByTagName('input');
-            if (inputComfim == "") {
-                for (var i = 0; i < inputs.length; i++) {
-                    var input = inputs[i];
-                    if (input.style.borderColor == 'red') {
-                        event.preventDefault();
-                    }
+        const forms = document.querySelectorAll('.deleteForm');
+        const formCreatProject = document.querySelector('.createForm');
+
+
+        // Gắn sự kiện click cho mỗi form
+        forms.forEach(form => {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
                 }
-            } else event.preventDefault();
-        }, false)
-    })()
+                form.classList.add('was-validated');
+            }, false);
+        });
+
+        formCreatProject.addEventListener('submit', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            // Get form fields
+            var name = document.getElementById("NameProject");
+            var description = document.getElementById("DecriptionProject");
+
+            // Perform AJAX call
+            $.ajax({
+                url: '/Home/GetDataProject',
+                type: 'GET',
+                success: function (data) {
+                    const checkName = data.some(element => element.Name === name.value);
+                    const checkDecription = data.some(element => element.Decription === description.value);
+
+                    if (!checkName) {
+                        name.setCustomValidity('');
+                    } else {
+                        name.setCustomValidity("This field is invalid");
+                    }
+
+                    if (!checkDecription) {
+                        description.setCustomValidity('');
+                    } else {
+                        description.setCustomValidity("This field is invalid");
+                    }
+
+                    // Check overall form validity
+                    if (formCreatProject.checkValidity()) {
+                        // If the form is valid, you can proceed with submitting the form
+                        formCreatProject.submit();
+                    }
+                    formCreatProject.classList.add('was-validated');
+
+                },
+                error: function (errorThrown) {
+                    console.log('Error:', errorThrown);
+                }
+            });
+        }, false);
+
+    })();
 
 </script>

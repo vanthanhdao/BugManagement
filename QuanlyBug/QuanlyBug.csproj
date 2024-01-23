@@ -145,6 +145,8 @@
     <Compile Include="Models\PROJECTMB.cs">
       <DependentUpon>qlbug.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProjectMemberModel.cs" />
+    <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\qlbug.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -167,6 +169,7 @@
     <Compile Include="Models\USER.cs">
       <DependentUpon>qlbug.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
