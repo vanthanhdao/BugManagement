@@ -12,33 +12,27 @@ namespace QuanlyBug.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BUG
+    public partial class FUNCTION
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public BUG()
+        public FUNCTION()
         {
-            this.FILES = new HashSet<FILE>();
+            this.BUGS = new HashSet<BUG>();
             this.PROJECTMBS = new HashSet<PROJECTMB>();
         }
     
-        public int BugID { get; set; }
+        public int FunctionID { get; set; }
         public string Title { get; set; }
+        public Nullable<int> ProjectID { get; set; }
+        public string EmailCreater { get; set; }
+        public string DateCreated { get; set; }
         public string Description { get; set; }
-        public string Priority { get; set; }
+        public string EmailUser { get; set; }
         public string Status { get; set; }
-        public string CreatedAt { get; set; }
-        public Nullable<int> FunctionID { get; set; }
-        public string severity { get; set; }
-        public string url { get; set; }
-        public string input { get; set; }
-        public string Reproduce { get; set; }
-        public string Expected { get; set; }
-        public string Actual { get; set; }
-        public string Env { get; set; }
     
-        public virtual FUNCTION FUNCTION { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FILE> FILES { get; set; }
+        public virtual ICollection<BUG> BUGS { get; set; }
+        public virtual PROJECT PROJECT { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PROJECTMB> PROJECTMBS { get; set; }
     }

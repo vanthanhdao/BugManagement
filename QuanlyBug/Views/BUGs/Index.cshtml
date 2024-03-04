@@ -1,4 +1,26 @@
-﻿@using QuanlyBug.Models
+﻿
+@model IEnumerable<QuanlyBug.Models.FILE>
+
+@{
+    var project = ViewData["Project"] as QuanlyBug.Models.PROJECT;
+    var users = ViewData["User"] as IEnumerable<QuanlyBug.Models.UserModel>;
+    var dataFuctions = ViewData["DataFuctions"] as IEnumerable<QuanlyBug.Models.ProjectList>;
+    var dataBugs = ViewData["DataBugs"] as IEnumerable<QuanlyBug.Models.ProjectList>;
+    var firstFuction = dataFuctions.FirstOrDefault();
+    int? idFuction = firstFuction?.FunctionID;
+    if (Session["idFuction"] != null)
+    {
+        idFuction = (int)Session["idFuction"];
+    }
+    var fucTions = dataFuctions.Where(f => f.FunctionID == idFuction).FirstOrDefault();
+
+}
+
+@using QuanlyBug.Models
+@{
+    USER kh = (USER)Session["TaiKhoan"];
+}
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
@@ -20,24 +42,14 @@
                     <div class="col">
                         <!-- Page pre-title -->
                         <div class="page-pretitle">
-                            Dự án / Demo
-                        </div>
-                        <h2 class="page-title">
-                            Vấn đề
-                        </h2>
-                    </div>
-                    <!-- Page title actions -->
-                    <div class="col-auto ms-auto d-print-none">
-                        <div class="btn-list">
-                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-createBug">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                                Tạo lỗi mới
-                            </a>
-                            <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-createBug" aria-label="Create new report">
-                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                            </a>
+                            <div class="page-title row-cols-md-auto">
+                                <a href="~/Home/Project" class="ms-1" aria-label="Open website">
+                                    Dự án /
+                                </a>
+                                <a>
+                                    @project.Name
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -48,109 +60,378 @@
             <div class="container-xl">
                 <div class="row row-cards">
                     <div class="col-lg-3">
-                        <div class="card" style="background-color:#F1F2F4">
+                        <div class="card" style="background-color: #F6F8FB">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between mb-3">
-                                    <div class="me-3">
-                                        <a class="nav-link dropdown-toggle show" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="true">
-                                            <span class="nav-link-title">
-                                                Trạng thái
-                                            </span>
-                                        </a>
-                                        <div class="dropdown-menu " data-bs-popper="static">
-                                            <a class="dropdown-item" href="https://tabler.io/docs" target="_blank" rel="noopener">
-                                                ToDo
+                                <div class="overflow-auto" style="height:70vh">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <div class="me-3">
+                                            <a class="nav-link dropdown-toggle show" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="true">
+                                                <span class="nav-link-title">
+                                                    Chức năng
+                                                </span>
                                             </a>
-                                            <a class="dropdown-item" href="./changelog.html">
-                                                InProgress
-                                            </a>
-                                            <a class="dropdown-item" href="https://github.com/tabler/tabler" target="_blank" rel="noopener">
-                                                InterView
-                                            </a>
-                                            <a class="dropdown-item text-pink" href="https://github.com/sponsors/codecalm" target="_blank" rel="noopener">
-                                                <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path></svg>
-                                                Done
-                                            </a>
+                                            <div class="dropdown-menu " data-bs-popper="static">
+                                                <a class="dropdown-item" href="https://tabler.io/docs" target="_blank" rel="noopener">
+                                                    ToDo
+                                                </a>
+                                                <a class="dropdown-item" href="./changelog.html">
+                                                    InProgress
+                                                </a>
+                                                <a class="dropdown-item" href="https://github.com/tabler/tabler" target="_blank" rel="noopener">
+                                                    InterView
+                                                </a>
+                                                <a class="dropdown-item text-pink" href="https://github.com/sponsors/codecalm" target="_blank" rel="noopener">
+                                                    <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path></svg>
+                                                    Done
+                                                </a>
+                                            </div>
+
                                         </div>
+                                        @if (kh != null && kh.Status == "admin" || kh.Status == "Product Manager")
+                                        {
+                                            <div class="d-flex justify-content-between">
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modal-createfuction">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-plus" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" /><path d="M9 12h6" /><path d="M12 9v6" /></svg>
+                                                </a>
+                                            </div>
+                                        }
 
                                     </div>
-                                    <div>
-                                        <a href="#">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-reload" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M19.933 13.041a8 8 0 1 1 -9.925 -8.788c3.899 -1 7.935 1.007 9.425 4.747" /><path d="M20 4v5h-5" /></svg>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="text-secondary mb-3">
-                                    <a href="#" class="card card-link card-link-pop">
-                                        <div class="card card-sm">
-                                            <div class="card-body">
-                                                <h3 class="card-title">Fix login</h3>
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="text-secondary">
-                                                        DriverLicenseApp-1
-                                                    </div>
-                                                    <div class="avatar-list avatar-list-stacked" style="margin-right:10px">
-                                                        <span class="avatar avatar-xs rounded" style="background-image: url(../../Assets//images/logo.png)"></span>
+
+
+                                    @foreach (var f in dataFuctions)
+                                    {
+                                        <div class="text-secondary mb-3">
+                                            <a href="#" class="card card-link card-link-pop" onclick="loadSelectedProject(@f.FunctionID,@f.ProjectID)">
+                                                <div class="card card-sm">
+                                                    <div class="card-body">
+                                                        <h3 class="card-title"> @f.Title</h3>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="text-secondary">
+                                                                @f.EmailUser
+                                                            </div>
+                                                            <div class="avatar-list avatar-list-stacked" style="margin-right:10px">
+                                                                <span class="avatar avatar-xs rounded" style="background-image: url(../../Assets//images/logo.png)"></span>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
-
-                                            </div>
+                                            </a>
                                         </div>
-                                    </a>
+                                    }
                                 </div>
-                                <div class="text-secondary mb-3">
-                                    <a href="#" class="card card-link card-link-pop">
-                                        <div class="card card-sm">
-                                            <div class="card-body">
-                                                <h3 class="card-title">Fix login</h3>
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="text-secondary">
-                                                        DriverLicenseApp-1
-                                                    </div>
-                                                    <div class="avatar-list avatar-list-stacked" style="margin-right:10px">
-                                                        <span class="avatar avatar-xs rounded" style="background-image: url(../../Assets//images/logo.png)"></span>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-                                <div class="text-secondary mb-3">
-                                    <a href="#" class="card card-link card-link-pop">
-                                        <div class="card card-sm">
-                                            <div class="card-body">
-                                                <h3 class="card-title">Fix login</h3>
-                                                <div class="d-flex justify-content-between">
-                                                    <div class="text-secondary">
-                                                        DriverLicenseApp-1
-                                                    </div>
-                                                    <div class="avatar-list avatar-list-stacked" style="margin-right:10px">
-                                                        <span class="avatar avatar-xs rounded" style="background-image: url(../../Assets//images/logo.png)"></span>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-
                             </div>
-
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <div class="card card-lg">
+                        <div class="card ">
                             <div class="card-body">
-                                <div class="markdown">
-                                    <p>This is a legal agreement between you, the Purchaser, and Tabler. Purchasing or downloading of any Tabler product (Tabler Free, Tabler PRO, Tabler Email), constitutes your acceptance of the terms of this license, <a href="https://tabler.io/terms-of-service.html">Tabler terms of service</a> and <a href="https://tabler.io/privacy-policy.html">Tabler private policy</a>.</p>
-                                    <p>A license grants you a non-exclusive and non-transferable right to use and incorporate the item in your personal or commercial projects.</p>
-                                    <h3 id="tabler-free-license">Tabler Free License</h3>
-                                    <p>Tabler Free is available under MIT License</p>
-                                    <p>Copyright 2023 Tabler</p>
-                                    <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-                                    <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>                                    
+                                <div class="overflow-auto" style="height:70vh">
+                                    <div class="d-flex justify-content-between mb-3">
+                                        <h1 class="lh-1" id="">Danh sách bug</h1>
+                                        @if (kh != null && (kh.Status == "admin" || kh.Status == "Product Manager" || kh.Status == "Tester") && firstFuction != null)
+                                        {
+                                            <div class="d-flex ">
+                                                <a href="#" class="btn btn-outline-primary w-100" data-bs-toggle="modal" data-bs-target="#modal-createbug" role="button" aria-expanded="true">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bug" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 9v-1a3 3 0 0 1 6 0v1" /><path d="M8 9h8a6 6 0 0 1 1 3v3a5 5 0 0 1 -10 0v-3a6 6 0 0 1 1 -3" /><path d="M3 13l4 0" /><path d="M17 13l4 0" /><path d="M12 20l0 -6" /><path d="M4 19l3.35 -2" /><path d="M20 19l-3.35 -2" /><path d="M4 7l3.75 2.4" /><path d="M20 7l-3.75 2.4" /></svg>
+                                                    Tạo lỗi mới
+                                                </a>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div>
+                                    </div>
+                                    @foreach (var bug in dataBugs.Where(b => b.FunctionID == idFuction))
+                                    {
+                                        <div class="card card-sm" id="interfaceBug-@bug.BugID" style="margin-bottom:20px">
+                                            <div class="card-status-top bg-yellow"></div>
+                                            <div class="card-body">
+                                                <div class="accordion-item">
+                                                    <div class="accordion-header" id="heading-1">
+                                                        <button class="accordion-button collapsed" onclick="toggleAccordion('titlebug-@bug.BugID','icon-chevron-down-@bug.BugID', '@bug.TitleBug')" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-@bug.BugID" aria-expanded="false">
+                                                            <style>
+                                                                .accordion-button::after {
+                                                                    display: none;
+                                                                }
+                                                            </style>
+                                                            <span id="titlebug-@bug.BugID">
+                                                                @bug.TitleBug
+                                                            </span>
+                                                            <span id="icon-chevron-down-@bug.BugID" style="margin-left:auto">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M6 9l6 6l6 -6" /></svg>
+                                                            </span>
+                                                        </button>
+                                                    </div>
+                                                    <div id="collapse-@bug.BugID" class="accordion-collapse collapse" data-bs-parent="#accordion-example" style="">
+                                                        <div class="accordion-body pt-0">
+
+                                                            <h4>Tiêu đề:</h4>
+                                                            <div class="text-secondary mb-3" id="EmailCreater">
+                                                                <input type="text" class="form-control" name="NameProject" value=" @bug.TitleBug" disabled>
+                                                            </div>
+
+                                                            <h4>Dữ liệu kiểm tra:</h4>
+                                                            <div class="text-secondary mb-3" id="EmailCreater">
+                                                                <input type="text" class="form-control" name="NameProject" value="@bug.Input" disabled>
+                                                            </div>
+
+                                                            <h4>Các bước tạo lỗi:</h4>
+                                                            <div class="text-secondary mb-3" id="EmailCreater">
+                                                                <input type="text" class="form-control" name="NameProject" value="@bug.Reproduce" disabled>
+                                                            </div>
+
+                                                            <h4>Kết quả mong đợi:</h4>
+                                                            <div class="text-secondary mb-3" id="EmailCreater">
+                                                                <input type="text" class="form-control" name="NameProject" value="@bug.Expected" disabled>
+                                                            </div>
+
+                                                            <h4>Kết quả thực tế:</h4>
+                                                            <div class="text-secondary mb-3" id="EmailCreater">
+                                                                <input type="text" class="form-control" name="NameProject" value="@bug.Actual" disabled>
+                                                            </div>
+
+                                                            <h4 class="col-auto">Url:</h4>
+                                                            <div class="col-auto text-secondary mb-3" id="EmailCreater">
+                                                                <input type="text" class="form-control" name="NameProject" value="@bug.Url" disabled>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <h4 class="col-auto">Mức độ nghiêm trọng:</h4>
+                                                                <div class="col-auto text-secondary mb-3" id="EmailCreater">
+                                                                    <span class="nav-link-title" id="spanStatus">
+                                                                        @bug.Severity
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <h4 class="col-auto">Mức độ ưu tiên:</h4>
+                                                                <div class="col-auto text-secondary mb-3" id="EmailCreater">
+                                                                    <span class="nav-link-title" id="spanStatus">
+                                                                        @bug.Priority
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <h4 class="col-auto">Môi trường:</h4>
+                                                                <div class="col-auto text-secondary mb-3" id="EmailCreater">
+                                                                    <span class="nav-link-title" id="spanStatus">
+                                                                        @bug.Env
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <h4 class="col-auto">Trạng thái bug:</h4>
+                                                                <div class="col-auto text-secondary mb-3" id="EmailCreater">
+                                                                    <span class="nav-link-title" id="spanStatus">
+                                                                        @bug.StatusBug
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            <h4>File đính kèm:</h4>
+                                                            <div class="text-secondary mb-3" id="EmailCreater">
+                                                                @foreach (var file in Model.Where(f => f.BugID == bug.BugID))
+                                                                {
+                                                                    if (file.FileType == "image/png" || file.FileType == "image/jpeg")
+                                                                    {
+                                                                        <img src="data:@file.FileType;base64,@Convert.ToBase64String(file.FileData)" alt="Description of the image">
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <label for="fileInput">@file.FileName</label>
+                                                                        <a href="data:application/octet-stream;base64,@Convert.ToBase64String(file.FileData)" download="@file.FileName">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><path d="M12 17v-6" /><path d="M9.5 14.5l2.5 2.5l2.5 -2.5" /></svg>
+                                                                        </a>
+
+                                                                    }
+
+                                                                }
+                                                            </div>
+
+                                                            <h4>Thông tin thêm:</h4>
+                                                            <div class="text-secondary mb-3" id="EmailCreater">
+                                                                <input type="text" class="form-control" name="NameProject" value="@bug.Description" disabled>
+                                                            </div>
+
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+                                                                        <li class="nav-item" role="presentation">
+                                                                            <a href="#tabs-profile-4" class="nav-link active" data-bs-toggle="tab" aria-selected="true" role="tab">Duyệt</a>
+                                                                        </li>
+                                                                        <li class="nav-item dropdown">
+                                                                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cài đặt</a>
+                                                                            <div class="dropdown-menu" style="">
+                                                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-editbug-@bug.BugID" role="button" aria-expanded="true">
+                                                                                    Cập nhật
+                                                                                </a>
+                                                                                <a class="dropdown-item" href="#">
+                                                                                    Xóa
+                                                                                </a>
+                                                                            </div>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <div class="tab-content">
+                                                                        <div class="tab-pane active show" id="tabs-profile-4" role="tabpanel">
+                                                                            @if (bug.StatusBug == "New")
+                                                                            {
+                                                                                <div class="mb-3">
+                                                                                    <label class="form-label">Email</label>
+                                                                                    <select class="form-select" name="Email" id="emailSelect" onchange="updateUrl(@project.ProjectID,@bug.BugID)">
+                                                                                        @if (users != null)
+                                                                                        {
+                                                                                            <option value="">-- Chọn email --</option>
+                                                                                            foreach (var i in users)
+                                                                                            {
+                                                                                                <option value="@i.Email">@i.Email</option>
+                                                                                            }
+                                                                                        }
+                                                                                    </select>
+
+                                                                                </div>
+                                                                                <div class="row g-2">
+                                                                                    <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
+                                                                                        <a href="@Url.Action("ChangeStatusBug", "BUGs", new { idPro = project.ProjectID, idBug = bug.BugID, status = "Dimiss" })" class="btn btn-danger w-100">
+                                                                                            Từ chối
+                                                                                        </a>
+                                                                                    </div>
+                                                                                    <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
+                                                                                    </div>
+                                                                                    <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
+                                                                                        <a id="changeStatusLink" href="" class="btn btn-info w-100">
+                                                                                            Đồng ý
+                                                                                        </a>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        using (Html.BeginForm("CreateBug", "BUGs", FormMethod.Post, new { @class = "editBugForm", @novalidate = "novalidate", enctype = "multipart/form-data" }))
+                                        {
+                                            <div class="modal modal-blur fade" id="modal-editbug-@bug.BugID" tabindex="-1" aria-modal="true" role="dialog">
+                                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Cập nhật lỗi </h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+
+                                                        <div class="modal-body overflow-auto" style="height:70vh">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Tiêu đề</label>
+                                                                <input type="text" class="form-control" name="title" id="TitleBug" placeholder="Nhập tiêu đề" value="@bug.TitleBug" required>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Dữ liệu kiểm tra</label>
+                                                                        <textarea class="form-control" name="input" rows="3" required>@bug.Input</textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Các bước tái tạo lỗi</label>
+                                                                        <textarea class="form-control" name="stepsToReproduce"  rows="3" required>@bug.Reproduce</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Kết quả mong đợi</label>
+                                                                        <input type="text" class="form-control" name="expected" value="@bug.Expected" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Kết quả thực tế</label>
+                                                                        <input type="text" class="form-control" name="actual" value="@bug.Actual" required>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Url</label>
+                                                                        <input type="text" class="form-control" name="url" value="@bug.Url" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Mức độ nghiêm trọng</label>
+                                                                        <select class="form-select" name="severity">
+                                                                            <option hidden>@bug.Severity</option>
+                                                                            <option value="Nghiêm trọng">Nghiêm trọng</option>
+                                                                            <option value="Cao">Cao</option>
+                                                                            <option value="Trung bình">Trung bình</option>
+                                                                            <option value="Thấp">Thấp</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Mức độ ưu tiên</label>
+                                                                        <select class="form-select" name="priority" value="@bug.Priority">
+                                                                            <option hidden>@bug.Priority</option>
+                                                                            <option value="Cao">Cao</option>
+                                                                            <option value="Trung bình">Trung bình</option>
+                                                                            <option value="Thấp">Thấp</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Môi trường</label>
+                                                                        <input type="text" class="form-control" name="enviroment" value="@bug.Env" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">File đính kèm</label>
+                                                                        <input type="file" class="form-control" name="files" multiple required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-12">
+                                                                    <div>
+                                                                        <label class="form-label">Thông tin thêm</label>
+                                                                        <textarea class="form-control" rows="3" name="description" required>@bug.Description</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn me-auto" data-bs-dismiss="modal">Hủy</button>
+                                                            <button type="submit" class="btn btn-primary">Gửi</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -158,69 +439,83 @@
                     <div class="col-lg-3">
                         <div class="card">
                             <div class="card-body">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="me-3">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/scale -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 20l10 0"></path><path d="M6 6l6 -1l6 1"></path><path d="M12 3l0 17"></path><path d="M9 12l-3 -6l-3 6a3 3 0 0 0 6 0"></path><path d="M21 12l-3 -6l-3 6a3 3 0 0 0 6 0"></path></svg>
-                                    </div>
-                                    <div>
-                                        <small class="text-secondary">tabler/tabler is licensed under the</small>
-                                        <h3 class="lh-1">MIT License</h3>
-                                    </div>
+                                <div class="overflow-auto" style="height:70vh">
+                                    @if (fucTions != null)
+                                    {
+                                        <div class="d-flex justify-content-center align-items-center mb-3">
+                                            <h1 class="me-3">
+                                                <!-- Download SVG icon from http://tabler-icons.io/i/scale -->
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 20l10 0"></path><path d="M6 6l6 -1l6 1"></path><path d="M12 3l0 17"></path><path d="M9 12l-3 -6l-3 6a3 3 0 0 0 6 0"></path><path d="M21 12l-3 -6l-3 6a3 3 0 0 0 6 0"></path></svg>
+                                            </h1>
+                                            <div id="Title">
+
+                                                <h1 class="lh-1" id="projectTitle">@fucTions.Title</h1>
+
+                                            </div>
+                                        </div>
+                                        <div class="text-secondary mb-3" id="Description" style="text-align:center">
+
+                                            @fucTions.DescriptionFunc
+                                        </div>
+
+                                        <h4>Người tạo chức năng:</h4>
+                                        <div class="text-secondary mb-3" id="EmailCreater">
+
+                                            @fucTions.EmailCreater
+
+                                        </div>
+                                        <h4>Ngày tạo:</h4>
+                                        <div class="text-secondary mb-3" id="DateCreated">
+
+                                            @fucTions.DateCreated
+
+                                        </div>
+                                        <h4>Người được ủy nhiệm:</h4>
+                                        <div class="text-secondary mb-3" id="EmailUser">
+
+                                            @fucTions.EmailUser
+
+                                        </div>
+                                        <h4>Trạng thái:</h4>
+                                        <div class="text-secondary mb-3">
+                                            @if (kh != null && kh.Status == "admin" || kh.Status == "Product Manager")
+                                            {
+                                                <a class="nav-link dropdown-toggle show" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="true">
+                                                    <span class="nav-link-title" id="Status">
+                                                        @fucTions.Status
+                                                    </span>
+                                                </a>
+                                                <div class="dropdown-menu " data-bs-popper="static">
+                                                    <a class="dropdown-item" href="https://tabler.io/docs" target="_blank" rel="noopener">
+                                                        ToDo
+                                                    </a>
+                                                    <a class="dropdown-item" href="./changelog.html">
+                                                        InProgress
+                                                    </a>
+                                                    <a class="dropdown-item" href="https://github.com/tabler/tabler" target="_blank" rel="noopener">
+                                                        InterView
+                                                    </a>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <span class="nav-link-title" id="spanStatus">
+                                                    @fucTions.Status
+                                                </span>
+                                            }
+                                        </div>
+                                        <div class="card-footer">
+                                            This is not legal advice.
+                                            <a href="#">Learn more about repository licenses.</a>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="empty">
+                                            <img src="~/Assets/images/noresult1.png" alt="">
+                                        </div>
+                                    }
                                 </div>
-                                <div class="text-secondary mb-3">
-                                    A short and simple permissive license with conditions only requiring preservation of copyright and
-                                    license notices. Licensed works, modifications, and larger works may be distributed under different terms
-                                    and without source code.
-                                </div>
-                                <h4>Permissions</h4>
-                                <ul class="list-unstyled space-y-1">
-                                    <li>
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/check -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l5 5l10 -10"></path></svg>
-                                        Commercial use
-                                    </li>
-                                    <li>
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/check -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l5 5l10 -10"></path></svg>
-                                        Modification
-                                    </li>
-                                    <li>
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/check -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l5 5l10 -10"></path></svg>
-                                        Distribution
-                                    </li>
-                                    <li>
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/check -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l5 5l10 -10"></path></svg>
-                                        Private use
-                                    </li>
-                                </ul>
-                                <h4>Limitations</h4>
-                                <ul class="list-unstyled space-y-1">
-                                    <li>
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/x -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-red" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg>
-                                        Liability
-                                    </li>
-                                    <li>
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/x -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-red" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg>
-                                        Warranty
-                                    </li>
-                                </ul>
-                                <h4>Conditions</h4>
-                                <ul class="list-unstyled space-y-1">
-                                    <li>
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/info-circle -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon text-blue" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"></path><path d="M12 9h.01"></path><path d="M11 12h1v4h1"></path></svg>
-                                        License and copyright notice
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-footer">
-                                This is not legal advice.
-                                <a href="#" target="_blank">Learn more about repository licenses.</a>
                             </div>
                         </div>
                     </div>
@@ -228,63 +523,278 @@
             </div>
         </div>
     </div>
-
 </div>
 
-
-@using (Html.BeginForm("Create", "BUGs", new { id = ViewBag.IdPr }, FormMethod.Post))
+@using (Html.BeginForm("CreateFunction", "BUGs", new { @id = project.ProjectID }, FormMethod.Post, new { @class = "createFunctionForm", @novalidate = "novalidate" }))
 {
-    <div class="modal modal-blur fade" id="modal-createBug" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="modal-createfuction" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tạo bug mới</h5>
+                    <h5 class="modal-title">Tạo mới một chức năng</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Tên chức năng</label>
+                        <input type="text" class="form-control" name="NameFunction" id="NameFunction" placeholder="Tên chức năng" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mô tả</label>
+                        <textarea class="form-control" name="DescriptionFunction" id="DescriptionFunction" rows="3" placeholder="Mô tả dự án của bạn" required></textarea>
+                    </div>
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="mb-3">
-                                <label class="form-label">Tên bug</label>
-                                <div class="input-group input-group-flat">
-                                    <input type="text" class="form-control" name="NameBug" placeholder="Tên lỗi">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="mb-3">
-                                <label class="form-label">Độ ưu tiên</label>
-                                <select name="Priority" class="form-select">
-                                    <option value="1" selected>Bình thường</option>
-                                    <option value="2">Cao</option>
-                                    <option value="3">Thấp</option>
+                                <label class="form-label">Email</label>
+                                <select class="form-select" name="EmailFunction" id="EmailFunction">
+                                    @if (users != null)
+                                    {
+                                        foreach (var i in users)
+                                        {
+                                            <option value="@i.Email">@i.Email</option>
+                                        }
+                                    }
+
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div>
-                                <label class="form-label">Mô tả</label>
-                                <textarea name="description" class="form-control" rows="3"></textarea>
-                            </div>
-                        </div>
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                            Hủy
+                        </a>
+                        <button type="submit" class="btn btn-primary ms-auto">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                            Gửi
+                        </button>
                     </div>
-                </div>
-
-
-
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                        Hủy
-                    </a>
-                    <button type="submit" class="btn btn-primary ms-auto">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        Tạo bug mới
-                    </button>
                 </div>
             </div>
         </div>
     </div>
 }
+
+
+@using (Html.BeginForm("CreateBug", "BUGs", new { @id = project.ProjectID, @idFuction = idFuction }, FormMethod.Post, new { @class = "createBugForm", @novalidate = "novalidate", enctype = "multipart/form-data" }))
+{
+    <div class="modal modal-blur fade" id="modal-createbug" tabindex="-1" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Tạo lỗi mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body overflow-auto" style="height:70vh">
+                    <div class="mb-3">
+                        <label class="form-label">Tiêu đề</label>
+                        <input type="text" class="form-control" name="title" id="TitleBug" placeholder="Nhập tiêu đề" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Dữ liệu kiểm tra</label>
+                                <textarea class="form-control" name="input" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Các bước tái tạo lỗi</label>
+                                <textarea class="form-control" name="stepsToReproduce" rows="3" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Kết quả mong đợi</label>
+                                <input type="text" class="form-control" name="expected" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Kết quả thực tế</label>
+                                <input type="text" class="form-control" name="actual" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Url</label>
+                                <input type="text" class="form-control" name="url" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label class="form-label">Mức độ nghiêm trọng</label>
+                                <select class="form-select" name="severity">
+                                    <option value="Nghiêm trọng">Nghiêm trọng</option>
+                                    <option value="Cao">Cao</option>
+                                    <option value="Trung bình">Trung bình</option>
+                                    <option value="Thấp">Thấp</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label class="form-label">Mức độ ưu tiên</label>
+                                <select class="form-select" name="priority">
+                                    <option value="Cao" selected="">Cao</option>
+                                    <option value="Trung bình">Trung bình</option>
+                                    <option value="Thấp">Thấp</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Môi trường</label>
+                                <input type="text" class="form-control" name="enviroment" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">File đính kèm</label>
+                                <input type="file" class="form-control" name="files" multiple required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label class="form-label">Thông tin thêm</label>
+                                <textarea class="form-control" rows="3" name="description" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+
+    (() => {
+        'use strict'
+        /* const forms = document.querySelectorAll('.deleteForm');*/
+        const formCreatFunction = document.querySelector('.createFunctionForm');
+        const formCreatBug = document.querySelector('.createBugForm');
+
+        formCreatFunction.addEventListener('submit', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var nameFunction = document.getElementById("NameFunction");
+            var descriptionFunction = document.getElementById("DescriptionFunction");
+
+            // Perform AJAX call
+            $.ajax({
+                url: '/BUGs/GetDataFuncion',
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                    const checkName = data.some(element => element.Title === nameFunction.value);
+                    const checkDescription = data.some(element => element.Description === descriptionFunction.value);
+
+                    if (!checkName) {
+                        nameFunction.setCustomValidity('');
+                    } else {
+                        nameFunction.setCustomValidity("This field is invalid");
+                    }
+                    if (!checkDescription) {
+                        descriptionFunction.setCustomValidity('');
+                    } else {
+                        descriptionFunction.setCustomValidity("This field is invalid");
+                    }
+
+                    if (formCreatFunction.checkValidity()) {
+                        formCreatFunction.submit();
+                    }
+                    formCreatFunction.classList.add('was-validated');
+                },
+                error: function (errorThrown) {
+                    console.log('Error:', errorThrown);
+                }
+            });
+        }, false);
+
+        formCreatBug.addEventListener('submit', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            var titleBug = document.getElementById("TitleBug");
+
+            // Perform AJAX call
+            $.ajax({
+                url: '/BUGs/GetDataBug',
+                type: 'GET',
+                success: function (data) {
+                    console.log(data)
+                    const checkName = data.some(element => element.Title === titleBug.value);
+                    if (!checkName) {
+                        titleBug.setCustomValidity('');
+                    } else {
+                        titleBug.setCustomValidity("This field is invalid");
+                    }
+
+                    if (formCreatBug.checkValidity()) {
+                        formCreatBug.submit();
+                    }
+                    formCreatBug.classList.add('was-validated');
+                },
+                error: function (errorThrown) {
+                    console.log('Error:', errorThrown);
+                }
+            });
+        }, false);
+
+    })();
+
+    function loadSelectedProject(FunctionID, ProjectID) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/BUGs/UpdateDataBug?idfuc=' + FunctionID + '&idPro=' + ProjectID, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    window.location.href = response.redirectToAction;
+                } else {
+                    console.error('Error:', xhr.status);
+                }
+            }
+        };
+        xhr.send();
+
+    }
+
+    function updateUrl(idPro, idBug) {
+        var selectedEmail = document.getElementById("emailSelect").value;
+        var url = '/BUGs/ChangeStatusBug?idPro=' + idPro + '&idBug=' + idBug + '&email=' + selectedEmail + '&status=Assigned';
+        console.log(url)
+        document.getElementById("changeStatusLink").setAttribute("href", url);
+    }
+
+    function toggleAccordion(id, icon, idbug) {
+        var accordionBody = document.getElementById(id);
+        var icon = document.getElementById(icon);
+        if (accordionBody.textContent !== "") {
+            accordionBody.textContent = "";
+            icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-up" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 15l6 -6l6 6" /></svg>';
+        } else {
+            accordionBody.textContent = idbug;
+            icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg>';
+        }
+    }
+</script>

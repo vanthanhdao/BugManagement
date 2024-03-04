@@ -1,0 +1,126 @@
+﻿
+
+
+@using QuanlyBug.Models
+@{
+    USER kh = (USER)Session["TaiKhoan"];
+}
+
+@if (kh.Status == "admin" || kh.Status == "Product Manager" || kh.Status == "Tester")
+{
+    <li class="nav-item">
+        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#modal-createbug" role="button" aria-expanded="true">
+            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bug" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M9 9v-1a3 3 0 0 1 6 0v1" /><path d="M8 9h8a6 6 0 0 1 1 3v3a5 5 0 0 1 -10 0v-3a6 6 0 0 1 1 -3" /><path d="M3 13l4 0" /><path d="M17 13l4 0" /><path d="M12 20l0 -6" /><path d="M4 19l3.35 -2" /><path d="M20 19l-3.35 -2" /><path d="M4 7l3.75 2.4" /><path d="M20 7l-3.75 2.4" /></svg>
+            </span>
+            <span class="nav-link-title">
+                Tạo lỗi
+            </span>
+        </a>
+    </li>
+
+}
+
+@using (Html.BeginForm("CreateBug", "BUGs", FormMethod.Post, new { @class = "createBugForm", @novalidate = "novalidate" }))
+{
+    <div class="modal modal-blur fade" id="modal-createbug" tabindex="-1" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tạo lỗi mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body overflow-auto" style="height:70vh">
+                    <div class="mb-3">
+                        <label class="form-label">Tiêu đề</label>
+                        <input type="text" class="form-control" name="title" placeholder="Nhập tiêu đề" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Dữ liệu kiểm tra</label>
+                                <textarea class="form-control" name="input" rows="3" required></textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Các bước tái tạo lỗi</label>
+                                <textarea class="form-control" name="stepsToReproduce" rows="3" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Kết quả mong đợi</label>
+                                <input type="text" class="form-control" name="expected" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Kết quả thực tế</label>
+                                <input type="text" class="form-control" name="actual" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Url</label>
+                                <input type="text" class="form-control ps-0" name="url" autocomplete="off" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label class="form-label">Mức độ nghiêm trọng</label>
+                                <select class="form-select" name="severity">
+                                    <option value="Nghiêm trọng">Nghiêm trọng</option>
+                                    <option value="Cao">Cao</option>
+                                    <option value="Trung bình">Trung bình</option>
+                                    <option value="Thấp">Thấp</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label class="form-label">Mức độ ưu tiên</label>
+                                <select class="form-select" name="priority">
+                                    <option value="Cao" selected="">Cao</option>
+                                    <option value="Trung bình">Trung bình</option>
+                                    <option value="Thấp">Thấp</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Môi trường</label>
+                                <input type="text" class="form-control" name="enviroment" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">File đính kèm</label>
+                                <input type="file" class="form-control" name="files" multiple required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div>
+                                <label class="form-label">Thông tin thêm</label>
+                                <textarea class="form-control" rows="3" name="description" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Gửi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -12,18 +12,14 @@ namespace QuanlyBug.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PROJECTMB
+    public partial class FILE
     {
-        public int ProjectMembersID { get; set; }
-        public Nullable<int> ProjectID { get; set; }
-        public Nullable<int> UserID { get; set; }
-        public string Role { get; set; }
-        public Nullable<int> FunctionID { get; set; }
+        public int FileID { get; set; }
+        public string FileName { get; set; }
+        public byte[] FileData { get; set; }
+        public string FileType { get; set; }
         public Nullable<int> BugID { get; set; }
     
         public virtual BUG BUG { get; set; }
-        public virtual FUNCTION FUNCTION { get; set; }
-        public virtual PROJECT PROJECT { get; set; }
-        public virtual USER USER { get; set; }
     }
 }
