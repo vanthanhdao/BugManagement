@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QuanlyBugModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QuanlyBugModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BUGS">
           <Key>
             <PropertyRef Name="BugID" />
@@ -23,15 +23,16 @@
           <Property Name="Expected" Type="nvarchar" MaxLength="500" />
           <Property Name="Actual" Type="nvarchar" MaxLength="500" />
           <Property Name="Env" Type="nvarchar" MaxLength="500" />
+          <Property Name="ProjectMembersID" Type="int" />
         </EntityType>
         <EntityType Name="FILES">
           <Key>
             <PropertyRef Name="FileID" />
           </Key>
           <Property Name="FileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FileName" Type="nvarchar" MaxLength="100" />
+          <Property Name="FileName" Type="nvarchar(max)" />
           <Property Name="FileData" Type="varbinary(max)" />
-          <Property Name="FileType" Type="varchar" MaxLength="50" />
+          <Property Name="FileType" Type="varchar(max)" />
           <Property Name="BugID" Type="int" />
         </EntityType>
         <EntityType Name="FUNCTIONS">
@@ -46,6 +47,19 @@
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="EmailUser" Type="nvarchar" MaxLength="50" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
+          <Property Name="ProjectMembersID" Type="int" />
+        </EntityType>
+        <EntityType Name="HISTORYS">
+          <Key>
+            <PropertyRef Name="ID_History" />
+          </Key>
+          <Property Name="ID_History" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectMembersID" Type="int" />
+          <Property Name="Name_Project" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description_History" Type="nvarchar" MaxLength="200" />
+          <Property Name="Time" Type="nvarchar" MaxLength="50" />
+          <Property Name="Activity" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID_User" Type="int" />
         </EntityType>
         <EntityType Name="PROJECTMBS">
           <Key>
@@ -55,8 +69,6 @@
           <Property Name="ProjectID" Type="int" />
           <Property Name="UserID" Type="int" />
           <Property Name="Role" Type="nvarchar" MaxLength="50" />
-          <Property Name="FunctionID" Type="int" />
-          <Property Name="BugID" Type="int" />
         </EntityType>
         <EntityType Name="PROJECTS">
           <Key>
@@ -69,16 +81,6 @@
           <Property Name="PeopleCreate" Type="nvarchar" MaxLength="50" />
           <Property Name="EmailPeoCreate" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="USERS">
           <Key>
             <PropertyRef Name="UserID" />
@@ -90,66 +92,6 @@
           <Property Name="ResetPass" Type="varchar" MaxLength="50" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <Association Name="FK_BUGS_FUNCTIONS">
-          <End Role="FUNCTIONS" Type="Self.FUNCTIONS" Multiplicity="0..1" />
-          <End Role="BUGS" Type="Self.BUGS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FUNCTIONS">
-              <PropertyRef Name="FunctionID" />
-            </Principal>
-            <Dependent Role="BUGS">
-              <PropertyRef Name="FunctionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FILES_BUGS">
-          <End Role="BUGS" Type="Self.BUGS" Multiplicity="0..1" />
-          <End Role="FILES" Type="Self.FILES" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUGS">
-              <PropertyRef Name="BugID" />
-            </Principal>
-            <Dependent Role="FILES">
-              <PropertyRef Name="BugID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FUNCTIONS_PROJECTS">
-          <End Role="PROJECTS" Type="Self.PROJECTS" Multiplicity="0..1" />
-          <End Role="FUNCTIONS" Type="Self.FUNCTIONS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PROJECTS">
-              <PropertyRef Name="ProjectID" />
-            </Principal>
-            <Dependent Role="FUNCTIONS">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PROJECTMBS_BUGS">
-          <End Role="BUGS" Type="Self.BUGS" Multiplicity="0..1" />
-          <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUGS">
-              <PropertyRef Name="BugID" />
-            </Principal>
-            <Dependent Role="PROJECTMBS">
-              <PropertyRef Name="BugID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PROJECTMBS_FUNCTIONS">
-          <End Role="FUNCTIONS" Type="Self.FUNCTIONS" Multiplicity="0..1" />
-          <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FUNCTIONS">
-              <PropertyRef Name="FunctionID" />
-            </Principal>
-            <Dependent Role="PROJECTMBS">
-              <PropertyRef Name="FunctionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PROJECTMBS_PROJECTS">
           <End Role="PROJECTS" Type="Self.PROJECTS" Multiplicity="0..1" />
           <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
@@ -174,65 +116,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="version" Type="int" Mode="In" />
-          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
-        </Function>
-        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-        </Function>
-        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
-          <Parameter Name="owner_id" Type="int" Mode="In" />
-          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
-        </Function>
-        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="QuanlyBugModelStoreContainer">
           <EntitySet Name="BUGS" EntityType="Self.BUGS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FILES" EntityType="Self.FILES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FUNCTIONS" EntityType="Self.FUNCTIONS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HISTORYS" EntityType="Self.HISTORYS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PROJECTMBS" EntityType="Self.PROJECTMBS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PROJECTS" EntityType="Self.PROJECTS" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USERS" EntityType="Self.USERS" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_BUGS_FUNCTIONS" Association="Self.FK_BUGS_FUNCTIONS">
-            <End Role="FUNCTIONS" EntitySet="FUNCTIONS" />
-            <End Role="BUGS" EntitySet="BUGS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FILES_BUGS" Association="Self.FK_FILES_BUGS">
-            <End Role="BUGS" EntitySet="BUGS" />
-            <End Role="FILES" EntitySet="FILES" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FUNCTIONS_PROJECTS" Association="Self.FK_FUNCTIONS_PROJECTS">
-            <End Role="PROJECTS" EntitySet="PROJECTS" />
-            <End Role="FUNCTIONS" EntitySet="FUNCTIONS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PROJECTMBS_BUGS" Association="Self.FK_PROJECTMBS_BUGS">
-            <End Role="BUGS" EntitySet="BUGS" />
-            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PROJECTMBS_FUNCTIONS" Association="Self.FK_PROJECTMBS_FUNCTIONS">
-            <End Role="FUNCTIONS" EntitySet="FUNCTIONS" />
-            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
-          </AssociationSet>
           <AssociationSet Name="FK_PROJECTMBS_PROJECTS" Association="Self.FK_PROJECTMBS_PROJECTS">
             <End Role="PROJECTS" EntitySet="PROJECTS" />
             <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
@@ -242,12 +133,123 @@
             <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QuanlyBugModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="BUG">
+        <EntityType Name="FILES">
+          <Key>
+            <PropertyRef Name="FileID" />
+          </Key>
+          <Property Name="FileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FileData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="FileType" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="BugID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="FUNCTIONS">
+          <Key>
+            <PropertyRef Name="FunctionID" />
+          </Key>
+          <Property Name="FunctionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="EmailCreater" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="EmailUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectMembersID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="HISTORYS">
+          <Key>
+            <PropertyRef Name="ID_History" />
+          </Key>
+          <Property Name="ID_History" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectMembersID" Type="Int32" />
+          <Property Name="Name_Project" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description_History" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Activity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ID_User" Type="Int32" />
+        </EntityType>
+        <EntityType Name="PROJECTMBS">
+          <Key>
+            <PropertyRef Name="ProjectMembersID" />
+          </Key>
+          <Property Name="ProjectMembersID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PROJECTS" Relationship="Self.FK_PROJECTMBS_PROJECTS" FromRole="PROJECTMBS" ToRole="PROJECTS" />
+          <NavigationProperty Name="USERS" Relationship="Self.FK_PROJECTMBS_USERS" FromRole="PROJECTMBS" ToRole="USERS" />
+        </EntityType>
+        <EntityType Name="PROJECTS">
+          <Key>
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="ProjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Decription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PeopleCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailPeoCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_PROJECTS" FromRole="PROJECTS" ToRole="PROJECTMBS" />
+        </EntityType>
+        <EntityType Name="USERS">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ResetPass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_USERS" FromRole="USERS" ToRole="PROJECTMBS" />
+        </EntityType>
+        <Association Name="FK_PROJECTMBS_PROJECTS">
+          <End Role="PROJECTS" Type="Self.PROJECTS" Multiplicity="0..1" />
+          <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PROJECTS">
+              <PropertyRef Name="ProjectID" />
+            </Principal>
+            <Dependent Role="PROJECTMBS">
+              <PropertyRef Name="ProjectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PROJECTMBS_USERS">
+          <End Role="USERS" Type="Self.USERS" Multiplicity="0..1" />
+          <End Role="PROJECTMBS" Type="Self.PROJECTMBS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USERS">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="PROJECTMBS">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QuanlyBugEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FILES" EntityType="Self.FILES" />
+          <EntitySet Name="FUNCTIONS" EntityType="Self.FUNCTIONS" />
+          <EntitySet Name="HISTORYS" EntityType="Self.HISTORYS" />
+          <EntitySet Name="PROJECTMBS" EntityType="Self.PROJECTMBS" />
+          <EntitySet Name="PROJECTS" EntityType="Self.PROJECTS" />
+          <EntitySet Name="USERS" EntityType="Self.USERS" />
+          <AssociationSet Name="FK_PROJECTMBS_PROJECTS" Association="Self.FK_PROJECTMBS_PROJECTS">
+            <End Role="PROJECTS" EntitySet="PROJECTS" />
+            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PROJECTMBS_USERS" Association="Self.FK_PROJECTMBS_USERS">
+            <End Role="USERS" EntitySet="USERS" />
+            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
+          </AssociationSet>
+          <EntitySet Name="BUGS" EntityType="QuanlyBugModel.BUGS" />
+        </EntityContainer>
+        <EntityType Name="BUGS">
           <Key>
             <PropertyRef Name="BugID" />
           </Key>
@@ -265,277 +267,16 @@
           <Property Name="Expected" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Actual" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Env" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="FUNCTION" Relationship="Self.FK_BUGS_FUNCTIONS" FromRole="BUGS" ToRole="FUNCTIONS" />
-          <NavigationProperty Name="FILES" Relationship="Self.FK_FILES_BUGS" FromRole="BUGS" ToRole="FILES" />
-          <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_BUGS" FromRole="BUGS" ToRole="PROJECTMBS" />
+          <Property Name="ProjectMembersID" Type="Int32" />
         </EntityType>
-        <EntityType Name="FILE">
-          <Key>
-            <PropertyRef Name="FileID" />
-          </Key>
-          <Property Name="FileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="FileData" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="FileType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="BugID" Type="Int32" />
-          <NavigationProperty Name="BUG" Relationship="Self.FK_FILES_BUGS" FromRole="FILES" ToRole="BUGS" />
-        </EntityType>
-        <EntityType Name="FUNCTION">
-          <Key>
-            <PropertyRef Name="FunctionID" />
-          </Key>
-          <Property Name="FunctionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ProjectID" Type="Int32" />
-          <Property Name="EmailCreater" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreated" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="EmailUser" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BUGS" Relationship="Self.FK_BUGS_FUNCTIONS" FromRole="FUNCTIONS" ToRole="BUGS" />
-          <NavigationProperty Name="PROJECT" Relationship="Self.FK_FUNCTIONS_PROJECTS" FromRole="FUNCTIONS" ToRole="PROJECTS" />
-          <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_FUNCTIONS" FromRole="FUNCTIONS" ToRole="PROJECTMBS" />
-        </EntityType>
-        <EntityType Name="PROJECTMB">
-          <Key>
-            <PropertyRef Name="ProjectMembersID" />
-          </Key>
-          <Property Name="ProjectMembersID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProjectID" Type="Int32" />
-          <Property Name="UserID" Type="Int32" />
-          <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="FunctionID" Type="Int32" />
-          <Property Name="BugID" Type="Int32" />
-          <NavigationProperty Name="BUG" Relationship="Self.FK_PROJECTMBS_BUGS" FromRole="PROJECTMBS" ToRole="BUGS" />
-          <NavigationProperty Name="FUNCTION" Relationship="Self.FK_PROJECTMBS_FUNCTIONS" FromRole="PROJECTMBS" ToRole="FUNCTIONS" />
-          <NavigationProperty Name="PROJECT" Relationship="Self.FK_PROJECTMBS_PROJECTS" FromRole="PROJECTMBS" ToRole="PROJECTS" />
-          <NavigationProperty Name="USER" Relationship="Self.FK_PROJECTMBS_USERS" FromRole="PROJECTMBS" ToRole="USERS" />
-        </EntityType>
-        <EntityType Name="PROJECT">
-          <Key>
-            <PropertyRef Name="ProjectID" />
-          </Key>
-          <Property Name="ProjectID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Decription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="PeopleCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="EmailPeoCreate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="FUNCTIONS" Relationship="Self.FK_FUNCTIONS_PROJECTS" FromRole="PROJECTS" ToRole="FUNCTIONS" />
-          <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_PROJECTS" FromRole="PROJECTS" ToRole="PROJECTMBS" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="USER">
-          <Key>
-            <PropertyRef Name="UserID" />
-          </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ResetPass" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="PROJECTMBS" Relationship="Self.FK_PROJECTMBS_USERS" FromRole="USERS" ToRole="PROJECTMBS" />
-        </EntityType>
-        <Association Name="FK_BUGS_FUNCTIONS">
-          <End Role="FUNCTIONS" Type="Self.FUNCTION" Multiplicity="0..1" />
-          <End Role="BUGS" Type="Self.BUG" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FUNCTIONS">
-              <PropertyRef Name="FunctionID" />
-            </Principal>
-            <Dependent Role="BUGS">
-              <PropertyRef Name="FunctionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FILES_BUGS">
-          <End Role="BUGS" Type="Self.BUG" Multiplicity="0..1" />
-          <End Role="FILES" Type="Self.FILE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUGS">
-              <PropertyRef Name="BugID" />
-            </Principal>
-            <Dependent Role="FILES">
-              <PropertyRef Name="BugID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PROJECTMBS_BUGS">
-          <End Role="BUGS" Type="Self.BUG" Multiplicity="0..1" />
-          <End Role="PROJECTMBS" Type="Self.PROJECTMB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="BUGS">
-              <PropertyRef Name="BugID" />
-            </Principal>
-            <Dependent Role="PROJECTMBS">
-              <PropertyRef Name="BugID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FUNCTIONS_PROJECTS">
-          <End Role="PROJECTS" Type="Self.PROJECT" Multiplicity="0..1" />
-          <End Role="FUNCTIONS" Type="Self.FUNCTION" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PROJECTS">
-              <PropertyRef Name="ProjectID" />
-            </Principal>
-            <Dependent Role="FUNCTIONS">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PROJECTMBS_FUNCTIONS">
-          <End Role="FUNCTIONS" Type="Self.FUNCTION" Multiplicity="0..1" />
-          <End Role="PROJECTMBS" Type="Self.PROJECTMB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FUNCTIONS">
-              <PropertyRef Name="FunctionID" />
-            </Principal>
-            <Dependent Role="PROJECTMBS">
-              <PropertyRef Name="FunctionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PROJECTMBS_PROJECTS">
-          <End Role="PROJECTS" Type="Self.PROJECT" Multiplicity="0..1" />
-          <End Role="PROJECTMBS" Type="Self.PROJECTMB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PROJECTS">
-              <PropertyRef Name="ProjectID" />
-            </Principal>
-            <Dependent Role="PROJECTMBS">
-              <PropertyRef Name="ProjectID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_PROJECTMBS_USERS">
-          <End Role="USERS" Type="Self.USER" Multiplicity="0..1" />
-          <End Role="PROJECTMBS" Type="Self.PROJECTMB" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="USERS">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="PROJECTMBS">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="QuanlyBugEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="BUGS" EntityType="Self.BUG" />
-          <EntitySet Name="FILES" EntityType="Self.FILE" />
-          <EntitySet Name="FUNCTIONS" EntityType="Self.FUNCTION" />
-          <EntitySet Name="PROJECTMBS" EntityType="Self.PROJECTMB" />
-          <EntitySet Name="PROJECTS" EntityType="Self.PROJECT" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
-          <EntitySet Name="USERS" EntityType="Self.USER" />
-          <AssociationSet Name="FK_BUGS_FUNCTIONS" Association="Self.FK_BUGS_FUNCTIONS">
-            <End Role="FUNCTIONS" EntitySet="FUNCTIONS" />
-            <End Role="BUGS" EntitySet="BUGS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FILES_BUGS" Association="Self.FK_FILES_BUGS">
-            <End Role="BUGS" EntitySet="BUGS" />
-            <End Role="FILES" EntitySet="FILES" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PROJECTMBS_BUGS" Association="Self.FK_PROJECTMBS_BUGS">
-            <End Role="BUGS" EntitySet="BUGS" />
-            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FUNCTIONS_PROJECTS" Association="Self.FK_FUNCTIONS_PROJECTS">
-            <End Role="PROJECTS" EntitySet="PROJECTS" />
-            <End Role="FUNCTIONS" EntitySet="FUNCTIONS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PROJECTMBS_FUNCTIONS" Association="Self.FK_PROJECTMBS_FUNCTIONS">
-            <End Role="FUNCTIONS" EntitySet="FUNCTIONS" />
-            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PROJECTMBS_PROJECTS" Association="Self.FK_PROJECTMBS_PROJECTS">
-            <End Role="PROJECTS" EntitySet="PROJECTS" />
-            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
-          </AssociationSet>
-          <AssociationSet Name="FK_PROJECTMBS_USERS" Association="Self.FK_PROJECTMBS_USERS">
-            <End Role="USERS" EntitySet="USERS" />
-            <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
-          </AssociationSet>
-          <FunctionImport Name="sp_alterdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_creatediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="version" Mode="In" Type="Int32" />
-            <Parameter Name="definition" Mode="In" Type="Binary" />
-          </FunctionImport>
-          <FunctionImport Name="sp_dropdiagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(QuanlyBugModel.sp_helpdiagramdefinition_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(QuanlyBugModel.sp_helpdiagrams_Result)">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-          </FunctionImport>
-          <FunctionImport Name="sp_renamediagram">
-            <Parameter Name="diagramname" Mode="In" Type="String" />
-            <Parameter Name="owner_id" Mode="In" Type="Int32" />
-            <Parameter Name="new_diagramname" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="sp_upgraddiagrams" />
-        </EntityContainer>
-        <ComplexType Name="sp_helpdiagramdefinition_Result">
-          <Property Type="Int32" Name="version" Nullable="true" />
-          <Property Type="Binary" Name="definition" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="sp_helpdiagrams_Result">
-          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
-          <Property Type="Int32" Name="ID" Nullable="false" />
-          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
-          <Property Type="Int32" Name="OwnerID" Nullable="false" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="QuanlyBugModelStoreContainer" CdmEntityContainer="QuanlyBugEntities">
-          <EntitySetMapping Name="BUGS">
-            <EntityTypeMapping TypeName="QuanlyBugModel.BUG">
-              <MappingFragment StoreEntitySet="BUGS">
-                <ScalarProperty Name="BugID" ColumnName="BugID" />
-                <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Priority" ColumnName="Priority" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
-                <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
-                <ScalarProperty Name="severity" ColumnName="severity" />
-                <ScalarProperty Name="url" ColumnName="url" />
-                <ScalarProperty Name="input" ColumnName="input" />
-                <ScalarProperty Name="Reproduce" ColumnName="Reproduce" />
-                <ScalarProperty Name="Expected" ColumnName="Expected" />
-                <ScalarProperty Name="Actual" ColumnName="Actual" />
-                <ScalarProperty Name="Env" ColumnName="Env" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="FILES">
-            <EntityTypeMapping TypeName="QuanlyBugModel.FILE">
+            <EntityTypeMapping TypeName="QuanlyBugModel.FILES">
               <MappingFragment StoreEntitySet="FILES">
                 <ScalarProperty Name="FileID" ColumnName="FileID" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
@@ -546,7 +287,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FUNCTIONS">
-            <EntityTypeMapping TypeName="QuanlyBugModel.FUNCTION">
+            <EntityTypeMapping TypeName="QuanlyBugModel.FUNCTIONS">
               <MappingFragment StoreEntitySet="FUNCTIONS">
                 <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -556,23 +297,35 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="EmailUser" ColumnName="EmailUser" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ProjectMembersID" ColumnName="ProjectMembersID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HISTORYS">
+            <EntityTypeMapping TypeName="QuanlyBugModel.HISTORYS">
+              <MappingFragment StoreEntitySet="HISTORYS">
+                <ScalarProperty Name="ID_History" ColumnName="ID_History" />
+                <ScalarProperty Name="ProjectMembersID" ColumnName="ProjectMembersID" />
+                <ScalarProperty Name="Name_Project" ColumnName="Name_Project" />
+                <ScalarProperty Name="Description_History" ColumnName="Description_History" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+                <ScalarProperty Name="ID_User" ColumnName="ID_User" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PROJECTMBS">
-            <EntityTypeMapping TypeName="QuanlyBugModel.PROJECTMB">
+            <EntityTypeMapping TypeName="QuanlyBugModel.PROJECTMBS">
               <MappingFragment StoreEntitySet="PROJECTMBS">
                 <ScalarProperty Name="ProjectMembersID" ColumnName="ProjectMembersID" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
-                <ScalarProperty Name="BugID" ColumnName="BugID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PROJECTS">
-            <EntityTypeMapping TypeName="QuanlyBugModel.PROJECT">
+            <EntityTypeMapping TypeName="QuanlyBugModel.PROJECTS">
               <MappingFragment StoreEntitySet="PROJECTS">
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -583,19 +336,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="QuanlyBugModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="USERS">
-            <EntityTypeMapping TypeName="QuanlyBugModel.USER">
+            <EntityTypeMapping TypeName="QuanlyBugModel.USERS">
               <MappingFragment StoreEntitySet="USERS">
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
@@ -606,30 +348,27 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="QuanlyBugModel.Store.sp_alterdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="QuanlyBugModel.Store.sp_creatediagram" />
-          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="QuanlyBugModel.Store.sp_dropdiagram" />
-          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="QuanlyBugModel.Store.sp_helpdiagramdefinition">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanlyBugModel.sp_helpdiagramdefinition_Result">
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="QuanlyBugModel.Store.sp_helpdiagrams">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="QuanlyBugModel.sp_helpdiagrams_Result">
-                <ScalarProperty Name="Database" ColumnName="Database" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Owner" ColumnName="Owner" />
-                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="QuanlyBugModel.Store.sp_renamediagram" />
-          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="QuanlyBugModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="BUGS">
+            <EntityTypeMapping TypeName="QuanlyBugModel.BUGS">
+              <MappingFragment StoreEntitySet="BUGS">
+                <ScalarProperty Name="ProjectMembersID" ColumnName="ProjectMembersID" />
+                <ScalarProperty Name="Env" ColumnName="Env" />
+                <ScalarProperty Name="Actual" ColumnName="Actual" />
+                <ScalarProperty Name="Expected" ColumnName="Expected" />
+                <ScalarProperty Name="Reproduce" ColumnName="Reproduce" />
+                <ScalarProperty Name="input" ColumnName="input" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="severity" ColumnName="severity" />
+                <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="BugID" ColumnName="BugID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -644,7 +383,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

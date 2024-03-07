@@ -1,8 +1,8 @@
 ﻿
-@model IEnumerable<QuanlyBug.Models.FILE>
+@model IEnumerable<QuanlyBug.Models.FILES>
 
 @{
-    var project = ViewData["Project"] as QuanlyBug.Models.PROJECT;
+    var project = ViewData["Project"] as QuanlyBug.Models.PROJECTS;
     var users = ViewData["User"] as IEnumerable<QuanlyBug.Models.UserModel>;
     var dataFuctions = ViewData["DataFuctions"] as IEnumerable<QuanlyBug.Models.ProjectList>;
     var dataBugs = ViewData["DataBugs"] as IEnumerable<QuanlyBug.Models.ProjectList>;
@@ -18,7 +18,7 @@
 
 @using QuanlyBug.Models
 @{
-    USER kh = (USER)Session["TaiKhoan"];
+    USERS kh = (USERS)Session["TaiKhoan"];
 }
 
 @{

@@ -135,26 +135,29 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\BUG.cs">
+    <Compile Include="Models\BugModel.cs" />
+    <Compile Include="Models\BUGS.cs">
       <DependentUpon>qlb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\BugModel.cs" />
-    <Compile Include="Models\FILE.cs">
+    <Compile Include="Models\FILES.cs">
       <DependentUpon>qlb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FuctionModel.cs" />
-    <Compile Include="Models\FUNCTION.cs">
+    <Compile Include="Models\FUNCTIONS.cs">
       <DependentUpon>qlb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PROJECT.cs">
+    <Compile Include="Models\HISTORYS.cs">
       <DependentUpon>qlb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProjectList.cs" />
-    <Compile Include="Models\PROJECTMB.cs">
+    <Compile Include="Models\PROJECTMBS.cs">
       <DependentUpon>qlb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProjectMemberModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="Models\PROJECTS.cs">
+      <DependentUpon>qlb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\qlb.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -171,19 +174,10 @@
       <DependentUpon>qlb.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ResetPassword.cs" />
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>qlb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
-      <DependentUpon>qlb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>qlb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\USER.cs">
-      <DependentUpon>qlb.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Models\USERS.cs">
+      <DependentUpon>qlb.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

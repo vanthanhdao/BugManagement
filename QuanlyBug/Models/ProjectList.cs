@@ -39,6 +39,10 @@ namespace QuanlyBug.Models
         public string Expected { get; set; }
         public string Actual { get; set; }
         public string Env { get; set; }
+        public int countFunctions { get; set; }
+        public int countBugs { get; set; }
+        public int countFunctionsNew { get; set; }
+        public int countBugsNew { get; set; }
 
     }
 }

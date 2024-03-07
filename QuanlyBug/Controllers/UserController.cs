@@ -27,7 +27,7 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(FormCollection collection, USER kh)
+        public ActionResult Register(FormCollection collection, USERS kh)
         {
 
             var sFullName = collection["FullName"];
@@ -84,7 +84,7 @@ namespace QuanlyBug.Controllers
             var messagelogin = "";
             if (!String.IsNullOrEmpty(sEmail) && !String.IsNullOrEmpty(sPassword))
             {
-                USER kh = db.USERS.SingleOrDefault(n => n.Email == sEmail && n.Password == sPassword);
+                USERS kh = db.USERS.SingleOrDefault(n => n.Email == sEmail && n.Password == sPassword);
                 if (kh != null)
                 {
                     Session["Taikhoan"] = kh;
@@ -196,7 +196,6 @@ namespace QuanlyBug.Controllers
             return RedirectToAction("ResetPassword", "User");
 
         }
-
 
         [ChildActionOnly]
         public ActionResult LoginLogout()

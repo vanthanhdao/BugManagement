@@ -10,10 +10,16 @@
 namespace QuanlyBug.Models
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class sp_helpdiagramdefinition_Result
+    public partial class PROJECTMBS
     {
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int ProjectMembersID { get; set; }
+        public Nullable<int> ProjectID { get; set; }
+        public Nullable<int> UserID { get; set; }
+        public string Role { get; set; }
+    
+        public virtual PROJECTS PROJECTS { get; set; }
+        public virtual USERS USERS { get; set; }
     }
 }

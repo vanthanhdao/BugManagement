@@ -12,12 +12,14 @@ namespace QuanlyBug.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagram
+    public partial class HISTORYS
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int ID_History { get; set; }
+        public Nullable<int> ProjectMembersID { get; set; }
+        public string Name_Project { get; set; }
+        public string Description_History { get; set; }
+        public string Time { get; set; }
+        public string Activity { get; set; }
+        public Nullable<int> ID_User { get; set; }
     }
 }
