@@ -12,13 +12,12 @@ namespace QuanlyBug.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class PROJECT
+    public partial class PROJECTS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public PROJECT()
+        public PROJECTS()
         {
-            this.FUNCTIONS = new HashSet<FUNCTION>();
-            this.PROJECTMBS = new HashSet<PROJECTMB>();
+            this.PROJECTMBS = new HashSet<PROJECTMBS>();
         }
     
         public int ProjectID { get; set; }
@@ -29,8 +28,6 @@ namespace QuanlyBug.Models
         public string EmailPeoCreate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FUNCTION> FUNCTIONS { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PROJECTMB> PROJECTMBS { get; set; }
+        public virtual ICollection<PROJECTMBS> PROJECTMBS { get; set; }
     }
 }

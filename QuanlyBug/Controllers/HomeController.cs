@@ -45,8 +45,58 @@ namespace QuanlyBug.Controllers
             string email = Request.QueryString["email"];
             if (!email.IsEmpty())
             {
-                USER kh = db.USERS.SingleOrDefault(n => n.Email == email);
-                Session["Taikhoan"] = kh;
+                USERS khs = db.USERS.SingleOrDefault(n => n.Email == email);
+                Session["Taikhoan"] = khs;
+            }
+
+            USERS kh = (USERS)Session["TaiKhoan"];
+            if (kh != null)
+            {
+               
+                var data = from pm in db.PROJECTMBS
+                           join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                           join b in db.BUGS on pm.ProjectMembersID equals b.ProjectMembersID into bs
+                           join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID into fs
+                           join u in db.USERS on pm.UserID equals u.UserID
+                           where pm.UserID == kh.UserID 
+                           //Lỗi Bug k truy suất dk
+                           select new ProjectList
+                           {
+                               ProjectID = p.ProjectID,
+                               Name = p.Name,
+                               Decription = p.Decription,
+                               EmailPeoCreate = p.EmailPeoCreate,
+                               DateCreate = p.DateCreate,
+                               PeopleCreate = p.PeopleCreate,
+                               UserID = u.UserID,
+                               Username = u.Username,
+                               Email = u.Email,
+                               Password = u.Password,
+                               Role = pm.Role,
+                               countFunctions = fs.Count(),
+                               countBugs = bs.Count(),
+                               countFunctionsNew = fs.Where(f => f.Status == "Todo").Count(),
+                               countBugsNew = bs.Where(b => b.Status == "New").Count(),
+                           };
+                //var coutFunctionshas = (from pm in db.PROJECTMBS
+                //                        join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID
+                //                        join p in db.PROJECTS on pm.ProjectID equals p.ProjectID into g
+                //                        join u in db.USERS on pm.UserID equals u.UserID
+                //                        where pm.UserID == kh.UserID
+                //                        sel).ToList();
+                ////lấy cái coutn function bugs
+                //var countFunctions = from pm in db.PROJECTMBS
+                //           join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                //           join u in db.USERS on pm.UserID equals u.UserID
+                //           where pm.UserID == kh.UserID && pm.FunctionID == null
+                //           select new ProjectList
+                //           {
+                //               ProjectID = p.ProjectID,
+
+                //           };,,,,,,,,,,,,,,,,,,,,,,,
+                //ViewData["countFunctionhas"] = coutFunctionshas;
+                ViewData["ProjectList"] = data.ToList();
+                return View(data.ToList());
             }
             return View();
         }
@@ -102,16 +152,16 @@ namespace QuanlyBug.Controllers
             string email = Request.QueryString["email"];
             if (!email.IsEmpty())
             {
-                USER user = db.USERS.SingleOrDefault(n => n.Email == email);
+                USERS user = db.USERS.SingleOrDefault(n => n.Email == email);
                 Session["Taikhoan"] = user;
             }
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
             {
                 var data = from pm in db.PROJECTMBS
                            join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                            join u in db.USERS on pm.UserID equals u.UserID
-                           where pm.UserID == kh.UserID && pm.FunctionID == null
+                           where pm.UserID == kh.UserID 
                            select new ProjectList
                            {
                                ProjectID = p.ProjectID,
@@ -133,10 +183,10 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProject(PROJECT project, PROJECTMB projectmb, FormCollection f)
+        public ActionResult CreateProject(PROJECTS project, PROJECTMBS projectmb, FormCollection f)
         {
 
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
             {
                 string name = f["NameProject"];
@@ -296,7 +346,7 @@ namespace QuanlyBug.Controllers
         [HttpPost]
         public void Authorization(string email, string role)
         {
-            USER kh = new USER();
+            USERS kh = new USERS();
             var user = db.USERS.AsEnumerable().SingleOrDefault(n => n.Email == email);
             var verifyUrl = "#";
             if (user == null && !email.IsEmpty())
@@ -324,7 +374,7 @@ namespace QuanlyBug.Controllers
         [HttpPost]
         public void AuthorizationAddMember(string email, string nameProject)
         {
-            PROJECTMB pmb = new PROJECTMB();
+            PROJECTMBS pmb = new PROJECTMBS();
             var user = db.USERS.AsEnumerable().SingleOrDefault(n => n.Email == email);
             var project = db.PROJECTS.AsEnumerable().SingleOrDefault(n => n.Name == nameProject);
             var projectmbs = db.PROJECTMBS.ToList();
@@ -368,16 +418,16 @@ namespace QuanlyBug.Controllers
 
         }
 
-
+        [HttpGet]
         public ActionResult Team()
         {
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
             {
                 var data = from pm in db.PROJECTMBS
                            join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                            join u in db.USERS on pm.UserID equals u.UserID
-                           where pm.UserID == kh.UserID && pm.FunctionID == null && pm.BugID ==null
+                           where pm.UserID == kh.UserID && pm.ProjectMembersID == null && pm.ProjectMembersID == null
                            select new ProjectList
                            {
                                ProjectID = p.ProjectID,

@@ -1,9 +1,7 @@
 ﻿
-
-
 @using QuanlyBug.Models
 @{
-    USER kh = (USER)Session["TaiKhoan"];
+    USERS kh = (USERS)Session["TaiKhoan"];
 }
 
 @if (kh.Status == "admin" || kh.Status == "Product Manager" || kh.Status == "Tester")

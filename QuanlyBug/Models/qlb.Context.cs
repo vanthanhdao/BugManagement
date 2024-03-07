@@ -12,8 +12,6 @@ namespace QuanlyBug.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    using System.Data.Entity.Core.Objects;
-    using System.Linq;
     
     public partial class QuanlyBugEntities : DbContext
     {
@@ -27,6 +25,14 @@ namespace QuanlyBug.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<FILES> FILES { get; set; }
+        public virtual DbSet<FUNCTIONS> FUNCTIONS { get; set; }
+        public virtual DbSet<HISTORYS> HISTORYS { get; set; }
+        public virtual DbSet<PROJECTMBS> PROJECTMBS { get; set; }
+        public virtual DbSet<PROJECTS> PROJECTS { get; set; }
+        public virtual DbSet<USERS> USERS { get; set; }
+        public virtual DbSet<BUGS> BUGS { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<BUG> BUGS { get; set; }
         public virtual DbSet<FILE> FILES { get; set; }
         public virtual DbSet<FUNCTION> FUNCTIONS { get; set; }

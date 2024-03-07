@@ -4,22 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3bbed33ba6484490b59f21d44090f55d" Name="Diagram1">
-        <EntityTypeShape EntityType="QuanlyBugModel.BUG" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="QuanlyBugModel.FILE" Width="1.5" PointX="7.5" PointY="4.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="QuanlyBugModel.FUNCTION" Width="1.5" PointX="3" PointY="4.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="QuanlyBugModel.PROJECTMB" Width="1.5" PointX="10.5" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="QuanlyBugModel.PROJECT" Width="1.5" PointX="0.75" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="QuanlyBugModel.sysdiagram" Width="1.5" PointX="0.75" PointY="8.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="QuanlyBugModel.USER" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
-        <AssociationConnector Association="QuanlyBugModel.FK_BUGS_FUNCTIONS" ManuallyRouted="false" />
-        <AssociationConnector Association="QuanlyBugModel.FK_FILES_BUGS" ManuallyRouted="false" />
-        <AssociationConnector Association="QuanlyBugModel.FK_PROJECTMBS_BUGS" ManuallyRouted="false" />
-        <AssociationConnector Association="QuanlyBugModel.FK_FUNCTIONS_PROJECTS" ManuallyRouted="false" />
-        <AssociationConnector Association="QuanlyBugModel.FK_PROJECTMBS_FUNCTIONS" ManuallyRouted="false" />
+      <Diagram DiagramId="af90c95979e942f29f1ee907b6fd0ebd" Name="Diagram1">
+        <EntityTypeShape EntityType="QuanlyBugModel.FILES" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanlyBugModel.FUNCTIONS" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanlyBugModel.HISTORYS" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanlyBugModel.PROJECTMBS" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanlyBugModel.PROJECTS" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanlyBugModel.USERS" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
         <AssociationConnector Association="QuanlyBugModel.FK_PROJECTMBS_PROJECTS" ManuallyRouted="false" />
         <AssociationConnector Association="QuanlyBugModel.FK_PROJECTMBS_USERS" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="QuanlyBugModel.HISTORY" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="QuanlyBugModel.BUGS" Width="1.5" PointX="3.375" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

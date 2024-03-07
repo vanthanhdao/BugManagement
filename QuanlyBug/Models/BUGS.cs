@@ -12,15 +12,8 @@ namespace QuanlyBug.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class BUG
+    public partial class BUGS
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public BUG()
-        {
-            this.FILES = new HashSet<FILE>();
-            this.PROJECTMBS = new HashSet<PROJECTMB>();
-        }
-    
         public int BugID { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
@@ -35,11 +28,6 @@ namespace QuanlyBug.Models
         public string Expected { get; set; }
         public string Actual { get; set; }
         public string Env { get; set; }
-    
-        public virtual FUNCTION FUNCTION { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FILE> FILES { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PROJECTMB> PROJECTMBS { get; set; }
+        public Nullable<int> ProjectMembersID { get; set; }
     }
 }

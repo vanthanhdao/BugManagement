@@ -20,12 +20,12 @@ namespace QuanlyBug.Controllers
         // GET: BUGs
         public ActionResult Index(int? id)
         {
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             var project = db.PROJECTS.SingleOrDefault(p => p.ProjectID == id);
             var users = from pm in db.PROJECTMBS
                         join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                         join u in db.USERS on pm.UserID equals u.UserID
-                        where pm.ProjectID == id && pm.FunctionID == null && pm.BugID == null
+                        where pm.ProjectID == id 
                         select new UserModel
                         {
                             UserID = (int)pm.UserID,
@@ -41,8 +41,8 @@ namespace QuanlyBug.Controllers
                     from pm in db.PROJECTMBS
                     join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                     join u in db.USERS on pm.UserID equals u.UserID
-                    join f in db.FUNCTIONS on pm.FunctionID equals f.FunctionID
-                    where (pm.UserID == kh.UserID && pm.ProjectID == id && pm.BugID == null)
+                    join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
+                    where (pm.UserID == kh.UserID && pm.ProjectID == id) 
                     select new ProjectList
                     {
                         FunctionID = f.FunctionID,
@@ -59,9 +59,10 @@ namespace QuanlyBug.Controllers
                     from pm in db.PROJECTMBS
                     join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                     join u in db.USERS on pm.UserID equals u.UserID
-                    join f in db.FUNCTIONS on pm.FunctionID equals f.FunctionID
-                    join b in db.BUGS on pm.BugID equals b.BugID
-                    where (pm.UserID == kh.UserID && pm.ProjectID == id)
+                    join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
+                    join b in db.BUGS on f.FunctionID equals b.FunctionID
+                    where (pm.UserID == kh.UserID && pm.ProjectID == id )
+
                     select new ProjectList
                     {
                         BugID = b.BugID,
@@ -137,7 +138,7 @@ namespace QuanlyBug.Controllers
         [HttpPost]
         public ActionResult CreateFunction(FUNCTION fuc, PROJECTMB pm, FormCollection f, int? id)
         {
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
             {
                 string name = f["NameFunction"];
@@ -147,6 +148,7 @@ namespace QuanlyBug.Controllers
                 var checkDecription = db.PROJECTS.SingleOrDefault(a => a.Decription == decription);
                 if (checkName == null && checkDecription == null)
                 {
+                    var ProMBs = db.PROJECTMBS.SingleOrDefault(n => n.ProjectID == id);
                     fuc.Title = name;
                     fuc.ProjectID = id;
                     fuc.Description = decription;
@@ -154,24 +156,10 @@ namespace QuanlyBug.Controllers
                     fuc.EmailCreater = kh.Email.ToString();
                     fuc.EmailUser = email.ToString();
                     fuc.Status = "Todo";
+                    fuc.ProjectMembersID = ProMBs.ProjectMembersID;
                     db.FUNCTIONS.Add(fuc);
                     db.SaveChanges();
 
-                    var Fuc = db.FUNCTIONS.SingleOrDefault(n => n.Title == name);
-                    pm.ProjectID = Fuc.ProjectID;
-                    pm.UserID = kh.UserID;
-                    pm.FunctionID = Fuc.FunctionID;
-                    pm.Role = "creater";
-                    db.PROJECTMBS.Add(pm);
-                    db.SaveChanges();
-
-                    var User = db.USERS.SingleOrDefault(n => n.Email == email);
-                    pm.ProjectID = Fuc.ProjectID;
-                    pm.UserID = User.UserID;
-                    pm.FunctionID = Fuc.FunctionID;
-                    pm.Role = "member";
-                    db.PROJECTMBS.Add(pm);
-                    db.SaveChanges();
                 }
             }
             return RedirectToAction("Index", "BUGs", new { id = id });
@@ -182,7 +170,7 @@ namespace QuanlyBug.Controllers
         [HttpPost]
         public ActionResult CreateBug(BUG bug, PROJECTMB pm, FILE file, FormCollection f, HttpPostedFileBase[] files, int? id, int? idFuction)
         {
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
 
             if (kh != null && id != null && idFuction != null)
             {
@@ -199,6 +187,7 @@ namespace QuanlyBug.Controllers
                 var checkName = db.BUGS.SingleOrDefault(a => a.Title == title);
                 if (checkName == null)
                 {
+                    var ProMBs = db.PROJECTMBS.SingleOrDefault(n => n.ProjectID == id);
                     bug.Title = title;
                     bug.Description = description;
                     bug.Priority = priority;
@@ -212,17 +201,12 @@ namespace QuanlyBug.Controllers
                     bug.Expected = expected;
                     bug.Actual = actual;
                     bug.Env = enviroment;
+                    bug.ProjectMembersID = ProMBs.ProjectMembersID;
                     db.BUGS.Add(bug);
                     db.SaveChanges();
 
                     var Bug = db.BUGS.SingleOrDefault(n => n.Title == title);
-                    pm.ProjectID = id;
-                    pm.UserID = kh.UserID;
-                    pm.FunctionID = Bug.FunctionID;
-                    pm.Role = "creater";
-                    pm.BugID = Bug.BugID;
-                    db.PROJECTMBS.Add(pm);
-                    db.SaveChanges();
+                  
                     try
                     {
                         if (files != null && files.Length > 0)
@@ -274,20 +258,20 @@ namespace QuanlyBug.Controllers
                 {
                     if (status == "Assigned")
                     {
-                        pm.ProjectID = idPro;
-                        pm.UserID = user.UserID;
-                        pm.FunctionID = bug.FunctionID;
-                        pm.Role = "member";
-                        db.PROJECTMBS.Add(pm);
-                        db.SaveChanges();
+                        //pm.ProjectID = idPro;
+                        //pm.UserID = user.UserID;
+                        //pm.FunctionID = bug.FunctionID;
+                        //pm.Role = "member";
+                        //db.PROJECTMBS.Add(pm);
+                        //db.SaveChanges();
 
-                        pm.ProjectID = idPro;
-                        pm.UserID = user.UserID;
-                        pm.FunctionID = bug.FunctionID;
-                        pm.Role = "member";
-                        pm.BugID = idBug;
-                        db.PROJECTMBS.Add(pm);
-                        db.SaveChanges();
+                        //pm.ProjectID = idPro;
+                        //pm.UserID = user.UserID;
+                        //pm.FunctionID = bug.FunctionID;
+                        //pm.Role = "member";
+                        //pm.BugID = idBug;
+                        //db.PROJECTMBS.Add(pm);
+                        //db.SaveChanges();
                     }
                 }
                 bug.Status = status;
