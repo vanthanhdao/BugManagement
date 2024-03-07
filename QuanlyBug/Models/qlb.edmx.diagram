@@ -19,6 +19,7 @@
         <AssociationConnector Association="QuanlyBugModel.FK_PROJECTMBS_FUNCTIONS" ManuallyRouted="false" />
         <AssociationConnector Association="QuanlyBugModel.FK_PROJECTMBS_PROJECTS" ManuallyRouted="false" />
         <AssociationConnector Association="QuanlyBugModel.FK_PROJECTMBS_USERS" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="QuanlyBugModel.HISTORY" Width="1.5" PointX="0.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

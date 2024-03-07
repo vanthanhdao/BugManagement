@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QuanlyBugModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QuanlyBugModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BUGS">
           <Key>
             <PropertyRef Name="BugID" />
@@ -29,9 +29,9 @@
             <PropertyRef Name="FileID" />
           </Key>
           <Property Name="FileID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FileName" Type="nvarchar" MaxLength="100" />
+          <Property Name="FileName" Type="nvarchar(max)" />
           <Property Name="FileData" Type="varbinary(max)" />
-          <Property Name="FileType" Type="varchar" MaxLength="50" />
+          <Property Name="FileType" Type="varchar(max)" />
           <Property Name="BugID" Type="int" />
         </EntityType>
         <EntityType Name="FUNCTIONS">
@@ -46,6 +46,18 @@
           <Property Name="Description" Type="nvarchar" MaxLength="500" />
           <Property Name="EmailUser" Type="nvarchar" MaxLength="50" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="HISTORYS">
+          <Key>
+            <PropertyRef Name="ID_History" />
+          </Key>
+          <Property Name="ID_History" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProjectMembersID" Type="int" />
+          <Property Name="Name_Project" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description_History" Type="nvarchar" MaxLength="200" />
+          <Property Name="Time" Type="nvarchar" MaxLength="50" />
+          <Property Name="Activity" Type="nvarchar" MaxLength="50" />
+          <Property Name="ID_User" Type="int" />
         </EntityType>
         <EntityType Name="PROJECTMBS">
           <Key>
@@ -209,6 +221,7 @@
           <EntitySet Name="BUGS" EntityType="Self.BUGS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FILES" EntityType="Self.FILES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FUNCTIONS" EntityType="Self.FUNCTIONS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HISTORYS" EntityType="Self.HISTORYS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PROJECTMBS" EntityType="Self.PROJECTMBS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PROJECTS" EntityType="Self.PROJECTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -242,8 +255,7 @@
             <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QuanlyBugModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -274,9 +286,9 @@
             <PropertyRef Name="FileID" />
           </Key>
           <Property Name="FileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FileName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FileName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="FileData" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="FileType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FileType" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="BugID" Type="Int32" />
           <NavigationProperty Name="BUG" Relationship="Self.FK_FILES_BUGS" FromRole="FILES" ToRole="BUGS" />
         </EntityType>
@@ -496,6 +508,7 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="HISTORYS" EntityType="QuanlyBugModel.HISTORY" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -508,6 +521,18 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="HISTORY">
+          <Key>
+            <PropertyRef Name="ID_History" />
+          </Key>
+          <Property Name="ID_History" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProjectMembersID" Type="Int32" />
+          <Property Name="Name_Project" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description_History" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Activity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ID_User" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -630,6 +655,19 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="QuanlyBugModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="QuanlyBugModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="HISTORYS">
+            <EntityTypeMapping TypeName="QuanlyBugModel.HISTORY">
+              <MappingFragment StoreEntitySet="HISTORYS">
+                <ScalarProperty Name="ID_User" ColumnName="ID_User" />
+                <ScalarProperty Name="Activity" ColumnName="Activity" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Description_History" ColumnName="Description_History" />
+                <ScalarProperty Name="Name_Project" ColumnName="Name_Project" />
+                <ScalarProperty Name="ProjectMembersID" ColumnName="ProjectMembersID" />
+                <ScalarProperty Name="ID_History" ColumnName="ID_History" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

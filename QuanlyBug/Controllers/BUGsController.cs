@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -32,7 +33,7 @@ namespace QuanlyBug.Controllers
                             Email = u.Email,
                             Status = u.Status,
                         };
-            if (kh != null && project != null && users != null )
+            if (kh != null && project != null && users != null)
             {
                 ViewData["Project"] = project;
                 ViewData["User"] = users.ToList();
@@ -41,7 +42,7 @@ namespace QuanlyBug.Controllers
                     join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                     join u in db.USERS on pm.UserID equals u.UserID
                     join f in db.FUNCTIONS on pm.FunctionID equals f.FunctionID
-                    where (pm.UserID == kh.UserID && pm.ProjectID == id && pm.BugID == null) 
+                    where (pm.UserID == kh.UserID && pm.ProjectID == id && pm.BugID == null)
                     select new ProjectList
                     {
                         FunctionID = f.FunctionID,
@@ -60,7 +61,7 @@ namespace QuanlyBug.Controllers
                     join u in db.USERS on pm.UserID equals u.UserID
                     join f in db.FUNCTIONS on pm.FunctionID equals f.FunctionID
                     join b in db.BUGS on pm.BugID equals b.BugID
-                    where (pm.UserID == kh.UserID && pm.ProjectID == id )
+                    where (pm.UserID == kh.UserID && pm.ProjectID == id)
                     select new ProjectList
                     {
                         BugID = b.BugID,
@@ -73,14 +74,14 @@ namespace QuanlyBug.Controllers
                         Severity = b.severity,
                         Url = b.url,
                         Input = b.input,
-                        Reproduce =b.Reproduce,
-                        Expected =b.Expected ,
+                        Reproduce = b.Reproduce,
+                        Expected = b.Expected,
                         Actual = b.Actual,
                         Env = b.Env,
                     };
                 ViewData["DataFuctions"] = dataFuctions.ToList();
                 ViewData["DataBugs"] = dataBugs.ToList();
-                
+
             }
             //HttpContext.Cache["IDProject"] = id;
 
@@ -88,7 +89,7 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateDataBug(int? idFuc,int? idPro)
+        public ActionResult UpdateDataBug(int? idFuc, int? idPro)
         {
             Session["idFuction"] = idFuc;
             return Json(new { redirectToAction = Url.Action("Index", "BUGs", new { id = idPro }) });
@@ -134,7 +135,7 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateFunction(FUNCTION fuc,PROJECTMB pm, FormCollection f, int? id)
+        public ActionResult CreateFunction(FUNCTION fuc, PROJECTMB pm, FormCollection f, int? id)
         {
             USER kh = (USER)Session["TaiKhoan"];
             if (kh != null)
@@ -166,24 +167,24 @@ namespace QuanlyBug.Controllers
 
                     var User = db.USERS.SingleOrDefault(n => n.Email == email);
                     pm.ProjectID = Fuc.ProjectID;
-                    pm.UserID = User.UserID ;
+                    pm.UserID = User.UserID;
                     pm.FunctionID = Fuc.FunctionID;
                     pm.Role = "member";
                     db.PROJECTMBS.Add(pm);
                     db.SaveChanges();
                 }
             }
-            return RedirectToAction("Index", "BUGs",new {id=id });
+            return RedirectToAction("Index", "BUGs", new { id = id });
         }
 
 
 
         [HttpPost]
-        public ActionResult CreateBug(BUG bug, PROJECTMB pm,FILE file, FormCollection f, HttpPostedFileBase[] files, int? id,int? idFuction)
+        public ActionResult CreateBug(BUG bug, PROJECTMB pm, FILE file, FormCollection f, HttpPostedFileBase[] files, int? id, int? idFuction)
         {
             USER kh = (USER)Session["TaiKhoan"];
 
-            if (kh != null && id!= null && idFuction != null)
+            if (kh != null && id != null && idFuction != null)
             {
                 string title = f["title"];
                 string input = f["input"];
@@ -252,17 +253,18 @@ namespace QuanlyBug.Controllers
                             }
                         }
                     }
-                    catch (Exception ex) { 
+                    catch (Exception ex)
+                    {
                         Console.WriteLine(ex.ToString());
                     }
-                
-                    
+
+
                 }
             }
             return RedirectToAction("Index", "BUGs", new { id = id });
         }
 
-        public ActionResult ChangeStatusBug(PROJECTMB pm,int? idBug, int? idPro,string email="",string status="")
+        public ActionResult ChangeStatusBug(PROJECTMB pm, int? idBug, int? idPro, string email = "", string status = "")
         {
             var bug = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
             var user = db.USERS.SingleOrDefault(u => u.Email == email);
@@ -291,22 +293,176 @@ namespace QuanlyBug.Controllers
                 bug.Status = status;
                 db.SaveChanges();
             }
-            return RedirectToAction("Index", "BUGs", new {id=idPro});
+            return RedirectToAction("Index", "BUGs", new { id = idPro });
         }
 
         [HttpPost]
-        public ActionResult EditBug(int? id, FormCollection f)
+        public ActionResult EditBug(FILE file,HISTORY his, FormCollection f, HttpPostedFileBase[] files, int? idPro, int? idBug, int? idFuc)
         {
-            var project = db.PROJECTS.AsEnumerable().SingleOrDefault(n => n.ProjectID == id);
-            if (id != null)
-            {
-                project.Name = f["NameProject"];
-                project.Decription = f["DecriptionProject"];
-                db.SaveChanges();
-                return RedirectToAction("Project", "Home");
-            }
-            return HttpNotFound();
+            USER kh = (USER)Session["TaiKhoan"];
+            var BUG = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
+            var FILE = db.FILES.Where(fi => fi.BugID == idBug);
+            var project = db.PROJECTS.SingleOrDefault(p => p.ProjectID == idPro);
+            var projectmbs = db.PROJECTMBS.SingleOrDefault(pm => pm.ProjectID == idPro && pm.FunctionID == idFuc && pm.BugID == idBug);
+            var fuction = db.FUNCTIONS.SingleOrDefault(fi => fi.FunctionID == idFuc);
+            string title = f["title"];
+            string input = f["input"];
+            string stepsToReproduce = f["stepsToReproduce"];
+            string expected = f["expected"];
+            string actual = f["actual"];
+            string url = f["url"];
+            string severity = f["severity"];
+            string priority = f["priority"];
+            string enviroment = f["enviroment"];
+            string description = f["description"];
+            string status = f["StatusBug"];
+            List<string> des = new List<string>();
 
+            if (BUG != null && FILE != null && project != null && projectmbs != null && fuction != null)
+            {
+                Dictionary<string, (string value, string description)> propertiesToUpdate = new Dictionary<string, (string value, string description)>
+                {
+                     { "Title",(title, "Tiêu đề") },
+                     { "input",(input, "Dữ liệu kiểm tra") },
+                     { "Reproduce", (stepsToReproduce,"Các bước tạo lỗi" )},
+                     { "Expected", (expected, "Kết quả mong đợi") },
+                     { "Actual",(actual, "Kết quả thực tế")},
+                     { "url", (url, "Url") },
+                     { "severity",( severity, "Mức độ nghiêm trọng")},
+                     { "Priority", (priority, "Mức độ ưu tiên") },
+                     { "Env",(enviroment, "Môi trường")},
+                     { "Description", (description, "Thông tin thêm") },
+                     { "Status", (status, "Trạng thái") },
+                 };
+
+                foreach (var property in propertiesToUpdate)
+                {
+                    if (property.Value.value != null && BUG.GetType().GetProperty(property.Key) != null)
+                    {
+                        string currentValue = BUG.GetType().GetProperty(property.Key).GetValue(BUG, null)?.ToString();
+                        if (currentValue != property.Value.value)
+                        {
+                            BUG.GetType().GetProperty(property.Key).SetValue(BUG, property.Value.value);
+                            des.Add(property.Value.description);
+                        }
+                    }
+                }
+                if (files != null && files.Length > 0 && files[0]?.ContentLength > 0)
+                {
+                    des.Add("File đính kèm");
+                }
+
+                BUG.Title = title;
+                BUG.input = input;
+                BUG.Reproduce = stepsToReproduce;
+                BUG.Expected = expected;
+                BUG.Actual = actual;
+                BUG.Env = enviroment;
+                BUG.Description = description;
+                BUG.url = url;
+                BUG.severity = severity;
+                BUG.Priority = priority;
+                BUG.Status = status;
+                db.SaveChanges();
+
+                if (files != null && files.Length > 0 && files[0]?.ContentLength > 0)
+                {
+                    foreach (var fi in FILE)
+                    {
+                        db.FILES.Remove(fi);
+                    }
+                    db.SaveChanges();
+
+                    foreach (var i in files)
+                    {
+                        if (i != null && i.ContentLength > 0)
+                        {
+                            // Lấy thông tin cơ bản của file
+                            var fileName = Path.GetFileName(i.FileName);
+                            var fileType = i.ContentType;
+
+                            // Đọc dữ liệu của file vào một byte array
+                            byte[] fileData;
+                            using (var binaryReader = new BinaryReader(i.InputStream))
+                            {
+                                fileData = binaryReader.ReadBytes(i.ContentLength);
+                            }
+                            file.FileName = fileName;
+                            if (fileType == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                            {
+                                fileType = "application/xlsx";
+                            }
+                            file.FileType = fileType;
+                            file.FileData = fileData;
+                            file.BugID = BUG.BugID;
+
+                            db.FILES.Add(file);
+                            db.SaveChanges();
+
+                        }
+                    }
+                }
+
+                string desString = string.Join(", ", des);
+                his.ProjectMembersID = projectmbs.ProjectMembersID;
+                his.ID_User = kh.UserID;
+                his.Activity = "Update";
+                his.Time = DateTime.Now.ToString("dd/MM/yyyy H:mm:ss tt");
+                his.Name_Project = project.Name;
+                his.Description_History = desString+" của bug " + BUG.Title + " được cập nhật trong chức năng " + fuction.Title + " của dự án " + project.Name;
+                db.HISTORYS.Add(his);
+                db.SaveChanges();
+
+
+            }
+            //try
+            //{
+            //}
+            //catch (DbEntityValidationException ex)
+            //{
+            //    Lặp qua từng entity validation error để hiển thị thông tin chi tiết
+            //foreach (var entityValidationError in ex.EntityValidationErrors)
+            //    {
+            //        foreach (var validationError in entityValidationError.ValidationErrors)
+            //        {
+            //            Console.WriteLine($"Property: {validationError.PropertyName}, Error: {validationError.ErrorMessage}");
+            //        }
+            //    }
+            //}
+            return RedirectToAction("Index", "BUGs", new { id = idPro });
+
+        }
+
+        [HttpPost]
+        public ActionResult DeleteBug(int? idPro, int? idBug, int? idFuc, FormCollection f, HISTORY his)
+        {
+            USER kh = (USER)Session["TaiKhoan"];
+            var project = db.PROJECTS.SingleOrDefault(p => p.ProjectID == idPro);
+            var fuction = db.FUNCTIONS.SingleOrDefault(fi => fi.FunctionID == idFuc);
+            var projectmbs = db.PROJECTMBS.SingleOrDefault(pm => pm.ProjectID == idPro && pm.FunctionID == idFuc && pm.BugID == idBug);
+            var file = db.FILES.Where(fi => fi.BugID == idBug);
+            var bug = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
+            if (file != null && projectmbs != null && bug != null && kh != null)
+            {
+                his.ProjectMembersID = projectmbs.ProjectMembersID;
+                his.ID_User = kh.UserID;
+                his.Activity = "Delete";
+                his.Time = DateTime.Now.ToString("dd/MM/yyyy H:mm:ss tt");
+                his.Name_Project = project.Name;
+                his.Description_History = "Bug " + bug.Title + " được xóa trong chức năng " + fuction.Title + " của dự án " + project.Name;
+                db.HISTORYS.Add(his);
+                db.SaveChanges();
+
+                db.PROJECTMBS.Remove(projectmbs);
+                db.SaveChanges();
+
+                db.FILES.RemoveRange(file);
+                db.SaveChanges();
+
+                db.BUGS.Remove(bug);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Index", "BUGs", new { id = idPro });
         }
 
         protected override void Dispose(bool disposing)
