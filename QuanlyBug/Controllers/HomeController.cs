@@ -111,7 +111,7 @@ namespace QuanlyBug.Controllers
                 var data = from pm in db.PROJECTMBS
                            join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                            join u in db.USERS on pm.UserID equals u.UserID
-                           where pm.UserID == kh.UserID
+                           where pm.UserID == kh.UserID && pm.FunctionID == null
                            select new ProjectList
                            {
                                ProjectID = p.ProjectID,
@@ -369,11 +369,6 @@ namespace QuanlyBug.Controllers
         }
 
 
-        public ActionResult ProjectList()
-        {
-            return PartialView();
-        }
-
         public ActionResult Team()
         {
             USER kh = (USER)Session["TaiKhoan"];
@@ -382,7 +377,7 @@ namespace QuanlyBug.Controllers
                 var data = from pm in db.PROJECTMBS
                            join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                            join u in db.USERS on pm.UserID equals u.UserID
-                           where pm.UserID == kh.UserID
+                           where pm.UserID == kh.UserID && pm.FunctionID == null && pm.BugID ==null
                            select new ProjectList
                            {
                                ProjectID = p.ProjectID,
