@@ -224,14 +224,28 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="row">
-                                                                <h4 class="col-auto">Trạng thái bug:</h4>
-                                                                <div class="col-auto text-secondary mb-3" id="EmailCreater">
-                                                                    <span class="nav-link-title" id="spanStatus">
-                                                                        @bug.StatusBug
-                                                                    </span>
+                                                            @if (bug.StatusBug == "New" || bug.StatusBug == "Dimiss" || bug.StatusBug == "Retest")
+                                                            {
+                                                                <div class="row">
+                                                                    <h4 class="col-auto">Trạng thái bug:</h4>
+                                                                    <div class="col-auto text-secondary mb-3" id="EmailCreater">
+                                                                        <span class="nav-link-title" id="spanStatus">
+                                                                            @bug.StatusBug
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="row">
+                                                                    <h4 class="col-auto">Trạng thái bug:</h4>
+                                                                    <div class="col-auto text-secondary mb-3" id="EmailCreater">
+                                                                        <span class="nav-link-title" id="spanStatus">
+                                                                            @bug.StatusBug
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                            }
 
                                                             <h4>File đính kèm:</h4>
                                                             <div class="text-secondary mb-3" id="EmailCreater">
@@ -258,64 +272,83 @@
                                                                 <input type="text" class="form-control" name="NameProject" value="@bug.Description" disabled>
                                                             </div>
 
-                                                            <div class="card">
-                                                                <div class="card-header">
-                                                                    <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
-                                                                        <li class="nav-item" role="presentation">
-                                                                            <a href="#tabs-profile-4" class="nav-link active" data-bs-toggle="tab" aria-selected="true" role="tab">Duyệt</a>
-                                                                        </li>
-                                                                        <li class="nav-item dropdown">
-                                                                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cài đặt</a>
-                                                                            <div class="dropdown-menu" style="">
-                                                                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-editbug-@bug.BugID" role="button" aria-expanded="true">
-                                                                                    Cập nhật
-                                                                                </a>
-                                                                                <a class="dropdown-item" href="#">
-                                                                                    Xóa
-                                                                                </a>
-                                                                            </div>
-                                                                        </li>
-                                                                    </ul>
-                                                                </div>
-                                                                <div class="card-body">
-                                                                    <div class="tab-content">
-                                                                        <div class="tab-pane active show" id="tabs-profile-4" role="tabpanel">
-                                                                            @if (bug.StatusBug == "New")
-                                                                            {
-                                                                                <div class="mb-3">
-                                                                                    <label class="form-label">Email</label>
-                                                                                    <select class="form-select" name="Email" id="emailSelect" onchange="updateUrl(@project.ProjectID,@bug.BugID)">
-                                                                                        @if (users != null)
-                                                                                        {
-                                                                                            <option value="">-- Chọn email --</option>
-                                                                                            foreach (var i in users)
+
+                                                            @if (kh.Status == "Tester" || kh.Status == "Product Manager")
+                                                            {
+                                                                if (bug.StatusBug == "New" || bug.StatusBug == "Dimiss" || bug.StatusBug == "Retest")
+                                                                {
+                                                                    <div class="card">
+                                                                        <div class="card-header">
+                                                                            <ul class="nav nav-tabs card-header-tabs" data-bs-toggle="tabs" role="tablist">
+                                                                                @if (kh.Status == "Product Manager" && bug.StatusBug == "New")
+                                                                                {
+                                                                                    <li class="nav-item" role="presentation">
+                                                                                        <a href="#tabs-profile-4" class="nav-link active" data-bs-toggle="tab" aria-selected="true" role="tab">Duyệt</a>
+                                                                                    </li>
+                                                                                }
+
+                                                                                @if (bug.StatusBug == "New" || bug.StatusBug == "Dimiss" || bug.StatusBug == "Retest")
+                                                                                {
+                                                                                    <li class="nav-item dropdown">
+                                                                                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cài đặt</a>
+                                                                                        <div class="dropdown-menu" style="">
+                                                                                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-editbug-@bug.BugID" role="button" aria-expanded="true">
+                                                                                                Cập nhật
+                                                                                            </a>
+                                                                                            @if (bug.StatusBug == "New" || bug.StatusBug == "Dimiss")
                                                                                             {
-                                                                                                <option value="@i.Email">@i.Email</option>
+                                                                                                <a class="dropdown-item text-pink" href="#" data-bs-toggle="modal" data-bs-target="#modal-deleteproject-@bug.BugID" role="button" aria-expanded="true">
+                                                                                                    Xóa
+                                                                                                </a>
                                                                                             }
-                                                                                        }
-                                                                                    </select>
+                                                                                            </div>
+                                                                                    </li>
+                                                                                }
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                            <div class="tab-content">
+                                                                                <div class="tab-pane active show" id="tabs-profile-4" role="tabpanel">
 
-                                                                                </div>
-                                                                                <div class="row g-2">
-                                                                                    <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
-                                                                                        <a href="@Url.Action("ChangeStatusBug", "BUGs", new { idPro = project.ProjectID, idBug = bug.BugID, status = "Dimiss" })" class="btn btn-danger w-100">
-                                                                                            Từ chối
-                                                                                        </a>
-                                                                                    </div>
-                                                                                    <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
-                                                                                    </div>
-                                                                                    <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
-                                                                                        <a id="changeStatusLink" href="" class="btn btn-info w-100">
-                                                                                            Đồng ý
-                                                                                        </a>
-                                                                                    </div>
+                                                                                    @if (bug.StatusBug == "New")
+                                                                                    {
+                                                                                        <div class="mb-3">
+                                                                                            <label class="form-label">Email</label>
+                                                                                            <select class="form-select" name="Email" id="emailSelect" onchange="updateUrl(@project.ProjectID,@bug.BugID)">
+                                                                                                @if (users != null)
+                                                                                                {
+                                                                                                    <option value="">-- Chọn email --</option>
+                                                                                                    foreach (var i in users)
+                                                                                                    {
+                                                                                                        <option value="@i.Email">@i.Email</option>
+                                                                                                    }
+                                                                                                }
+                                                                                            </select>
 
+                                                                                        </div>
+                                                                                        <div class="row g-2">
+                                                                                            <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
+                                                                                                <a href="@Url.Action("ChangeStatusBug", "BUGs", new { idPro = project.ProjectID, idBug = bug.BugID, status = "Dimiss" })" class="btn btn-danger w-100">
+                                                                                                    Từ chối
+                                                                                                </a>
+                                                                                            </div>
+                                                                                            <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
+                                                                                            </div>
+                                                                                            <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
+                                                                                                <a id="changeStatusLink" href="" class="btn btn-info w-100">
+                                                                                                    Đồng ý
+                                                                                                </a>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    }
                                                                                 </div>
-                                                                            }
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-                                                            </div>
+                                                                }
+                                                            }
+
 
                                                         </div>
                                                     </div>
@@ -323,7 +356,7 @@
                                             </div>
                                         </div>
 
-                                        using (Html.BeginForm("CreateBug", "BUGs", FormMethod.Post, new { @class = "editBugForm", @novalidate = "novalidate", enctype = "multipart/form-data" }))
+                                        using (Html.BeginForm("EditBug", "BUGs", new { idPro = project.ProjectID, idBug = bug.BugID, idFuc = bug.FunctionID }, FormMethod.Post, new { @class = "editBugForm", @novalidate = "novalidate", enctype = "multipart/form-data" }))
                                         {
                                             <div class="modal modal-blur fade" id="modal-editbug-@bug.BugID" tabindex="-1" aria-modal="true" role="dialog">
                                                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -349,7 +382,7 @@
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">Các bước tái tạo lỗi</label>
-                                                                        <textarea class="form-control" name="stepsToReproduce"  rows="3" required>@bug.Reproduce</textarea>
+                                                                        <textarea class="form-control" name="stepsToReproduce" rows="3" required>@bug.Reproduce</textarea>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -409,15 +442,30 @@
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">File đính kèm</label>
+                                                                        @foreach (var file in Model.Where(f => f.BugID == bug.BugID))
+                                                                        {
+                                                                            <label for="fileInput">@file.FileName</label>
+                                                                        }
                                                                         <input type="file" class="form-control" name="files" multiple required>
                                                                     </div>
                                                                 </div>
+                                                                <div class="col-lg-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Trạng thái</label>
+                                                                        <select class="form-select" name="StatusBug">
+                                                                            <option value="@bug.StatusBug">@bug.StatusBug</option>
+                                                                            <option value="Reopen">Reopen</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+
                                                                 <div class="col-lg-12">
-                                                                    <div>
+                                                                    <div class="mb-3">
                                                                         <label class="form-label">Thông tin thêm</label>
                                                                         <textarea class="form-control" rows="3" name="description" required>@bug.Description</textarea>
                                                                     </div>
                                                                 </div>
+
                                                             </div>
 
                                                         </div>
@@ -425,6 +473,42 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn me-auto" data-bs-dismiss="modal">Hủy</button>
                                                             <button type="submit" class="btn btn-primary">Gửi</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        using (Html.BeginForm("DeleteBug", "BUGs", new { idPro = project.ProjectID, idBug = bug.BugID, idFuc = bug.FunctionID }, FormMethod.Post, new { @class = "deleteBugForm", @novalidate = "novalidate" }))
+                                        {
+                                            <div class="modal modal-blur fade" id="modal-deleteproject-@bug.BugID" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Xóa bug</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Tiêu đề</label>
+                                                                <input type="text" class="form-control" name="NameBug" value="@bug.TitleBug" disabled>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label" id="lableComfirm">Xác nhận xóa</label>
+                                                                <input type="text" class="form-control" name="NewNameBug" oninput="updateValue(this,'@bug.TitleBug')" id="inputConfirm" required>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                                                Hủy
+                                                            </a>
+                                                            <button type="submit" class="btn btn-primary ms-auto">
+                                                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                                Gửi
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -797,4 +881,16 @@
             icon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 9l6 6l6 -6" /></svg>';
         }
     }
+
+    function updateValue(inputElement, name) {
+        var value = inputElement.value;
+        if (value === name) {
+            inputElement.setCustomValidity("");
+            inputElement.style.borderColor = "";
+        } else {
+            inputElement.setCustomValidity("This field is invalid");
+            inputElement.style.borderColor = "red";
+        }
+    }
+
 </script>
