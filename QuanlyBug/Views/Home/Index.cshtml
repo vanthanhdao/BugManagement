@@ -4,6 +4,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
     var projectList = ViewData["ProjectList"] as IEnumerable<QuanlyBug.Models.ProjectList>;
+    var historylist = ViewData["dataHistory"] as IEnumerable<QuanlyBug.Models.HistoryList>;
     //var countFunctionhas = ViewData["countFunctionhas"];
     var padingProject = projectList != null ? "0px" : "60px";
     int count = -1;
@@ -136,7 +137,7 @@
 </style>
 
 
-<div class="scrollable" style=" margin-bottom: 20px; ">
+<div class="scrollable">
     <div class="page-wrapper">
 
         <div class="page-header d-print-none">
@@ -162,11 +163,12 @@
                             {
                                 count = 0;
                             }
-                            else {
+                            else
+                            {
                                 count = count + 1;
                             }
                             <div class="col-sm-6 col-lg-3" style="margin-bottom:25px  ">
-                                <a href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })" class="card" style="border-left-color: @listcolorProject[count]; border-left-width: 15px;">
+                                <a href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })" class="card" style="border-radius: 8px;border-left-color: @listcolorProject[count]; border-left-width: 15px;">
 
                                     <div class="card" style="  padding-left: 25px; padding-top: 15px;padding-bottom: 15px;  ">
                                         <font style="vertical-align: inherit; font-weight:bold;font-size:20px"><font style="vertical-align: inherit;font-size:22px">@item.Name</font></font>
@@ -210,83 +212,26 @@
                     }
                 </div>
                 <div class="d-flex justify-content-center">
-                    <span style=" font-size: 20px;font-weight: bold;">Lịch sử hoạt động</span>
+                    <span style=" margin-bottom:10px;font-size: 20px;font-weight: bold;">Lịch sử hoạt động</span>
                 </div>
-                <div class="card"   >
+                @if (historylist != null)
+                {
+                    foreach (var item in historylist)
+                    {
 
-                    <div style=" width: 100%;  height: 35px; padding-left:5px;" class="d-flex justify-content-between">
-                        <h4 style="margin-left: 100px;">
-                            Tung <small class="d-flex justify-content-start" style=" ">
-                                <span style="font-size: 10px;font-style: italic; ">TUNG-1 </span><span> · </span><span style="font-size: 10px;font-style: italic; "> Tung</span>
-                            </small>
-                        </h4>
-                        <span style="margin-right: 100px; margin-top: 10px;">Update</span>
+                        <div class="card" style=" margin-bottom: 120px; padding-top: 15px;padding-bottom: 15px;">
+                            <div style=" width: 100%; height: 35px; padding-left: 5px; margin: 3px" class="d-flex justify-content-between">
+                                <h4 style="margin-left: 100px;">
+                                    @item.Description_History <small class="d-flex justify-content-start" style=" ">
+                                        <span style="font-size: 10px; font-style: italic; margin-right: 7px ">@item.nameUser    </span><span> · </span><span style="font-size: 10px;font-style: italic;margin-left:7px ">  @item.Name_Project</span>
+                                    </small>
+                                </h4>
+                                <span style="margin-right: 100px; margin-top: 10px;">@item.Activity</span>
 
-                    </div>
-                    <div style=" width: 100%;  height: 35px; padding-left:5px;" class="d-flex justify-content-between">
-                        <h4 style=" margin-left: 100px;">
-                            Tung <small class="d-flex justify-content-start" style=" ">
-                                <span style="font-size: 10px;font-style: italic; ">TUNG-1 </span><span> · </span><span style="font-size: 10px;font-style: italic; "> Tung</span>
-                            </small>
-                        </h4>
-                        <span style="margin-right: 100px;margin-top: 10px;">Update</span>
+                            </div>
 
-                    </div>
-                    <div style=" width: 100%;  height: 35px; padding-left:5px;" class="d-flex justify-content-between">
-                        <h4 style="margin-left: 100px;">
-                            Tung <small class="d-flex justify-content-start" style=" ">
-                                <span style="font-size: 10px;font-style: italic; ">TUNG-1 </span><span> · </span><span style="font-size: 10px;font-style: italic; "> Tung</span>
-                            </small>
-                        </h4>
-                        <span style="margin-right: 100px; margin-top: 10px;">Update</span>
-
-                    </div>
-                    <div style=" width: 100%;  height: 35px; padding-left:5px;" class="d-flex justify-content-between">
-                        <h4 style=" margin-left: 100px;">
-                            Tung <small class="d-flex justify-content-start" style=" ">
-                                <span style="font-size: 10px;font-style: italic; ">TUNG-1 </span><span> · </span><span style="font-size: 10px;font-style: italic; "> Tung</span>
-                            </small>
-                        </h4>
-                        <span style="margin-right: 100px;margin-top: 10px;">Update</span>
-
-                    </div>
-                    <div style=" width: 100%;  height: 35px; padding-left:5px;" class="d-flex justify-content-between">
-                        <h4 style="margin-left: 100px;">
-                            Tung <small class="d-flex justify-content-start" style=" ">
-                                <span style="font-size: 10px;font-style: italic; ">TUNG-1 </span><span> · </span><span style="font-size: 10px;font-style: italic; "> Tung</span>
-                            </small>
-                        </h4>
-                        <span style="margin-right: 100px; margin-top: 10px;">Update</span>
-
-                    </div>
-                    <div style=" width: 100%;  height: 35px; padding-left:5px;" class="d-flex justify-content-between">
-                        <h4 style=" margin-left: 100px;">
-                            Tung <small class="d-flex justify-content-start" style=" ">
-                                <span style="font-size: 10px;font-style: italic; ">TUNG-1 </span><span> · </span><span style="font-size: 10px;font-style: italic; "> Tung</span>
-                            </small>
-                        </h4>
-                        <span style="margin-right: 100px;margin-top: 10px;">Update</span>
-
-                    </div>
-                    <div style=" width: 100%;  height: 35px; padding-left:5px;" class="d-flex justify-content-between">
-                        <h4 style="margin-left: 100px;">
-                            Tung <small class="d-flex justify-content-start" style=" ">
-                                <span style="font-size: 10px;font-style: italic; ">TUNG-1 </span><span> · </span><span style="font-size: 10px;font-style: italic; "> Tung</span>
-                            </small>
-                        </h4>
-                        <span style="margin-right: 100px; margin-top: 10px;">Update</span>
-
-                    </div>
-                    <div style=" width: 100%;  height: 35px; padding-left:5px;" class="d-flex justify-content-between">
-                        <h4 style=" margin-left: 100px;">
-                            Tung <small class="d-flex justify-content-start" style=" ">
-                                <span style="font-size: 10px;font-style: italic; ">TUNG-1 </span><span> · </span><span style="font-size: 10px;font-style: italic; "> Tung</span>
-                            </small>
-                        </h4>
-                        <span style="margin-right: 100px;margin-top: 10px;">Update</span>
-
-                    </div>
-                </div>
+                        </div>
+                    }}
             </div>
         </div>
     </div>
@@ -379,6 +324,7 @@
                 url: '/Home/GetDataProjectList',
                 type: 'GET',
                 success: function (data) {
+                    console.log(data)
                     const checkNameOrEmail = inputNameOrEmail.value!="" ? data.some(element => element.Email === inputNameOrEmail.value) : null;
                     const checkProjectMember = inputNameOrEmail.value != "" ? data.some(element => element.Email === inputNameOrEmail.value && element.Name === inputNameProject.value) : null;
                     console.log(data, checkNameOrEmail, checkProjectMember)

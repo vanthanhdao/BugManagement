@@ -4,7 +4,8 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="af90c95979e942f29f1ee907b6fd0ebd" Name="Diagram1">
+      <Diagram DiagramId="27cede3fd71840428b14126741a72855" Name="Diagram1">
+        <EntityTypeShape EntityType="QuanlyBugModel.BUGS" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="QuanlyBugModel.FILES" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="QuanlyBugModel.FUNCTIONS" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="QuanlyBugModel.HISTORYS" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
@@ -13,7 +14,6 @@
         <EntityTypeShape EntityType="QuanlyBugModel.USERS" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
         <AssociationConnector Association="QuanlyBugModel.FK_PROJECTMBS_PROJECTS" ManuallyRouted="false" />
         <AssociationConnector Association="QuanlyBugModel.FK_PROJECTMBS_USERS" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="QuanlyBugModel.BUGS" Width="1.5" PointX="3.375" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

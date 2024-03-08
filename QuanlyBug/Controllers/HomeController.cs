@@ -52,13 +52,13 @@ namespace QuanlyBug.Controllers
             USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
             {
-               
+
                 var data = from pm in db.PROJECTMBS
                            join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                            join b in db.BUGS on pm.ProjectMembersID equals b.ProjectMembersID into bs
                            join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID into fs
                            join u in db.USERS on pm.UserID equals u.UserID
-                           where pm.UserID == kh.UserID 
+                           where pm.UserID == kh.UserID
                            //Lỗi Bug k truy suất dk
                            select new ProjectList
                            {
@@ -78,6 +78,24 @@ namespace QuanlyBug.Controllers
                                countFunctionsNew = fs.Where(f => f.Status == "Todo").Count(),
                                countBugsNew = bs.Where(b => b.Status == "New").Count(),
                            };
+                var dataHistory = (from h in db.HISTORYS
+                                   join pm in db.PROJECTMBS on kh.UserID equals pm.UserID
+                                   join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                                   join u in db.USERS on h.ID_User equals u.UserID
+                                   where h.ProjectID == p.ProjectID
+                                   //Lỗi Bug k truy suất dk
+                                   select new HistoryList
+                                   {
+                                       ID_History = h.ID_History,
+                                       Name_Project = h.Name_Project,
+                                       Description_History = h.Description_History,
+                                       Time = h.Time,
+                                       Activity = h.Activity,
+                                       nameUser = u.Email,
+                                       ID_User = h.ID_User
+                                   }).ToList();
+
+                ViewData["dataHistory"] = dataHistory;
                 //var coutFunctionshas = (from pm in db.PROJECTMBS
                 //                        join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID
                 //                        join p in db.PROJECTS on pm.ProjectID equals p.ProjectID into g
@@ -115,10 +133,10 @@ namespace QuanlyBug.Controllers
         }
 
         public JsonResult GetDataProjectList()
-        {            
+        {
             var data = from pm in db.PROJECTMBS
                        join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                       join u in db.USERS on pm.UserID equals u.UserID                      
+                       join u in db.USERS on pm.UserID equals u.UserID
                        select new ProjectMemberModel
                        {
                            UserID = pm.UserID,
@@ -161,7 +179,7 @@ namespace QuanlyBug.Controllers
                 var data = from pm in db.PROJECTMBS
                            join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                            join u in db.USERS on pm.UserID equals u.UserID
-                           where pm.UserID == kh.UserID 
+                           where pm.UserID == kh.UserID
                            select new ProjectList
                            {
                                ProjectID = p.ProjectID,
@@ -183,7 +201,7 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateProject(PROJECTS project, PROJECTMBS projectmb, FormCollection f)
+        public ActionResult CreateProject(PROJECTS project, PROJECTMBS projectmb, HISTORYS his, FormCollection f)
         {
 
             USERS kh = (USERS)Session["TaiKhoan"];
@@ -208,6 +226,15 @@ namespace QuanlyBug.Controllers
                     projectmb.UserID = kh.UserID;
                     projectmb.Role = "creater";
                     db.PROJECTMBS.Add(projectmb);
+                    db.SaveChanges();
+
+                    his.ProjectID = projectmb.ProjectID;
+                    his.Name_Project = Project.Name;
+                    his.Description_History = kh.Email.ToString() + " đã tạo dự án " + Project.Name;
+                    his.Time = DateTime.Now.ToString("dd/MM/yyyy H:mm:ss tt"); ;
+                    his.Activity = "Create";
+                    his.ID_User = kh.UserID;
+                    db.HISTORYS.Add(his);
                     db.SaveChanges();
                 }
 
@@ -297,7 +324,8 @@ namespace QuanlyBug.Controllers
           "\r\n</div>" +
           "\r\n</body>" +
           "\r\n</html>";
-            }else
+            }
+            else
             {
                 body =
          "<!DOCTYPE html>\r\n" +
@@ -378,7 +406,7 @@ namespace QuanlyBug.Controllers
             var user = db.USERS.AsEnumerable().SingleOrDefault(n => n.Email == email);
             var project = db.PROJECTS.AsEnumerable().SingleOrDefault(n => n.Name == nameProject);
             var projectmbs = db.PROJECTMBS.ToList();
-            var verifyUrl = "#";    
+            var verifyUrl = "#";
             if (pmb != null && user != null && project != null)
             {
                 bool exists = projectmbs.Any(e => e.ProjectID == project.ProjectID && e.UserID == user.UserID);

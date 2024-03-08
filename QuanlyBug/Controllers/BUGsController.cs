@@ -136,7 +136,7 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateFunction(FUNCTION fuc, PROJECTMB pm, FormCollection f, int? id)
+        public ActionResult CreateFunction(FUNCTIONS fuc, PROJECTMBS pm, FormCollection f, int? id)
         {
             USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
@@ -148,7 +148,7 @@ namespace QuanlyBug.Controllers
                 var checkDecription = db.PROJECTS.SingleOrDefault(a => a.Decription == decription);
                 if (checkName == null && checkDecription == null)
                 {
-                    var ProMBs = db.PROJECTMBS.SingleOrDefault(n => n.ProjectID == id);
+                    var ProMBs = db.PROJECTMBS.SingleOrDefault(n => n.ProjectID == id && kh.UserID == n.UserID);
                     fuc.Title = name;
                     fuc.ProjectID = id;
                     fuc.Description = decription;
@@ -168,7 +168,7 @@ namespace QuanlyBug.Controllers
 
 
         [HttpPost]
-        public ActionResult CreateBug(BUG bug, PROJECTMB pm, FILE file, FormCollection f, HttpPostedFileBase[] files, int? id, int? idFuction)
+        public ActionResult CreateBug(BUGS bug, PROJECTMBS pm, FILES file, FormCollection f, HttpPostedFileBase[] files, int? id, int? idFuction)
         {
             USERS kh = (USERS)Session["TaiKhoan"];
 
@@ -187,7 +187,7 @@ namespace QuanlyBug.Controllers
                 var checkName = db.BUGS.SingleOrDefault(a => a.Title == title);
                 if (checkName == null)
                 {
-                    var ProMBs = db.PROJECTMBS.SingleOrDefault(n => n.ProjectID == id);
+                    var ProMBs = db.PROJECTMBS.SingleOrDefault(n => n.ProjectID == id && n.UserID == kh.UserID);
                     bug.Title = title;
                     bug.Description = description;
                     bug.Priority = priority;
@@ -248,7 +248,7 @@ namespace QuanlyBug.Controllers
             return RedirectToAction("Index", "BUGs", new { id = id });
         }
 
-        public ActionResult ChangeStatusBug(PROJECTMB pm, int? idBug, int? idPro, string email = "", string status = "")
+        public ActionResult ChangeStatusBug(PROJECTMBS pm, int? idBug, int? idPro, string email = "", string status = "")
         {
             var bug = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
             var user = db.USERS.SingleOrDefault(u => u.Email == email);
@@ -281,13 +281,13 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditBug(FILE file,HISTORY his, FormCollection f, HttpPostedFileBase[] files, int? idPro, int? idBug, int? idFuc)
+        public ActionResult EditBug(FILES file,HISTORYS his, FormCollection f, HttpPostedFileBase[] files, int? idPro, int? idBug, int? idFuc)
         {
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             var BUG = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
             var FILE = db.FILES.Where(fi => fi.BugID == idBug);
             var project = db.PROJECTS.SingleOrDefault(p => p.ProjectID == idPro);
-            var projectmbs = db.PROJECTMBS.SingleOrDefault(pm => pm.ProjectID == idPro && pm.FunctionID == idFuc && pm.BugID == idBug);
+            var projectmbs = db.PROJECTMBS.SingleOrDefault(pm => pm.ProjectID == idPro);
             var fuction = db.FUNCTIONS.SingleOrDefault(fi => fi.FunctionID == idFuc);
             string title = f["title"];
             string input = f["input"];
@@ -388,7 +388,7 @@ namespace QuanlyBug.Controllers
                 }
 
                 string desString = string.Join(", ", des);
-                his.ProjectMembersID = projectmbs.ProjectMembersID;
+                his.ProjectID = projectmbs.ProjectID;
                 his.ID_User = kh.UserID;
                 his.Activity = "Update";
                 his.Time = DateTime.Now.ToString("dd/MM/yyyy H:mm:ss tt");
@@ -418,17 +418,17 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteBug(int? idPro, int? idBug, int? idFuc, FormCollection f, HISTORY his)
+        public ActionResult DeleteBug(int? idPro, int? idBug, int? idFuc, FormCollection f, HISTORYS his)
         {
-            USER kh = (USER)Session["TaiKhoan"];
+            USERS kh = (USERS)Session["TaiKhoan"];
             var project = db.PROJECTS.SingleOrDefault(p => p.ProjectID == idPro);
             var fuction = db.FUNCTIONS.SingleOrDefault(fi => fi.FunctionID == idFuc);
-            var projectmbs = db.PROJECTMBS.SingleOrDefault(pm => pm.ProjectID == idPro && pm.FunctionID == idFuc && pm.BugID == idBug);
+            var projectmbs = db.PROJECTMBS.SingleOrDefault(pm => pm.ProjectID == idPro );
             var file = db.FILES.Where(fi => fi.BugID == idBug);
             var bug = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
             if (file != null && projectmbs != null && bug != null && kh != null)
             {
-                his.ProjectMembersID = projectmbs.ProjectMembersID;
+                his.ProjectID = projectmbs.ProjectID;
                 his.ID_User = kh.UserID;
                 his.Activity = "Delete";
                 his.Time = DateTime.Now.ToString("dd/MM/yyyy H:mm:ss tt");

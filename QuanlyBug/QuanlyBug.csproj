@@ -146,10 +146,8 @@
     <Compile Include="Models\FUNCTIONS.cs">
       <DependentUpon>qlb.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\HISTORY.cs">
-      <DependentUpon>qlb.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PROJECT.cs">
+    <Compile Include="Models\HistoryList.cs" />
+    <Compile Include="Models\HISTORYS.cs">
       <DependentUpon>qlb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ProjectList.cs" />

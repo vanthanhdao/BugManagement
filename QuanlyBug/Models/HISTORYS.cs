@@ -15,7 +15,7 @@ namespace QuanlyBug.Models
     public partial class HISTORYS
     {
         public int ID_History { get; set; }
-        public Nullable<int> ProjectMembersID { get; set; }
+        public Nullable<int> ProjectID { get; set; }
         public string Name_Project { get; set; }
         public string Description_History { get; set; }
         public string Time { get; set; }
