@@ -231,7 +231,15 @@
                             </div>
 
                         </div>
-                    }}
+                    }
+                }
+                <div class="card">
+                    <div class="card-body">
+
+                        <div id="toastmess"></div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -315,7 +323,7 @@
         }, false);
 
         formAddMember.addEventListener('submit', event => {
-
+            
             event.preventDefault();
             event.stopPropagation();
             var inputNameOrEmail = document.getElementById("nameOrEmail");
@@ -324,10 +332,9 @@
                 url: '/Home/GetDataProjectList',
                 type: 'GET',
                 success: function (data) {
-                    console.log(data)
                     const checkNameOrEmail = inputNameOrEmail.value!="" ? data.some(element => element.Email === inputNameOrEmail.value) : null;
                     const checkProjectMember = inputNameOrEmail.value != "" ? data.some(element => element.Email === inputNameOrEmail.value && element.Name === inputNameProject.value) : null;
-                    console.log(data, checkNameOrEmail, checkProjectMember)
+                    console.log( checkNameOrEmail, checkProjectMember)
                    /* inputNameOrEmail.setCustomValidity('');*/
                     if (checkNameOrEmail) {
                         inputNameOrEmail.setCustomValidity('');
@@ -367,6 +374,11 @@
                             type: "success",
                             duration: 5000
                         });
+                    
+                      setTimeout(function() {
+                        // Load lại trang sau khi đã chờ 5 giây
+                        location.reload();
+                    }, 3000);
                     } else {
                         if (checkNameOrEmail == false) {
                             toast({
@@ -400,19 +412,13 @@
             formAddMember.classList.add('was-validated');
         }, false);
 
-        formCreateBug.addEventListener('submit', event => {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-
-            formCreateBug.classList.add('was-validated');
-        }, false);
+        
 
     })();
 
 
     function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+            console.log(title)
         const main = document.getElementById("toastmess");
         if (main) {
             const toast = document.createElement("div");

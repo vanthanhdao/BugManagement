@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="QuanlyBugModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="QuanlyBugModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BUGS">
           <Key>
             <PropertyRef Name="BugID" />
@@ -23,7 +23,7 @@
           <Property Name="Expected" Type="nvarchar" MaxLength="500" />
           <Property Name="Actual" Type="nvarchar" MaxLength="500" />
           <Property Name="Env" Type="nvarchar" MaxLength="500" />
-          <Property Name="ProjectMembersID" Type="int" />
+          <Property Name="ProjectID" Type="int" />
         </EntityType>
         <EntityType Name="FILES">
           <Key>
@@ -133,8 +133,7 @@
             <End Role="PROJECTMBS" EntitySet="PROJECTMBS" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="QuanlyBugModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -156,7 +155,7 @@
           <Property Name="Expected" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Actual" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Env" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Name="ProjectMembersID" Type="Int32" />
+          <Property Name="ProjectID" Type="Int32" />
         </EntityType>
         <EntityType Name="FILES">
           <Key>
@@ -279,6 +278,7 @@
           <EntitySetMapping Name="BUGS">
             <EntityTypeMapping TypeName="QuanlyBugModel.BUGS">
               <MappingFragment StoreEntitySet="BUGS">
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="BugID" ColumnName="BugID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -293,7 +293,6 @@
                 <ScalarProperty Name="Expected" ColumnName="Expected" />
                 <ScalarProperty Name="Actual" ColumnName="Actual" />
                 <ScalarProperty Name="Env" ColumnName="Env" />
-                <ScalarProperty Name="ProjectMembersID" ColumnName="ProjectMembersID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

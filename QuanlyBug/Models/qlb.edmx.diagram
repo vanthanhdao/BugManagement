@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="27cede3fd71840428b14126741a72855" Name="Diagram1">
-        <EntityTypeShape EntityType="QuanlyBugModel.BUGS" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QuanlyBugModel.BUGS" Width="1.5" PointX="2.875" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="QuanlyBugModel.FILES" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="QuanlyBugModel.FUNCTIONS" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="QuanlyBugModel.HISTORYS" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />

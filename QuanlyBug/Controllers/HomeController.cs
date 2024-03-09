@@ -55,7 +55,7 @@ namespace QuanlyBug.Controllers
 
                 var data = from pm in db.PROJECTMBS
                            join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                           join b in db.BUGS on pm.ProjectMembersID equals b.ProjectMembersID into bs
+                           join b in db.BUGS on pm.ProjectID equals b.ProjectID into bs
                            join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID into fs
                            join u in db.USERS on pm.UserID equals u.UserID
                            where pm.UserID == kh.UserID
@@ -94,7 +94,7 @@ namespace QuanlyBug.Controllers
                                        nameUser = u.Email,
                                        ID_User = h.ID_User
                                    }).ToList();
-
+                // xử lí người nào trong chức năng nào chỉ coi được history đó
                 ViewData["dataHistory"] = dataHistory;
                 //var coutFunctionshas = (from pm in db.PROJECTMBS
                 //                        join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID
@@ -170,7 +170,7 @@ namespace QuanlyBug.Controllers
             string email = Request.QueryString["email"];
             if (!email.IsEmpty())
             {
-                USERS user = db.USERS.SingleOrDefault(n => n.Email == email);
+                USERS user = db.USERS.FirstOrDefault(n => n.Email == email);
                 Session["Taikhoan"] = user;
             }
             USERS kh = (USERS)Session["TaiKhoan"];
@@ -403,8 +403,8 @@ namespace QuanlyBug.Controllers
         public void AuthorizationAddMember(string email, string nameProject)
         {
             PROJECTMBS pmb = new PROJECTMBS();
-            var user = db.USERS.AsEnumerable().SingleOrDefault(n => n.Email == email);
-            var project = db.PROJECTS.AsEnumerable().SingleOrDefault(n => n.Name == nameProject);
+            var user = db.USERS.FirstOrDefault(n => n.Email == email);
+            var project = db.PROJECTS.FirstOrDefault(n => n.Name == nameProject);
             var projectmbs = db.PROJECTMBS.ToList();
             var verifyUrl = "#";
             if (pmb != null && user != null && project != null)
@@ -454,8 +454,9 @@ namespace QuanlyBug.Controllers
             {
                 var data = from pm in db.PROJECTMBS
                            join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                           join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID into fs
                            join u in db.USERS on pm.UserID equals u.UserID
-                           where pm.UserID == kh.UserID && pm.ProjectMembersID == null && pm.ProjectMembersID == null
+                           where pm.UserID == kh.UserID
                            select new ProjectList
                            {
                                ProjectID = p.ProjectID,

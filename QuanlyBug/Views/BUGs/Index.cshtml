@@ -2,10 +2,11 @@
 @model IEnumerable<QuanlyBug.Models.FILES>
 
 @{
+    USERS kh = (USERS)Session["TaiKhoan"];
     var project = ViewData["Project"] as QuanlyBug.Models.PROJECTS;
     var users = ViewData["User"] as IEnumerable<QuanlyBug.Models.UserModel>;
-    var dataFuctions = ViewData["DataFuctions"] as IEnumerable<QuanlyBug.Models.ProjectList>;
-    var dataBugs = ViewData["DataBugs"] as IEnumerable<QuanlyBug.Models.ProjectList>;
+    var dataFuctions = kh != null && (kh.Status == "admin" || kh.Status == "Product Manager") ? ViewData["DataFuctionsVIP"] as IEnumerable<QuanlyBug.Models.ProjectList> : ViewData["DataFuctions"] as IEnumerable<QuanlyBug.Models.ProjectList>;
+    var dataBugs = kh != null && (kh.Status == "admin" || kh.Status == "Product Manager")?ViewData["DataBugsVIP"] as IEnumerable<QuanlyBug.Models.ProjectList> : ViewData["DataBugs"] as IEnumerable<QuanlyBug.Models.ProjectList> ;
     var firstFuction = dataFuctions.FirstOrDefault();
     int? idFuction = firstFuction?.FunctionID;
     if (Session["idFuction"] != null)
@@ -17,9 +18,7 @@
 }
 
 @using QuanlyBug.Models
-@{
-    USERS kh = (USERS)Session["TaiKhoan"];
-}
+
 
 @{
     ViewBag.Title = "Index";

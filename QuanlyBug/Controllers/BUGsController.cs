@@ -25,7 +25,7 @@ namespace QuanlyBug.Controllers
             var users = from pm in db.PROJECTMBS
                         join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                         join u in db.USERS on pm.UserID equals u.UserID
-                        where pm.ProjectID == id 
+                        where pm.ProjectID == id
                         select new UserModel
                         {
                             UserID = (int)pm.UserID,
@@ -80,8 +80,53 @@ namespace QuanlyBug.Controllers
                         Actual = b.Actual,
                         Env = b.Env,
                     };
+                var dataFuctionsVIP =
+                    from pm in db.PROJECTMBS
+                    join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                    join u in db.USERS on pm.UserID equals u.UserID
+                    join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
+                    where ( pm.ProjectID == id)
+                    select new ProjectList
+                    {
+                        FunctionID = f.FunctionID,
+                        Title = f.Title,
+                        EmailCreater = f.EmailCreater,
+                        DateCreated = f.DateCreated,
+                        DescriptionFunc = f.Description,
+                        EmailUser = f.EmailUser,
+                        Status = f.Status,
+                        ProjectID = (int)pm.ProjectID,
+                        UserID = (int)pm.UserID
+                    };
+                var dataBugsVIP =
+                    from pm in db.PROJECTMBS
+                    join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                    join u in db.USERS on pm.UserID equals u.UserID
+                    join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
+                    join b in db.BUGS on f.FunctionID equals b.FunctionID
+                    where ( pm.ProjectID == id)
+
+                    select new ProjectList
+                    {
+                        BugID = b.BugID,
+                        FunctionID = (int)b.FunctionID,
+                        TitleBug = b.Title,
+                        Description = b.Description,
+                        Priority = b.Priority,
+                        StatusBug = b.Status,
+                        CreatedAt = b.CreatedAt,
+                        Severity = b.severity,
+                        Url = b.url,
+                        Input = b.input,
+                        Reproduce = b.Reproduce,
+                        Expected = b.Expected,
+                        Actual = b.Actual,
+                        Env = b.Env,
+                    };
                 ViewData["DataFuctions"] = dataFuctions.ToList();
                 ViewData["DataBugs"] = dataBugs.ToList();
+                ViewData["DataFuctionsVIP"] = dataFuctionsVIP.ToList();
+                ViewData["DataBugsVIP"] = dataBugsVIP.ToList();
 
             }
             //HttpContext.Cache["IDProject"] = id;
@@ -146,9 +191,10 @@ namespace QuanlyBug.Controllers
                 string email = f["EmailFunction"];
                 var checkName = db.PROJECTS.SingleOrDefault(a => a.Name == name);
                 var checkDecription = db.PROJECTS.SingleOrDefault(a => a.Decription == decription);
+                var idUserBeGive = db.USERS.SingleOrDefault(a => a.Email == email);
                 if (checkName == null && checkDecription == null)
                 {
-                    var ProMBs = db.PROJECTMBS.SingleOrDefault(n => n.ProjectID == id && kh.UserID == n.UserID);
+                    var ProMBs = db.PROJECTMBS.SingleOrDefault(n => n.ProjectID == id && idUserBeGive.UserID == n.UserID);
                     fuc.Title = name;
                     fuc.ProjectID = id;
                     fuc.Description = decription;
@@ -187,7 +233,6 @@ namespace QuanlyBug.Controllers
                 var checkName = db.BUGS.SingleOrDefault(a => a.Title == title);
                 if (checkName == null)
                 {
-                    var ProMBs = db.PROJECTMBS.SingleOrDefault(n => n.ProjectID == id && n.UserID == kh.UserID);
                     bug.Title = title;
                     bug.Description = description;
                     bug.Priority = priority;
@@ -201,7 +246,7 @@ namespace QuanlyBug.Controllers
                     bug.Expected = expected;
                     bug.Actual = actual;
                     bug.Env = enviroment;
-                    bug.ProjectMembersID = ProMBs.ProjectMembersID;
+                    bug.ProjectID = id;
                     db.BUGS.Add(bug);
                     db.SaveChanges();
 
