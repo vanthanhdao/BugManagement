@@ -24,6 +24,9 @@
           <Property Name="Actual" Type="nvarchar" MaxLength="500" />
           <Property Name="Env" Type="nvarchar" MaxLength="500" />
           <Property Name="ProjectID" Type="int" />
+          <Property Name="User_chose" Type="int" />
+          <Property Name="Deadline" Type="nvarchar" MaxLength="100" />
+          <Property Name="ProjectMembers" Type="int" />
         </EntityType>
         <EntityType Name="FILES">
           <Key>
@@ -156,6 +159,9 @@
           <Property Name="Actual" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="Env" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="ProjectID" Type="Int32" />
+          <Property Name="User_chose" Type="Int32" />
+          <Property Name="Deadline" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectMembers" Type="Int32" />
         </EntityType>
         <EntityType Name="FILES">
           <Key>
@@ -278,6 +284,9 @@
           <EntitySetMapping Name="BUGS">
             <EntityTypeMapping TypeName="QuanlyBugModel.BUGS">
               <MappingFragment StoreEntitySet="BUGS">
+                <ScalarProperty Name="ProjectMembers" ColumnName="ProjectMembers" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="User_chose" ColumnName="User_chose" />
                 <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
                 <ScalarProperty Name="BugID" ColumnName="BugID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />

@@ -43,6 +43,8 @@ namespace QuanlyBug.Models
         public int countBugs { get; set; }
         public int countFunctionsNew { get; set; }
         public int countBugsNew { get; set; }
-
+        public int countProject { get; set; }
+        public string deadline { get; set; }
+        public string nameUserChose{ get; set; }
     }
 }

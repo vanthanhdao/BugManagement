@@ -53,47 +53,188 @@ namespace QuanlyBug.Controllers
             if (kh != null)
             {
 
-                var data = from pm in db.PROJECTMBS
-                           join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                           join b in db.BUGS on pm.ProjectID equals b.ProjectID into bs
-                           join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID into fs
-                           join u in db.USERS on pm.UserID equals u.UserID
-                           where pm.UserID == kh.UserID
-                           //Lỗi Bug k truy suất dk
-                           select new ProjectList
-                           {
-                               ProjectID = p.ProjectID,
-                               Name = p.Name,
-                               Decription = p.Decription,
-                               EmailPeoCreate = p.EmailPeoCreate,
-                               DateCreate = p.DateCreate,
-                               PeopleCreate = p.PeopleCreate,
-                               UserID = u.UserID,
-                               Username = u.Username,
-                               Email = u.Email,
-                               Password = u.Password,
-                               Role = pm.Role,
-                               countFunctions = fs.Count(),
-                               countBugs = bs.Count(),
-                               countFunctionsNew = fs.Where(f => f.Status == "Todo").Count(),
-                               countBugsNew = bs.Where(b => b.Status == "New").Count(),
-                           };
-                var dataHistory = (from h in db.HISTORYS
-                                   join pm in db.PROJECTMBS on kh.UserID equals pm.UserID
-                                   join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                                   join u in db.USERS on h.ID_User equals u.UserID
-                                   where h.ProjectID == p.ProjectID
-                                   //Lỗi Bug k truy suất dk
-                                   select new HistoryList
-                                   {
-                                       ID_History = h.ID_History,
-                                       Name_Project = h.Name_Project,
-                                       Description_History = h.Description_History,
-                                       Time = h.Time,
-                                       Activity = h.Activity,
-                                       nameUser = u.Email,
-                                       ID_User = h.ID_User
-                                   }).ToList();
+                var data = kh.Status == "admin" ?
+                    (from p in db.PROJECTS
+
+                     join b in db.BUGS on p.ProjectID equals b.ProjectID into bs
+                     join f in db.FUNCTIONS on p.ProjectID equals f.ProjectID into fs
+                     //Lỗi Bug k truy suất dk
+                     select new ProjectList
+                     {
+                         ProjectID = p.ProjectID,
+                         Name = p.Name,
+                         Decription = p.Decription,
+                         EmailPeoCreate = p.EmailPeoCreate,
+                         DateCreate = p.DateCreate,
+                         PeopleCreate = p.PeopleCreate,
+                         countFunctions = fs.Count(),
+                         countBugs = bs.Count(),
+                         countFunctionsNew = fs.Where(f => f.Status == "Todo").Count(),
+                         countBugsNew = bs.Where(b => b.Status == "New").Count(),
+                     }) : kh.Status != "Dev" && kh.Status != "Tester" ?
+                      (from pm in db.PROJECTMBS
+                       join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                       join b in db.BUGS on pm.ProjectID equals b.ProjectID into bs
+                       join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID into fs
+                       join u in db.USERS on pm.UserID equals u.UserID
+                       where pm.UserID == kh.UserID
+                       //Lỗi Bug k truy suất dk
+                       select new ProjectList
+                       {
+                           ProjectID = p.ProjectID,
+                           Name = p.Name,
+                           Decription = p.Decription,
+                           EmailPeoCreate = p.EmailPeoCreate,
+                           DateCreate = p.DateCreate,
+                           PeopleCreate = p.PeopleCreate,
+                           UserID = u.UserID,
+                           Username = u.Username,
+                           Email = u.Email,
+                           Password = u.Password,
+                           Role = pm.Role,
+                           countFunctions = fs.Count(),
+                           countBugs = bs.Count(),
+                           countFunctionsNew = fs.Where(f => f.Status == "Todo").Count(),
+                           countBugsNew = bs.Where(b => b.Status == "New").Count(),
+                       }) :
+                        kh.Status != "Dev" ?
+                      (from pm in db.PROJECTMBS
+                       join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                       join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID into fs
+                       from f in fs
+                       join b in db.BUGS on f.FunctionID equals b.FunctionID into bs
+                       join u in db.USERS on pm.UserID equals u.UserID
+                       where pm.UserID == kh.UserID
+                       //Lỗi Bug k truy suất dk
+                       select new ProjectList
+                       {
+                           ProjectID = p.ProjectID,
+                           Name = p.Name,
+                           Decription = p.Decription,
+                           EmailPeoCreate = p.EmailPeoCreate,
+                           DateCreate = p.DateCreate,
+                           PeopleCreate = p.PeopleCreate,
+                           UserID = u.UserID,
+                           Username = u.Username,
+                           Email = u.Email,
+                           Password = u.Password,
+                           Role = pm.Role,
+                           countFunctions = fs.Count(),
+                           countBugs = bs.Count(),
+                           countFunctionsNew = fs.Where(f => f.Status == "Todo").Count(),
+                           countBugsNew = bs.Where(b => b.Status == "New").Count(),
+                       }) :
+                       (from pm in db.PROJECTMBS
+                        join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                        join u in db.USERS on pm.UserID equals u.UserID
+                        where pm.UserID == kh.UserID
+                        //Lỗi Bug k truy suất dk
+                        select new ProjectList
+                        {
+                            ProjectID = p.ProjectID,
+                            Name = p.Name,
+                            Decription = p.Decription,
+                            EmailPeoCreate = p.EmailPeoCreate,
+                            DateCreate = p.DateCreate,
+                            PeopleCreate = p.PeopleCreate,
+                            UserID = u.UserID,
+                            Username = u.Username,
+                            Email = u.Email,
+                            Password = u.Password,
+                            Role = pm.Role,
+                            countFunctions = db.FUNCTIONS.Count(f => db.BUGS.Where(x => x.User_chose == kh.UserID).Any(b => b.FunctionID == f.FunctionID && b.ProjectID == p.ProjectID)),
+                            countBugs = db.BUGS.Count(b => b.ProjectMembers == pm.ProjectMembersID),
+                            countFunctionsNew = db.FUNCTIONS.Count(f => db.BUGS.Where(x => x.User_chose == kh.UserID).Any(b => b.FunctionID == f.FunctionID && b.ProjectID == p.ProjectID) && f.Status == "Todo"),
+                            countBugsNew = db.BUGS.Count(b => b.ProjectMembers == pm.ProjectMembersID && b.Status == "New"),
+                        });
+                var Deadline = kh.Status == "admin" ?
+                     (from b in db.BUGS
+                      join p in db.PROJECTS on b.ProjectID equals p.ProjectID
+                      join f in db.FUNCTIONS on b.FunctionID equals f.FunctionID
+                      //Lỗi Bug k truy suất dk
+                      select new ProjectList
+                      {
+                          ProjectID = p.ProjectID,
+                          Name = p.Name,
+                          Title = f.Title,
+                          TitleBug = b.Title,
+                          deadline = b.Deadline,
+
+                      }) : kh.Status != "Dev" && kh.Status != "Tester" ?
+                         (from b in db.BUGS
+                          join p in db.PROJECTS on b.ProjectID equals p.ProjectID
+                          join f in db.FUNCTIONS on b.FunctionID equals f.FunctionID
+                          join pm in db.PROJECTMBS on p.ProjectID equals pm.ProjectID
+                          where pm.UserID == kh.UserID
+                          select new ProjectList
+                          {
+                              ProjectID = p.ProjectID,
+                              Name = p.Name,
+                              Title = f.Title,
+                              TitleBug = b.Title,
+                              deadline = b.Deadline,
+
+                          }) :
+                          kh.Status == "Tester" ?
+                           (from f in db.FUNCTIONS
+                            join b in db.BUGS on f.FunctionID equals b.FunctionID
+                            join p in db.PROJECTS on f.ProjectID equals p.ProjectID
+                            where f.EmailUser == kh.Email
+                            select new ProjectList
+                            {
+                                ProjectID = p.ProjectID,
+                                Name = p.Name,
+                                Title = f.Title,
+                                TitleBug = b.Title,
+                                deadline = b.Deadline,
+
+                            }) :
+                             (from b in db.BUGS
+                              join p in db.PROJECTS on b.ProjectID equals p.ProjectID
+                              join f in db.FUNCTIONS on b.FunctionID equals f.FunctionID
+                              where b.User_chose == kh.UserID
+                              select new ProjectList
+                              {
+                                  ProjectID = p.ProjectID,
+                                  Name = p.Name,
+                                  Title = f.Title,
+                                  TitleBug = b.Title,
+                                  deadline = b.Deadline,
+
+                              });
+
+                ;
+                var dataHistory = kh.Status == "admin" ?
+                     (from h in db.HISTORYS
+                      join u in db.USERS on h.ID_User equals u.UserID
+                      //Lỗi Bug k truy suất dk
+                      select new HistoryList
+                      {
+                          ID_History = h.ID_History,
+                          Name_Project = h.Name_Project,
+                          Description_History = h.Description_History,
+                          Time = h.Time,
+                          Activity = h.Activity,
+                          nameUser = u.Email,
+                          ID_User = h.ID_User
+                      }).ToList()
+                      : (from h in db.HISTORYS
+                         join pm in db.PROJECTMBS on kh.UserID equals pm.UserID
+                         join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                         join u in db.USERS on h.ID_User equals u.UserID
+                         where h.ProjectID == p.ProjectID
+                         //Lỗi Bug k truy suất dk
+                         select new HistoryList
+                         {
+                             ID_History = h.ID_History,
+                             Name_Project = h.Name_Project,
+                             Description_History = h.Description_History,
+                             Time = h.Time,
+                             Activity = h.Activity,
+                             nameUser = u.Email,
+                             ID_User = h.ID_User
+                         }).ToList();
+
                 // xử lí người nào trong chức năng nào chỉ coi được history đó
                 ViewData["dataHistory"] = dataHistory;
                 //var coutFunctionshas = (from pm in db.PROJECTMBS
@@ -114,7 +255,7 @@ namespace QuanlyBug.Controllers
                 //           };,,,,,,,,,,,,,,,,,,,,,,,
                 //ViewData["countFunctionhas"] = coutFunctionshas;
                 ViewData["ProjectList"] = data.ToList();
-                return View(data.ToList());
+                return View(Deadline.ToList());
             }
             return View();
         }
@@ -134,21 +275,31 @@ namespace QuanlyBug.Controllers
 
         public JsonResult GetDataProjectList()
         {
-            var data = from pm in db.PROJECTMBS
-                       join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                       join u in db.USERS on pm.UserID equals u.UserID
-                       select new ProjectMemberModel
-                       {
-                           UserID = pm.UserID,
-                           Username = u.Username,
-                           Email = u.Email,
-                           Name = p.Name,
-                           Status = u.Status,
-                           ProjectID = pm.ProjectID,
-                           Role = pm.Role,
-                       };
+            USERS kh = (USERS)Session["TaiKhoan"];
+            var data = kh != null && kh.Status == "admin" ?
+                from p in db.PROJECTS
+                select new ProjectMemberModel
+                {
+                    Name = p.Name,
+                    ProjectID = p.ProjectID,
+                }
+                :
+                (from pm in db.PROJECTMBS
+                 join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                 join u in db.USERS on pm.UserID equals u.UserID
+                 select new ProjectMemberModel
+                 {
+                     UserID = pm.UserID,
+                     Username = u.Username,
+                     Email = u.Email,
+                     Name = p.Name,
+                     Status = u.Status,
+                     ProjectID = pm.ProjectID,
+                     Role = pm.Role,
+                 });
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+
 
         public JsonResult GetDataProject()
         {
@@ -176,24 +327,87 @@ namespace QuanlyBug.Controllers
             USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
             {
-                var data = from pm in db.PROJECTMBS
-                           join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                           join u in db.USERS on pm.UserID equals u.UserID
-                           where pm.UserID == kh.UserID
-                           select new ProjectList
-                           {
-                               ProjectID = p.ProjectID,
-                               Name = p.Name,
-                               Decription = p.Decription,
-                               EmailPeoCreate = p.EmailPeoCreate,
-                               DateCreate = p.DateCreate,
-                               PeopleCreate = p.PeopleCreate,
-                               UserID = u.UserID,
-                               Username = u.Username,
-                               Email = u.Email,
-                               Password = u.Password,
-                               Role = pm.Role,
-                           };
+                var data = kh.Status == "admin" ?
+                   (from p in db.PROJECTS
+
+                    join b in db.BUGS on p.ProjectID equals b.ProjectID into bs
+                    join f in db.FUNCTIONS on p.ProjectID equals f.ProjectID into fs
+                    //Lỗi Bug k truy suất dk
+                    select new ProjectList
+                    {
+                        ProjectID = p.ProjectID,
+                        Name = p.Name,
+                        Decription = p.Decription,
+                        EmailPeoCreate = p.EmailPeoCreate,
+                        DateCreate = p.DateCreate,
+                        PeopleCreate = p.PeopleCreate,
+                       
+                    }) : kh.Status != "Dev" && kh.Status != "Tester" ?
+                     (from pm in db.PROJECTMBS
+                      join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                      join b in db.BUGS on pm.ProjectID equals b.ProjectID into bs
+                      join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID into fs
+                      join u in db.USERS on pm.UserID equals u.UserID
+                      where pm.UserID == kh.UserID
+                      //Lỗi Bug k truy suất dk
+                      select new ProjectList
+                      {
+                          ProjectID = p.ProjectID,
+                          Name = p.Name,
+                          Decription = p.Decription,
+                          EmailPeoCreate = p.EmailPeoCreate,
+                          DateCreate = p.DateCreate,
+                          PeopleCreate = p.PeopleCreate,
+                          UserID = u.UserID,
+                          Username = u.Username,
+                          Email = u.Email,
+                          Password = u.Password,
+                          Role = pm.Role,
+                          
+                      }) :
+                       kh.Status != "Dev" ?
+                     (from pm in db.PROJECTMBS
+                      join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                      join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID into fs
+                      from f in fs
+                      join b in db.BUGS on f.FunctionID equals b.FunctionID into bs
+                      join u in db.USERS on pm.UserID equals u.UserID
+                      where pm.UserID == kh.UserID
+                      //Lỗi Bug k truy suất dk
+                      select new ProjectList
+                      {
+                          ProjectID = p.ProjectID,
+                          Name = p.Name,
+                          Decription = p.Decription,
+                          EmailPeoCreate = p.EmailPeoCreate,
+                          DateCreate = p.DateCreate,
+                          PeopleCreate = p.PeopleCreate,
+                          UserID = u.UserID,
+                          Username = u.Username,
+                          Email = u.Email,
+                          Password = u.Password,
+                          Role = pm.Role,
+                          
+                      }) :
+                      (from pm in db.PROJECTMBS
+                       join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                       join u in db.USERS on pm.UserID equals u.UserID
+                       where pm.UserID == kh.UserID
+                       //Lỗi Bug k truy suất dk
+                       select new ProjectList
+                       {
+                           ProjectID = p.ProjectID,
+                           Name = p.Name,
+                           Decription = p.Decription,
+                           EmailPeoCreate = p.EmailPeoCreate,
+                           DateCreate = p.DateCreate,
+                           PeopleCreate = p.PeopleCreate,
+                           UserID = u.UserID,
+                           Username = u.Username,
+                           Email = u.Email,
+                           Password = u.Password,
+                           Role = pm.Role,
+                       });
                 return View(data.ToList());
             }
             return View();
@@ -446,34 +660,47 @@ namespace QuanlyBug.Controllers
 
         }
 
-        [HttpGet]
         public ActionResult Team()
         {
             USERS kh = (USERS)Session["TaiKhoan"];
             if (kh != null)
             {
-                var data = from pm in db.PROJECTMBS
-                           join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                           join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID into fs
-                           join u in db.USERS on pm.UserID equals u.UserID
-                           where pm.UserID == kh.UserID
-                           select new ProjectList
-                           {
-                               ProjectID = p.ProjectID,
-                               Name = p.Name,
-                               Decription = p.Decription,
-                               EmailPeoCreate = p.EmailPeoCreate,
-                               DateCreate = p.DateCreate,
-                               PeopleCreate = p.PeopleCreate,
-                               UserID = u.UserID,
-                               Username = u.Username,
-                               Email = u.Email,
-                               Password = u.Password,
-                               Role = pm.Role,
-                           };
+                var data = kh.Status == "admin" ?
+                    (from p in db.PROJECTS
+                     join f in db.FUNCTIONS on p.ProjectID equals f.ProjectID into fs
+                     select new ProjectList
+                     {
+                         ProjectID = p.ProjectID,
+                         Name = p.Name,
+                         Decription = p.Decription,
+                         EmailPeoCreate = p.EmailPeoCreate,
+                         DateCreate = p.DateCreate,
+                         PeopleCreate = p.PeopleCreate,
+
+                     }) :
+                (from pm in db.PROJECTMBS
+                 join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                 join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID into fs
+                 join u in db.USERS on pm.UserID equals u.UserID
+                 where pm.UserID == kh.UserID
+                 select new ProjectList
+                 {
+                     ProjectID = p.ProjectID,
+                     Name = p.Name,
+                     Decription = p.Decription,
+                     EmailPeoCreate = p.EmailPeoCreate,
+                     DateCreate = p.DateCreate,
+                     PeopleCreate = p.PeopleCreate,
+                     UserID = u.UserID,
+                     Username = u.Username,
+                     Email = u.Email,
+                     Password = u.Password,
+                     Role = pm.Role,
+                 });
                 return PartialView(data.ToList());
             }
             return RedirectToAction("Index", "About");
         }
+
     }
 }

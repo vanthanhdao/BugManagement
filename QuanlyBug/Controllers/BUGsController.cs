@@ -37,26 +37,90 @@ namespace QuanlyBug.Controllers
             {
                 ViewData["Project"] = project;
                 ViewData["User"] = users.ToList();
-                var dataFuctions =
-                    from pm in db.PROJECTMBS
-                    join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                    join u in db.USERS on pm.UserID equals u.UserID
-                    join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
-                    where (pm.UserID == kh.UserID && pm.ProjectID == id) 
-                    select new ProjectList
-                    {
-                        FunctionID = f.FunctionID,
-                        Title = f.Title,
-                        EmailCreater = f.EmailCreater,
-                        DateCreated = f.DateCreated,
-                        DescriptionFunc = f.Description,
-                        EmailUser = f.EmailUser,
-                        Status = f.Status,
-                        ProjectID = (int)pm.ProjectID,
-                        UserID = (int)pm.UserID
-                    };
-                var dataBugs =
-                    from pm in db.PROJECTMBS
+                var dataFuctions = kh.Status == "admin" || kh.Status == "Product Manager" ?
+                    (from pm in db.PROJECTMBS
+                     join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                     join u in db.USERS on pm.UserID equals u.UserID
+                     join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
+                     where (pm.ProjectID == id)
+                     select new ProjectList
+                     {
+                         FunctionID = f.FunctionID,
+                         Title = f.Title,
+                         EmailCreater = f.EmailCreater,
+                         DateCreated = f.DateCreated,
+                         DescriptionFunc = f.Description,
+                         EmailUser = f.EmailUser,
+                         Status = f.Status,
+                         ProjectID = (int)pm.ProjectID,
+                         UserID = (int)pm.UserID
+                     }) :
+                     kh.Status != "Dev" ?
+                    (from pm in db.PROJECTMBS
+                     join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                     join u in db.USERS on pm.UserID equals u.UserID
+                     join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
+                     where ((kh.UserID == pm.UserID && pm.ProjectID == id))
+                     select new ProjectList
+                     {
+                         FunctionID = f.FunctionID,
+                         Title = f.Title,
+                         EmailCreater = f.EmailCreater,
+                         DateCreated = f.DateCreated,
+                         DescriptionFunc = f.Description,
+                         EmailUser = f.EmailUser,
+                         Status = f.Status,
+                         ProjectID = (int)pm.ProjectID,
+                         UserID = (int)pm.UserID
+                     }) :
+                    (from pm in db.PROJECTMBS
+                     join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                     join u in db.USERS on pm.UserID equals u.UserID
+                     join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
+                     join b in db.BUGS on f.FunctionID equals b.FunctionID
+                     where ((b.ProjectID == id && b.User_chose == kh.UserID))
+                     select new ProjectList
+                     {
+                         FunctionID = f.FunctionID,
+                         Title = f.Title,
+                         EmailCreater = f.EmailCreater,
+                         DateCreated = f.DateCreated,
+                         DescriptionFunc = f.Description,
+                         EmailUser = f.EmailUser,
+                         Status = f.Status,
+                         ProjectID = (int)pm.ProjectID,
+                         UserID = (int)pm.UserID
+                     });
+
+                var dataBugs = kh.Status == "admin" || kh.Status == "Product Manager" ?
+                    (from pm in db.PROJECTMBS
+                     join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                     join u in db.USERS on pm.UserID equals u.UserID
+                     join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
+                     join b in db.BUGS on f.FunctionID equals b.FunctionID
+                     where (pm.ProjectID == id)
+
+                     select new ProjectList
+                     {
+                         BugID = b.BugID,
+                         FunctionID = (int)b.FunctionID,
+                         TitleBug = b.Title,
+                         Description = b.Description,
+                         Priority = b.Priority,
+                         StatusBug = b.Status,
+                         CreatedAt = b.CreatedAt,
+                         Severity = b.severity,
+                         Url = b.url,
+                         Input = b.input,
+                         Reproduce = b.Reproduce,
+                         Expected = b.Expected,
+                         Actual = b.Actual,
+                         Env = b.Env,
+                         deadline = b.Deadline,
+                         nameUserChose = db.USERS.FirstOrDefault(x => x.UserID == b.User_chose).Email
+                     }):
+                     kh.Status !="Dev"?
+                    (from pm in db.PROJECTMBS
                     join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
                     join u in db.USERS on pm.UserID equals u.UserID
                     join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
@@ -79,54 +143,41 @@ namespace QuanlyBug.Controllers
                         Expected = b.Expected,
                         Actual = b.Actual,
                         Env = b.Env,
-                    };
-                var dataFuctionsVIP =
-                    from pm in db.PROJECTMBS
-                    join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                    join u in db.USERS on pm.UserID equals u.UserID
-                    join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
-                    where ( pm.ProjectID == id)
-                    select new ProjectList
-                    {
-                        FunctionID = f.FunctionID,
-                        Title = f.Title,
-                        EmailCreater = f.EmailCreater,
-                        DateCreated = f.DateCreated,
-                        DescriptionFunc = f.Description,
-                        EmailUser = f.EmailUser,
-                        Status = f.Status,
-                        ProjectID = (int)pm.ProjectID,
-                        UserID = (int)pm.UserID
-                    };
-                var dataBugsVIP =
-                    from pm in db.PROJECTMBS
-                    join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                    join u in db.USERS on pm.UserID equals u.UserID
-                    join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
-                    join b in db.BUGS on f.FunctionID equals b.FunctionID
-                    where ( pm.ProjectID == id)
+                        deadline = b.Deadline,
+                        nameUserChose = db.USERS.FirstOrDefault(x => x.UserID == b.User_chose).Email
+                    }) :
+                    (from pm in db.PROJECTMBS
+                     join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
+                     join u in db.USERS on pm.UserID equals u.UserID
+                     join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID
+                     join b in db.BUGS on f.FunctionID equals b.FunctionID
+                     where (b.ProjectID == id && b.User_chose == kh.UserID)
 
-                    select new ProjectList
-                    {
-                        BugID = b.BugID,
-                        FunctionID = (int)b.FunctionID,
-                        TitleBug = b.Title,
-                        Description = b.Description,
-                        Priority = b.Priority,
-                        StatusBug = b.Status,
-                        CreatedAt = b.CreatedAt,
-                        Severity = b.severity,
-                        Url = b.url,
-                        Input = b.input,
-                        Reproduce = b.Reproduce,
-                        Expected = b.Expected,
-                        Actual = b.Actual,
-                        Env = b.Env,
-                    };
+                     select new ProjectList
+                     {
+                         BugID = b.BugID,
+                         FunctionID = (int)b.FunctionID,
+                         TitleBug = b.Title,
+                         Description = b.Description,
+                         Priority = b.Priority,
+                         StatusBug = b.Status,
+                         CreatedAt = b.CreatedAt,
+                         Severity = b.severity,
+                         Url = b.url,
+                         Input = b.input,
+                         Reproduce = b.Reproduce,
+                         Expected = b.Expected,
+                         Actual = b.Actual,
+                         Env = b.Env,
+                         deadline = b.Deadline,
+                         nameUserChose = db.USERS.FirstOrDefault(x => x.UserID == b.User_chose).Email
+                     })
+                    ;
+                
+               
                 ViewData["DataFuctions"] = dataFuctions.ToList();
                 ViewData["DataBugs"] = dataBugs.ToList();
-                ViewData["DataFuctionsVIP"] = dataFuctionsVIP.ToList();
-                ViewData["DataBugsVIP"] = dataBugsVIP.ToList();
+                
 
             }
             //HttpContext.Cache["IDProject"] = id;
@@ -192,7 +243,7 @@ namespace QuanlyBug.Controllers
                 var checkName = db.PROJECTS.SingleOrDefault(a => a.Name == name);
                 var checkDecription = db.PROJECTS.SingleOrDefault(a => a.Decription == decription);
                 var idUserBeGive = db.USERS.SingleOrDefault(a => a.Email == email);
-                if (checkName == null && checkDecription == null)
+                if (checkName == null )
                 {
                     var ProMBs = db.PROJECTMBS.SingleOrDefault(n => n.ProjectID == id && idUserBeGive.UserID == n.UserID);
                     fuc.Title = name;
@@ -230,6 +281,7 @@ namespace QuanlyBug.Controllers
                 string priority = f["priority"];
                 string enviroment = f["enviroment"];
                 string description = f["description"];
+                string deadline = f["deadline"];
                 var checkName = db.BUGS.SingleOrDefault(a => a.Title == title);
                 if (checkName == null)
                 {
@@ -247,6 +299,7 @@ namespace QuanlyBug.Controllers
                     bug.Actual = actual;
                     bug.Env = enviroment;
                     bug.ProjectID = id;
+                    bug.Deadline = deadline;
                     db.BUGS.Add(bug);
                     db.SaveChanges();
 
@@ -297,42 +350,33 @@ namespace QuanlyBug.Controllers
         {
             var bug = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
             var user = db.USERS.SingleOrDefault(u => u.Email == email);
+            var idpromems = db.PROJECTMBS.SingleOrDefault(x => x.UserID == user.UserID && x.ProjectID == idPro);
             if (bug != null)
             {
                 if (user != null)
                 {
                     if (status == "Assigned")
                     {
-                        //pm.ProjectID = idPro;
-                        //pm.UserID = user.UserID;
-                        //pm.FunctionID = bug.FunctionID;
-                        //pm.Role = "member";
-                        //db.PROJECTMBS.Add(pm);
-                        //db.SaveChanges();
-
-                        //pm.ProjectID = idPro;
-                        //pm.UserID = user.UserID;
-                        //pm.FunctionID = bug.FunctionID;
-                        //pm.Role = "member";
-                        //pm.BugID = idBug;
-                        //db.PROJECTMBS.Add(pm);
-                        //db.SaveChanges();
+                        
+                        
                     }
                 }
+                bug.User_chose = user.UserID;
                 bug.Status = status;
+                bug.ProjectMembers = idpromems.ProjectMembersID;
                 db.SaveChanges();
             }
             return RedirectToAction("Index", "BUGs", new { id = idPro });
         }
 
         [HttpPost]
+        //Sữa cái này
         public ActionResult EditBug(FILES file,HISTORYS his, FormCollection f, HttpPostedFileBase[] files, int? idPro, int? idBug, int? idFuc)
         {
             USERS kh = (USERS)Session["TaiKhoan"];
             var BUG = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
             var FILE = db.FILES.Where(fi => fi.BugID == idBug);
             var project = db.PROJECTS.SingleOrDefault(p => p.ProjectID == idPro);
-            var projectmbs = db.PROJECTMBS.SingleOrDefault(pm => pm.ProjectID == idPro);
             var fuction = db.FUNCTIONS.SingleOrDefault(fi => fi.FunctionID == idFuc);
             string title = f["title"];
             string input = f["input"];
@@ -345,9 +389,10 @@ namespace QuanlyBug.Controllers
             string enviroment = f["enviroment"];
             string description = f["description"];
             string status = f["StatusBug"];
+            string deadline = f["deadline"];
             List<string> des = new List<string>();
 
-            if (BUG != null && FILE != null && project != null && projectmbs != null && fuction != null)
+            if (BUG != null && FILE != null && project != null  && fuction != null)
             {
                 Dictionary<string, (string value, string description)> propertiesToUpdate = new Dictionary<string, (string value, string description)>
                 {
@@ -392,6 +437,7 @@ namespace QuanlyBug.Controllers
                 BUG.severity = severity;
                 BUG.Priority = priority;
                 BUG.Status = status;
+                BUG.Deadline = deadline;
                 db.SaveChanges();
 
                 if (files != null && files.Length > 0 && files[0]?.ContentLength > 0)
@@ -433,7 +479,7 @@ namespace QuanlyBug.Controllers
                 }
 
                 string desString = string.Join(", ", des);
-                his.ProjectID = projectmbs.ProjectID;
+                his.ProjectID = project.ProjectID;
                 his.ID_User = kh.UserID;
                 his.Activity = "Update";
                 his.Time = DateTime.Now.ToString("dd/MM/yyyy H:mm:ss tt");
@@ -468,12 +514,11 @@ namespace QuanlyBug.Controllers
             USERS kh = (USERS)Session["TaiKhoan"];
             var project = db.PROJECTS.SingleOrDefault(p => p.ProjectID == idPro);
             var fuction = db.FUNCTIONS.SingleOrDefault(fi => fi.FunctionID == idFuc);
-            var projectmbs = db.PROJECTMBS.SingleOrDefault(pm => pm.ProjectID == idPro );
             var file = db.FILES.Where(fi => fi.BugID == idBug);
             var bug = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
-            if (file != null && projectmbs != null && bug != null && kh != null)
+            if (file != null  && bug != null && kh != null)
             {
-                his.ProjectID = projectmbs.ProjectID;
+                his.ProjectID = project.ProjectID;
                 his.ID_User = kh.UserID;
                 his.Activity = "Delete";
                 his.Time = DateTime.Now.ToString("dd/MM/yyyy H:mm:ss tt");
@@ -482,8 +527,7 @@ namespace QuanlyBug.Controllers
                 db.HISTORYS.Add(his);
                 db.SaveChanges();
 
-                db.PROJECTMBS.Remove(projectmbs);
-                db.SaveChanges();
+               
 
                 db.FILES.RemoveRange(file);
                 db.SaveChanges();
