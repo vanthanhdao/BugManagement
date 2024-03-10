@@ -1,6 +1,10 @@
-﻿
+﻿@model IEnumerable<QuanlyBug.Models.ProjectList>
+
+
 
 @{
+    QuanlyBug.Models.USERS kh = (QuanlyBug.Models.USERS)Session["TaiKhoan"];
+
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
     var projectList = ViewData["ProjectList"] as IEnumerable<QuanlyBug.Models.ProjectList>;
@@ -12,7 +16,7 @@
 }
 @*<script src="~/Assets/dist/js/demo-theme.min.js?1684106062"></script>*@
 
-
+@*Làm cái deadline Bug*@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 <style>
 
@@ -135,116 +139,158 @@
         overflow-y: hidden;
     }
 </style>
+<div class="row" style="width:100%; height:100%">
+    <div class="scrollable" style="width: 80%;">
+        <div class="page-wrapper">
 
-
-<div class="scrollable">
-    <div class="page-wrapper">
-
-        <div class="page-header d-print-none">
-            <div class="container-xl">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        <h2 class="page-title">
-                            Dự án
-                        </h2>
+            <div class="page-header d-print-none">
+                <div class="container-xl">
+                    <div class="row g-2 align-items-center">
+                        <div class="col">
+                            <h2 class="page-title">
+                                Dự án
+                            </h2>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="page-body">
-            <div class="container-xl">
-                <div class="row row-deck row-cards" style=" width: 100%; height: 100%; padding: @padingProject " }>
-                    @if (projectList != null)
-                    {
-                        foreach (var item in projectList)
+            <div class="page-body">
+                <div class="container-xl">
+                    <div class="row row-deck row-cards" style=" width: 100%; height: 100%; padding: @padingProject;margin-bottom: 50px;      " }>
+                        @if (projectList != null)
                         {
-                            if (count == listcolorProject.Length - 1)
+                            foreach (var item in projectList)
                             {
-                                count = 0;
-                            }
-                            else
-                            {
-                                count = count + 1;
-                            }
-                            <div class="col-sm-6 col-lg-3" style="margin-bottom:25px  ">
-                                <a href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })" class="card" style="border-radius: 8px;border-left-color: @listcolorProject[count]; border-left-width: 15px;">
+                                if (count == listcolorProject.Length - 1)
+                                {
+                                    count = 0;
+                                }
+                                else
+                                {
+                                    count = count + 1;
+                                }
+                                <div class="col-sm-6 col-lg-3">
+                                    <a href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })" class="card" style="border-radius: 8px;border-left-color: @listcolorProject[count]; border-left-width: 15px;">
 
-                                    <div class="card" style="  padding-left: 25px; padding-top: 15px;padding-bottom: 15px;  ">
-                                        <font style="vertical-align: inherit; font-weight:bold;font-size:20px"><font style="vertical-align: inherit;font-size:22px">@item.Name</font></font>
-                                        <font style="vertical-align: inherit; "><font style="vertical-align: inherit;font-size:16px">Quản lý dịch vụ</font></font>
+                                        <div class="card" style="  padding-left: 15px; padding-top: 15px;padding-bottom: 15px;  ">
+                                            <font style="vertical-align: inherit; font-weight:bold;font-size:20px"><font style="vertical-align: inherit;font-size:18px">@item.Name</font></font>
+                                            <font style="vertical-align: inherit; "><font style="vertical-align: inherit;font-size:16px">Quản lý dịch vụ</font></font>
 
-                                        <div style="
+                                            <div style="
+                                        flex-direction: row; " class="d-flex justify-content-between ">
+                                                <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Tất cả chức năng</font>
+
+                                                <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countFunctions</font></font>
+                                            </div>
+                                            <div style="
+                                    flex-direction: row;  " class="d-flex justify-content-between ">
+                                                <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Chức năng chưa xong</font>
+
+                                                <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countFunctionsNew</font></font>
+                                            </div>
+                                            <div style="
                                     flex-direction: row; " class="d-flex justify-content-between ">
-                                            <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Tất cả chức năng</font>
+                                                <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Tất cả lỗi</font>
 
-                                            <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countFunctions</font></font>
+                                                <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countBugs</font></font>
+                                            </div>
+                                            <div style="
+                                    flex-direction: row; " class="d-flex justify-content-between ">
+                                                <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Lỗi chưa duyệt</font>
+
+                                                <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countBugsNew</font></font>
+                                            </div>
+
+
                                         </div>
-                                        <div style="
-                                flex-direction: row;  " class="d-flex justify-content-between ">
-                                            <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Chức năng chưa xong</font>
+                                    </a>
 
-                                            <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countFunctionsNew</font></font>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                    <div>
+                        <div class="d-flex justify-content-center">
+                            <span style=" margin-bottom:10px;font-size: 20px;font-weight: bold;">Lịch sử hoạt động</span>
+                        </div>
+                        <div style="background-color:grey;width:100%;height:1px"></div>
+                        <div style="margin-bottom: 120px;margin-top:15px">
+                            @if (historylist != null)
+                            {
+                                foreach (var item in historylist)
+                                {
+
+                                    <div style=" margin-bottom:10px;padding-bottom: 10px;">
+                                        <div style=" width: 100%; height: 35px; padding-left: 5px; margin: 7px" class="d-flex justify-content-between">
+                                            <h4 style="margin-left: 100px; margin-top: 5px;">
+                                                @item.Description_History <small class="d-flex justify-content-start" style=" ">
+                                                    <span style="font-size: 10px; font-style: italic; margin-right: 7px ">@item.nameUser    </span><span> · </span><span style="font-size: 10px;font-style: italic;margin-left:7px ">  @item.Name_Project</span>
+                                                </small>
+                                            </h4>
+                                            <span style="margin-right: 100px; margin-top: 10px;">@item.Activity</span>
+
                                         </div>
-                                        <div style="
-                                flex-direction: row; " class="d-flex justify-content-between ">
-                                            <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Tất cả lỗi</font>
-
-                                            <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countBugs</font></font>
-                                        </div>
-                                        <div style="
-                                flex-direction: row; " class="d-flex justify-content-between ">
-                                            <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Lỗi chưa duyệt</font>
-
-                                            <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countBugsNew</font></font>
-                                        </div>
-
 
                                     </div>
-                                </a>
+                                }
+                            }
+                            <div class="card" style="display:contents">
+                                <div class="card-body">
 
+                                    <div id="toastmess"></div>
+
+                                </div>
                             </div>
-                        }
-                    }
-                    else
-                    {
-
-                    }
-                </div>
-                <div class="d-flex justify-content-center">
-                    <span style=" margin-bottom:10px;font-size: 20px;font-weight: bold;">Lịch sử hoạt động</span>
-                </div>
-                @if (historylist != null)
-                {
-                    foreach (var item in historylist)
-                    {
-
-                        <div class="card" style=" margin-bottom: 120px; padding-top: 15px;padding-bottom: 15px;">
-                            <div style=" width: 100%; height: 35px; padding-left: 5px; margin: 3px" class="d-flex justify-content-between">
-                                <h4 style="margin-left: 100px;">
-                                    @item.Description_History <small class="d-flex justify-content-start" style=" ">
-                                        <span style="font-size: 10px; font-style: italic; margin-right: 7px ">@item.nameUser    </span><span> · </span><span style="font-size: 10px;font-style: italic;margin-left:7px ">  @item.Name_Project</span>
-                                    </small>
-                                </h4>
-                                <span style="margin-right: 100px; margin-top: 10px;">@item.Activity</span>
-
-                            </div>
-
                         </div>
-                    }
-                }
-                <div class="card">
-                    <div class="card-body">
-
-                        <div id="toastmess"></div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div style="width:20%;padding-bottom:120px" class="scrollable">
+        <div class="card column-gap-md-3" style="height: 30%; margin-bottom: 15px; display: flex; flex-direction: column; align-items: center; margin-top: 15%">
+            <span style="margin-bottom: 10%;margin-top:5%; font-size: 20px; font-weight: bold; ">Thống kê</span>
+            <img src="/Assets/images/noresult1.png" style="width:100px;height:100px" alt="">
+        </div>
+        <div class="column-gap-md-3" style="height:70%;display: flex;justify-content: center;flex-direction: column;align-items: center">
+            <span style="margin-bottom: 10px; font-size: 20px; font-weight: bold; ">Sự kiện sắp diễn ra</span>
+            <div style="background-color: grey; width: 100%; height: 1px; margin-bottom: 10px"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Năm</th>
+                        <th>Sự kiện</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1776</td>
+                        <td>Tiến hành Tuyên ngôn Độc lập Hoa Kỳ</td>
+                    </tr>
+                    <tr>
+                        <td>1789</td>
+                        <td>Bắt đầu Cách mạng Pháp</td>
+                    </tr>
+                    <tr>
+                        <td>1914-1918</td>
+                        <td>Chiến tranh Thế giới thứ nhất</td>
+                    </tr>
+                    <tr>
+                        <td>1939-1945</td>
+                        <td>Chiến tranh Thế giới thứ hai</td>
+                    </tr>
+                    <!-- Thêm các dòng khác tùy theo nhu cầu -->
+                </tbody>
+            </table>
+            <div style="background-color:grey;width:100%;height:1px;margin-top:10px"></div>
 
+
+        </div>
+
+    </div>
+</div>
 
 
 <script>
@@ -323,19 +369,20 @@
         }, false);
 
         formAddMember.addEventListener('submit', event => {
-            
+
             event.preventDefault();
             event.stopPropagation();
             var inputNameOrEmail = document.getElementById("nameOrEmail");
             var inputNameProject = document.getElementById("nameProject");
+
             $.ajax({
                 url: '/Home/GetDataProjectList',
                 type: 'GET',
                 success: function (data) {
-                    const checkNameOrEmail = inputNameOrEmail.value!="" ? data.some(element => element.Email === inputNameOrEmail.value) : null;
+                    const checkNameOrEmail = inputNameOrEmail.value != "" ? data.some(element => element.Email === inputNameOrEmail.value) : null;
                     const checkProjectMember = inputNameOrEmail.value != "" ? data.some(element => element.Email === inputNameOrEmail.value && element.Name === inputNameProject.value) : null;
-                    console.log( checkNameOrEmail, checkProjectMember)
-                   /* inputNameOrEmail.setCustomValidity('');*/
+                    console.log(checkNameOrEmail, checkProjectMember)
+                    /* inputNameOrEmail.setCustomValidity('');*/
                     if (checkNameOrEmail) {
                         inputNameOrEmail.setCustomValidity('');
                     } else {
@@ -374,11 +421,11 @@
                             type: "success",
                             duration: 5000
                         });
-                    
-                      setTimeout(function() {
-                        // Load lại trang sau khi đã chờ 5 giây
-                        location.reload();
-                    }, 3000);
+
+                        setTimeout(function () {
+                            // Load lại trang sau khi đã chờ 5 giây
+                            location.reload();
+                        }, 2000);
                     } else {
                         if (checkNameOrEmail == false) {
                             toast({
@@ -412,13 +459,13 @@
             formAddMember.classList.add('was-validated');
         }, false);
 
-        
+
 
     })();
 
 
     function toast({ title = "", message = "", type = "info", duration = 3000 }) {
-            console.log(title)
+        console.log(title)
         const main = document.getElementById("toastmess");
         if (main) {
             const toast = document.createElement("div");
@@ -449,17 +496,17 @@
             toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
 
             toast.innerHTML = `
-                    <div class="toast__icon">
-                        <i class="${icon}"></i>
-                    </div>
-                    <div class="toast__body">
-                        <h3 class="toast__title">${title}</h3>
-                        <p class="toast__msg">${message}</p>
-                    </div>
-                    <div class="toast__close">
-                        <i class="fas fa-times"></i>
-                    </div>
-                `;
+                            <div class="toast__icon">
+                                <i class="${icon}"></i>
+                            </div>
+                            <div class="toast__body">
+                                <h3 class="toast__title">${title}</h3>
+                                <p class="toast__msg">${message}</p>
+                            </div>
+                            <div class="toast__close">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        `;
             main.appendChild(toast);
         }
     }

@@ -1,4 +1,9 @@
-﻿<!Doctype html>
+﻿@{
+    QuanlyBug.Models.USERS kh = (QuanlyBug.Models.USERS)Session["TaiKhoan"];
+}
+
+
+<!Doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -170,11 +175,7 @@
                             </a>
 
                         </li>
-
-                        @Html.Action("Team", "Home")
-
-                      
-
+                            @Html.Action("Team", "Home")
 
                     </ul>
                     <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
