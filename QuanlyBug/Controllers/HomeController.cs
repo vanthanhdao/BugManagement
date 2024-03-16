@@ -55,9 +55,6 @@ namespace QuanlyBug.Controllers
 
                 var data = kh.Status == "admin" ?
                     (from p in db.PROJECTS
-
-                     join b in db.BUGS on p.ProjectID equals b.ProjectID into bs
-                     join f in db.FUNCTIONS on p.ProjectID equals f.ProjectID into fs
                      //Lỗi Bug k truy suất dk
                      select new ProjectList
                      {
@@ -67,15 +64,13 @@ namespace QuanlyBug.Controllers
                          EmailPeoCreate = p.EmailPeoCreate,
                          DateCreate = p.DateCreate,
                          PeopleCreate = p.PeopleCreate,
-                         countFunctions = fs.Count(),
-                         countBugs = bs.Count(),
-                         countFunctionsNew = fs.Where(f => f.Status == "Todo").Count(),
-                         countBugsNew = bs.Where(b => b.Status == "New").Count(),
-                     }) : kh.Status != "Dev" && kh.Status != "Tester" ?
+                         countFunctions = db.FUNCTIONS.Count(x=>x.ProjectID == p.ProjectID),
+                         countBugs = db.BUGS.Count(x=> x.ProjectID == p.ProjectID),
+                         countFunctionsNew = db.FUNCTIONS.Count(x=> x.ProjectID == p.ProjectID  && x.Status == "Todo"),
+                         countBugsNew = db.BUGS.Count(x => x.ProjectID == p.ProjectID && x.Status == "New"),
+                     }) : kh.Status == "Product Manager" ?
                       (from pm in db.PROJECTMBS
                        join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                       join b in db.BUGS on pm.ProjectID equals b.ProjectID into bs
-                       join f in db.FUNCTIONS on pm.ProjectID equals f.ProjectID into fs
                        join u in db.USERS on pm.UserID equals u.UserID
                        where pm.UserID == kh.UserID
                        //Lỗi Bug k truy suất dk
@@ -92,17 +87,17 @@ namespace QuanlyBug.Controllers
                            Email = u.Email,
                            Password = u.Password,
                            Role = pm.Role,
-                           countFunctions = fs.Count(),
-                           countBugs = bs.Count(),
-                           countFunctionsNew = fs.Where(f => f.Status == "Todo").Count(),
-                           countBugsNew = bs.Where(b => b.Status == "New").Count(),
+                           countFunctions = db.FUNCTIONS.Count(x => x.ProjectID == p.ProjectID),
+                           countBugs = db.BUGS.Count(x => x.ProjectID == p.ProjectID),
+                           countFunctionsNew = db.FUNCTIONS.Count(x => x.ProjectID == p.ProjectID && x.Status=="Todo"),
+                           countBugsNew = db.BUGS.Count(x => x.ProjectID == p.ProjectID && x.Status == "New"),
                        }) :
                         kh.Status != "Dev" ?
                       (from pm in db.PROJECTMBS
                        join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
-                       join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID into fs
-                       from f in fs
-                       join b in db.BUGS on f.FunctionID equals b.FunctionID into bs
+                       //join f in db.FUNCTIONS on pm.ProjectMembersID equals f.ProjectMembersID into fs
+                       //from f in fs
+                       //join b in db.BUGS on f.FunctionID equals b.FunctionID into bs
                        join u in db.USERS on pm.UserID equals u.UserID
                        where pm.UserID == kh.UserID
                        //Lỗi Bug k truy suất dk
@@ -119,10 +114,10 @@ namespace QuanlyBug.Controllers
                            Email = u.Email,
                            Password = u.Password,
                            Role = pm.Role,
-                           countFunctions = fs.Count(),
-                           countBugs = bs.Count(),
-                           countFunctionsNew = fs.Where(f => f.Status == "Todo").Count(),
-                           countBugsNew = bs.Where(b => b.Status == "New").Count(),
+                           countFunctions = db.FUNCTIONS.Count(x => x.ProjectMembersID == pm.ProjectMembersID),
+                           countBugs = db.BUGS.Count(x => x.FunctionID == db.FUNCTIONS.FirstOrDefault(f => f.ProjectMembersID == pm.ProjectMembersID).FunctionID),
+                           countFunctionsNew = db.FUNCTIONS.Count(x => x.ProjectMembersID == pm.ProjectMembersID && x.Status == "Todo"),
+                           countBugsNew = db.BUGS.Count(x => x.FunctionID == db.FUNCTIONS.FirstOrDefault(f => f.ProjectMembersID == pm.ProjectMembersID).FunctionID && x.Status == "New"),
                        }) :
                        (from pm in db.PROJECTMBS
                         join p in db.PROJECTS on pm.ProjectID equals p.ProjectID
@@ -424,8 +419,7 @@ namespace QuanlyBug.Controllers
                 string name = f["NameProject"];
                 string decription = f["DecriptionProject"];
                 var checkName = db.PROJECTS.SingleOrDefault(a => a.Name == name);
-                var checkDecription = db.PROJECTS.SingleOrDefault(a => a.Decription == decription);
-                if (checkName == null && checkDecription == null)
+                if (checkName == null )
                 {
                     project.Name = name;
                     project.Decription = decription;
@@ -458,7 +452,8 @@ namespace QuanlyBug.Controllers
 
 
         [HttpPost]
-        public ActionResult EditProject(int? id, FormCollection f)
+        public ActionResult 
+            Project(int? id, FormCollection f)
         {
             var project = db.PROJECTS.AsEnumerable().SingleOrDefault(n => n.ProjectID == id);
             if (id == null)

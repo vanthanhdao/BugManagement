@@ -121,7 +121,8 @@
                                                     </a>
                                                     @if (item.Role == "creater")
                                                     {
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-editproject-@item.ProjectID">
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal-
+                                                           project-@item.ProjectID">
                                                             Cập nhật dự án
                                                         </a>
                                                         <a class="dropdown-item text-pink" href="#" data-bs-toggle="modal" data-bs-target="#modal-deleteproject-@item.ProjectID">
@@ -359,7 +360,7 @@
                         name.setCustomValidity("This field is invalid");
                     }
 
-                    if (!checkDecription) {
+                    if (description != null) {
                         description.setCustomValidity('');
                     } else {
                         description.setCustomValidity("This field is invalid");
