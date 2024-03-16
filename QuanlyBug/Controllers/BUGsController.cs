@@ -373,8 +373,7 @@ namespace QuanlyBug.Controllers
 
         [HttpPost]
         //Sữa cái này
-        public ActionResult
-            Bug(FILES file, HISTORYS his, FormCollection f, HttpPostedFileBase[] files, int? idPro, int? idBug, int? idFuc)
+        public ActionResult EditBug(FILES file, HISTORYS his, FormCollection f, HttpPostedFileBase[] files, int? idPro, int? idBug, int? idFuc)
         {
             USERS kh = (USERS)Session["TaiKhoan"];
             var BUG = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
@@ -428,6 +427,8 @@ namespace QuanlyBug.Controllers
                 {
                     des.Add("File đính kèm");
                 }
+                if (status == "Dimiss" || status == "Duplicate" || status == "Rejected" || status == "Not a bug")  status = "New";
+              
 
                 BUG.Title = title;
                 BUG.input = input;
@@ -512,7 +513,7 @@ namespace QuanlyBug.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteBug(int? idPro, int? idBug, int? idFuc, FormCollection f, HISTORYS his)
+        public ActionResult DeleteBug(int? idPro, int? idBug, int? idFuc, HISTORYS his)
         {
             USERS kh = (USERS)Session["TaiKhoan"];
             var project = db.PROJECTS.SingleOrDefault(p => p.ProjectID == idPro);
@@ -529,8 +530,6 @@ namespace QuanlyBug.Controllers
                 his.Description_History = "Bug " + bug.Title + " được xóa trong chức năng " + fuction.Title + " của dự án " + project.Name;
                 db.HISTORYS.Add(his);
                 db.SaveChanges();
-
-
 
                 db.FILES.RemoveRange(file);
                 db.SaveChanges();
