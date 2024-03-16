@@ -28,6 +28,9 @@ namespace QuanlyBug.Models
         public string Expected { get; set; }
         public string Actual { get; set; }
         public string Env { get; set; }
-        public Nullable<int> ProjectMembersID { get; set; }
+        public Nullable<int> ProjectID { get; set; }
+        public Nullable<int> User_chose { get; set; }
+        public string Deadline { get; set; }
+        public Nullable<int> ProjectMembers { get; set; }
     }
 }

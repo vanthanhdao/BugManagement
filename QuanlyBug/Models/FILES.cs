@@ -18,6 +18,6 @@ namespace QuanlyBug.Models
         public string FileName { get; set; }
         public byte[] FileData { get; set; }
         public string FileType { get; set; }
-        public Nullable<int> BugID { get; set; }
+        public int BugID { get; set; }
     }
 }
