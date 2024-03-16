@@ -477,7 +477,7 @@
                                                                                                     @if (users != null)
                                                                                                     {
                                                                                                         <option value="">-- Chọn email --</option>
-                                                                                                        foreach (var i in users)
+                                                                                                        foreach (var i in users.Where(x=>x.Status == "Dev"))
                                                                                                         {
                                                                                                             <option value="@i.Email">@i.Email</option>
                                                                                                         }
