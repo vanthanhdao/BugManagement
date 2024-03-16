@@ -520,7 +520,7 @@ namespace QuanlyBug.Controllers
             var fuction = db.FUNCTIONS.SingleOrDefault(fi => fi.FunctionID == idFuc);
             var file = db.FILES.Where(fi => fi.BugID == idBug);
             var bug = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
-            if (file != null && bug != null && kh != null)
+            if (file != null && bug != null && kh != null && project != null && fuction != null)
             {
                 his.ProjectID = project.ProjectID;
                 his.ID_User = kh.UserID;

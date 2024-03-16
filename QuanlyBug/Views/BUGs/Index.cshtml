@@ -1276,18 +1276,20 @@
     }
 
     function approveBug(FunctionID, ProjectID, BugID) {
-        $.ajax({
-            type: "POST",
-            url: "/BUGs/DeleteBug?idPro=" + ProjectID + "&idBug=" + BugID + "&idFun" + FunctionID,
-            success: function (response) {
-                // Xử lý kết quả từ controller (nếu cần)
-                console.log(response);
-            },
-            error: function (error) {
-                // Xử lý lỗi nếu có
-                console.error(error);
+        console.log(FunctionID, ProjectID, BugID)
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "/BUGs/DeleteBug?idPro=" + ProjectID + "&idBug=" + BugID + "&idFuc=" + FunctionID, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    window.location.href = response.redirectToAction;
+                } else {
+                    console.error('Error:', xhr.status);
+                }
             }
-        });
+        };
+        xhr.send();
 
     }
 
