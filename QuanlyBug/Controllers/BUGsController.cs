@@ -371,7 +371,8 @@ namespace QuanlyBug.Controllers
 
         [HttpPost]
         //Sữa cái này
-        public ActionResult EditBug(FILES file,HISTORYS his, FormCollection f, HttpPostedFileBase[] files, int? idPro, int? idBug, int? idFuc)
+        public ActionResult 
+            Bug(FILES file,HISTORYS his, FormCollection f, HttpPostedFileBase[] files, int? idPro, int? idBug, int? idFuc)
         {
             USERS kh = (USERS)Session["TaiKhoan"];
             var BUG = db.BUGS.SingleOrDefault(b => b.BugID == idBug);
@@ -537,7 +538,55 @@ namespace QuanlyBug.Controllers
             }
             return RedirectToAction("Index", "BUGs", new { id = idPro });
         }
+        [HttpPost]
+        public ActionResult EditFunction( FormCollection f, int? id, int? IdProject)
+        {
+            USERS kh = (USERS)Session["TaiKhoan"];
+            if (kh != null)
+            {
+                var Project = db.PROJECTS.SingleOrDefault(x => x.ProjectID == IdProject);
+                var func = db.FUNCTIONS.SingleOrDefault(x => x.FunctionID == id);
+                string email = f["EmailFunction"];
+                var user = db.USERS.SingleOrDefault(x => x.Email == email);
+                var ProMBs = db.PROJECTMBS.SingleOrDefault(x => x.UserID == user.UserID && x.ProjectID == IdProject);
+                string name = f["NameFunction"];
+                string decription = f["DescriptionFunction"];
+                var checkName = db.PROJECTS.SingleOrDefault(a => a.Name == name);
+                    func.Title = name;
+                    func.ProjectID = IdProject;
+                    func.Description = decription;
+                    func.Status = "Todo";
+                    func.EmailUser = email;
+                    func.ProjectMembersID = ProMBs.ProjectMembersID;
+                    db.SaveChanges();
 
+            }
+            return RedirectToAction("Index", "BUGs", new { id = IdProject });
+        }
+        [HttpPost]
+        public ActionResult DeleteFunc(int? id,int? idfunc, FormCollection f)
+        {
+            USERS kh = (USERS)Session["TaiKhoan"];
+            var func = db.FUNCTIONS.SingleOrDefault(x => x.FunctionID == idfunc);
+            var bugsToDelete = db.BUGS.Where(b => b.FunctionID == idfunc);
+
+            // Tạo một danh sách các BugID để sử dụng trong việc xóa các files
+            var bugIds = bugsToDelete.Select(b => b.BugID).ToList();
+
+            // Tìm và xóa tất cả các files có BugID trong danh sách bugIds
+            var filesToDelete = db.FILES.Where(fi => bugIds.Contains(fi.BugID));
+
+            // Xóa các files
+            db.FILES.RemoveRange(filesToDelete);
+
+            // Xóa các bugs
+            db.BUGS.RemoveRange(bugsToDelete);
+
+            db.FUNCTIONS.Remove(func);
+
+            db.SaveChanges();
+            return RedirectToAction("Index", "BUGs", new { id = id });
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

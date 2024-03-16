@@ -1,10 +1,12 @@
-﻿@model IEnumerable<QuanlyBug.Models.ProjectList>
+﻿
+
+@model IEnumerable<QuanlyBug.Models.ProjectList>
 
 @*Sữa lại check description
-sữa lại lịch sử hoạt động
-Thêm ghi lại khi tạo xóa thêm vào history
-Thêm coi thành viên trong nhóm và show khi thêm thành viên
-Sữa lại giao diện cho đẹp*@
+    sữa lại lịch sử hoạt động
+    Thêm ghi lại khi tạo xóa thêm vào history
+    Thêm coi thành viên trong nhóm và show khi thêm thành viên
+    Sữa lại giao diện cho đẹp*@
 
 
 @{
@@ -132,276 +134,269 @@ Sữa lại giao diện cho đẹp*@
         color: rgba(0, 0, 0, 0.3);
         cursor: pointer;
     }
-
-    .scrollable {
-        width: 100%;
-        height: 100%;
-        overflow-y: auto; /* or scroll */
-        border: 1px solid #ccc;
-    }
-
-    body {
-        overflow-y: hidden;
-    }
 </style>
-<div class="row" style="width:100%; height:100%">
-    <div class="scrollable" style="width: 80%;">
-        <div class="page-wrapper">
 
-            <div class="page-header d-print-none">
-                <div class="container-xl">
-                    <div class="row g-2 align-items-center">
-                        <div class="col">
-                            <h2 style="margin-left:9%" class="page-title">
-                                Dự án
-                            </h2>
-                        </div>
-                    </div>
+
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Dự án
+                    </h2>
                 </div>
             </div>
-
-            <div class="page-body">
-                <div class="container-xl">
-                    <div class="row row-deck row-cards" style=" margin-left:8%;width: 95%; height: 100%; padding: @padingProject;margin-bottom: 50px;      " }>
-                        @if (projectList.Count() != 0)
-                        {
-                            foreach (var item in projectList)
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="card overflow-auto" style="height:70vh;">
+                        <div class="row row-deck row-cards">
+                            @if (projectList.Count() != 0)
                             {
-                                if (count == listcolorProject.Length - 1)
+                                foreach (var item in projectList)
                                 {
-                                    count = 0;
-                                }
-                                else
-                                {
-                                    count = count + 1;
-                                }
-                                <div class="col-sm-6 col-lg-3">
-                                    <a href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })" class="card" style="border-radius: 8px;border-left-color: @listcolorProject[count]; border-left-width: 15px;">
+                                    if (count == listcolorProject.Length - 1)
+                                    {
+                                        count = 0;
+                                    }
+                                    else
+                                    {
+                                        count = count + 1;
+                                    }
+                                    <div class="col-sm-6 col-lg-3 " style="padding-top:20px; padding-left:25px">
+                                        <a href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })" class="card" style="border-radius: 8px;border-left-color: @listcolorProject[count]; border-left-width: 15px;">
 
-                                        <div class="card" style="  padding-left: 15px; padding-top: 15px;padding-bottom: 15px;  ">
-                                            <font style="vertical-align: inherit; font-weight:bold;font-size:16px"><font style="vertical-align: inherit;font-size:1em">@item.Name</font></font>
-                                            <font style="vertical-align: inherit;margin-top:5px "><font style="vertical-align: inherit;font-size:14px">Quản lý dịch vụ</font></font>
+                                            <div class="card" style="  padding-left: 15px; padding-top: 15px;padding-bottom: 15px;  ">
+                                                <font style="vertical-align: inherit; font-weight:bold;font-size:16px"><font style="vertical-align: inherit;font-size:1em">@item.Name</font></font>
+                                                <font style="vertical-align: inherit;margin-top:5px "><font style="vertical-align: inherit;font-size:14px">Quản lý dịch vụ</font></font>
 
-                                            <div style="
-                                        flex-direction: row;margin-top:5px " class="d-flex justify-content-between ">
-                                                <font style="vertical-align: inherit;font-size: 11px;font-style: italic;">Tất cả chức năng</font>
+                                                <div style="flex-direction: row;margin-top:5px " class="d-flex justify-content-between ">
+                                                    <font style="vertical-align: inherit;font-size: 11px;font-style: italic;">Tất cả chức năng</font>
 
-                                                <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 11px;font-style: italic;">@item.countFunctions</font></font>
+                                                    <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 11px;font-style: italic;">@item.countFunctions</font></font>
+                                                </div>
+                                                <div style="flex-direction: row;  " class="d-flex justify-content-between ">
+                                                    <font style="vertical-align: inherit;font-size: 11px;font-style: italic;">Chức năng chưa xong</font>
+
+                                                    <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 11px;font-style: italic;">@item.countFunctionsNew</font></font>
+                                                </div>
+                                                <div style="flex-direction: row; " class="d-flex justify-content-between ">
+                                                    <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Tất cả lỗi</font>
+
+                                                    <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countBugs</font></font>
+                                                </div>
+                                                <div style=" flex-direction: row; " class="d-flex justify-content-between ">
+                                                    <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Lỗi chưa duyệt</font>
+
+                                                    <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countBugsNew</font></font>
+                                                </div>
+
+
                                             </div>
-                                            <div style="
-                                    flex-direction: row;  " class="d-flex justify-content-between ">
-                                                <font style="vertical-align: inherit;font-size: 11px;font-style: italic;">Chức năng chưa xong</font>
-
-                                                <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 11px;font-style: italic;">@item.countFunctionsNew</font></font>
-                                            </div>
-                                            <div style="
-                                    flex-direction: row; " class="d-flex justify-content-between ">
-                                                <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Tất cả lỗi</font>
-
-                                                <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countBugs</font></font>
-                                            </div>
-                                            <div style="
-                                    flex-direction: row; " class="d-flex justify-content-between ">
-                                                <font style="vertical-align: inherit;font-size: 12px;font-style: italic;">Lỗi chưa duyệt</font>
-
-                                                <font style="vertical-align: inherit;padding-right: 50px;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@item.countBugsNew</font></font>
-                                            </div>
-
-
-                                        </div>
-                                    </a>
-
-                                </div>
-                            }
-                        }
-                        else
-                        {
-                            <div style="display:flex;justify-content:center;align-items:center">
-                                <img src="/Assets/images/noresult1.png" style="width:100px;height:100px" alt="">
-                                <span style="font-size:18px">Không có dự án</span>
-
-                            </div>
-                        }
-
-                    </div>
-                    <div>
-                        <div class="d-flex justify-content-center">
-                            <span style=" margin-bottom:10px;font-size: 20px;font-weight: bold;">Lịch sử hoạt động</span>
-                        </div>
-                        <div style="background-color:grey;width:100%;height:1px"></div>
-                        <div style="margin-bottom: 120px;margin-top:15px">
-                            @if (historylist.Count() != 0)
-                            {
-                                foreach (var item in historylist)
-                                {
-
-                                    <div style=" margin-bottom:10px;padding-bottom: 10px;">
-                                        <div style=" width: 100%; height: 35px; padding-left: 5px; margin: 7px" class="d-flex justify-content-between">
-                                            <h4 style="margin-left: 100px; margin-top: 5px;">
-                                                @item.Description_History
-                                                <small class="d-flex justify-content-start" style=" ">
-                                                    <span style="font-size: 10px; font-style: italic; margin-right: 7px ">@item.nameUser    </span><span> · </span><span style="font-size: 10px;font-style: italic;margin-left:7px ">  @item.Name_Project</span>
-                                                </small>
-                                            </h4>
-                                            <span style="margin-right: 100px; margin-top: 10px;">@item.Activity</span>
-
-                                        </div>
+                                        </a>
 
                                     </div>
                                 }
                             }
                             else
                             {
-                                <div style="display:flex;justify-content:center;align-items:center;margin-top:7%;margin-left:8%">
-                                    <img src="/Assets/images/no-data.png" style="width:50px;height:50px" alt="">
-                                    <span style="font-size:18px">Không có lịch sử</span>
+                                <div style="display:flex;justify-content:center;align-items:center">
+                                    <img src="/Assets/images/noresult1.png" style="width:100px;height:100px" alt="">
+                                    <span style="font-size:18px">Không có dự án</span>
+
                                 </div>
                             }
-                            <div class="card" style="display:contents">
-                                <div class="card-body">
+                            <div class="d-flex justify-content-center">
+                                <span style=" margin-bottom: 10px; font-size: 20px; font-weight: bold;">Lịch sử hoạt động</span>
+                            </div>
 
-                                    <div id="toastmess"></div>
+                            <div style="margin-bottom: 120px;margin-top:15px">
+                                @if (historylist.Count() != 0)
+                                {
+                                    foreach (var item in historylist)
+                                    {
 
+                                        <div style=" margin-bottom:10px;padding-bottom: 10px;">
+                                            <div style=" width: 100%; height: 35px; padding-left: 5px; margin: 7px" class="d-flex justify-content-between">
+                                                <h4 style="margin-left: 100px; margin-top: 5px;">
+                                                    @item.Description_History
+                                                    <small class="d-flex justify-content-start" style=" ">
+                                                        <span style="font-size: 10px; font-style: italic; margin-right: 7px ">@item.nameUser    </span><span> · </span><span style="font-size: 10px;font-style: italic;margin-left:7px ">  @item.Name_Project</span>
+                                                    </small>
+                                                </h4>
+                                                <span style="margin-right: 100px; margin-top: 10px;">@item.Activity</span>
+
+                                            </div>
+
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div style="display:flex;justify-content:center;align-items:center;margin-top:7%;margin-left:8%">
+                                        <img src="/Assets/images/no-data.png" style="width:50px;height:50px" alt="">
+                                        <span style="font-size:18px">Không có lịch sử</span>
+                                    </div>
+                                }
+                                <div class="card" style="display:contents">
+                                    <div class="card-body">
+
+                                        <div id="toastmess"></div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="row row-cards">
+                        <div class="col-md-6 col-lg-12">
+                            @if (projectList.Count() != 0)
+                            {
+                                var countFunctions = 0;
+                                var countFunctionsNew = 0;
+                                var countBugs = 0;
+                                var countBugsNew = 0;
+                                var countProject = 0;
+                                foreach (var item in projectList)
+                                {
+                                    countFunctions += item.countFunctions;
+                                    countFunctionsNew += item.countFunctionsNew;
+                                    countBugs += item.countBugs;
+                                    countBugsNew += item.countBugsNew;
+
+                                }
+                                countProject = projectList.Count();
+                                <div class="card" style="display: flex; justify-content: space-between; padding-left: 15%; padding-right: 15%; padding-bottom: 10%;; margin-bottom: 10%; border-width: initial">
+                                    <span style="margin-bottom: 10%;margin-top:5%; font-size: 20px; font-weight: bold;align-self:center ">Thống kê</span>
+
+                                    <div style="
+                              flex-direction: row; " class="d-flex justify-content-between ">
+                                        <font style="vertical-align: inherit;font-size: 12px;font-weight:bold;">Tất cả dự án</font>
+
+                                        <font style="vertical-align: inherit;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@countProject</font></font>
+                                    </div>
+                                    <div style="
+                                  flex-direction: row; " class="d-flex justify-content-between ">
+                                        <font style="vertical-align: inherit; font-size: 11px; font-weight: bold;">Tất cả chức năng</font>
+
+                                        <font style="vertical-align: inherit; "><font style="vertical-align: inherit;font-size: 11px;font-style: italic;">@countFunctions</font></font>
+                                    </div>
+                                    <div style="
+                              flex-direction: row;  " class="d-flex justify-content-between ">
+                                        <font style="vertical-align: inherit; font-size: 11px; font-weight: bold;">Chức năng chưa xong</font>
+
+                                        <font style="vertical-align: inherit; "><font style="vertical-align: inherit;font-size: 11px;font-style: italic;">@countFunctionsNew</font></font>
+                                    </div>
+                                    <div style="
+                              flex-direction: row; " class="d-flex justify-content-between ">
+                                        <font style="vertical-align: inherit; font-size: 12px; font-weight: bold;">Tất cả lỗi</font>
+
+                                        <font style="vertical-align: inherit; "><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@countBugs</font></font>
+                                    </div>
+                                    <div style="
+                              flex-direction: row; " class="d-flex justify-content-between ">
+                                        <font style="vertical-align: inherit; font-size: 12px; font-weight: bold;">Lỗi chưa duyệt</font>
+
+                                        <font style="vertical-align: inherit;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@countBugsNew</font></font>
+                                    </div>
+
+                                </div>
+                            }
+
+                        </div>
+                        <div class="col-md-6 col-lg-12">
+                            <div class="card" style="height:auto;padding:5%;border-width:initial">
+                                <span style="margin-bottom: 10px; font-size: 20px; font-weight: bold;  display: flex; align-content: flex-start; justify-content: center; ">Sự kiện sắp diễn ra</span>
+                                <div style="background-color: grey; width: 100%; height: 1px; margin-bottom: 10px"></div>
+                                <table>
+                                    <thead>
+                                        <tr style="display:flex;flex-direction: row;align-content: space-between;n;align-items: center;">
+                                            <th style="width:70%">Tên lỗi - Dự án</th>
+                                            <th style="width:30%">Thời hạn</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (Model.Count() != 0)
+                                        {
+                                            foreach (var item in Model)
+                                            {
+                                                if (item.TitleBug != null)
+                                                {
+                                                    string deadline = item.deadline;
+                                                    string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
+                                                    DateTime date1 = DateTime.ParseExact(deadline, "yyyy-MM-dd HH:mm", null);
+                                                    DateTime date2 = DateTime.ParseExact(now, "yyyy-MM-dd HH:mm", null);
+
+                                                    // Tính toán chênh lệch giữa hai ngày
+                                                    TimeSpan difference = date1 - date2;
+                                                    if (difference.TotalMinutes <= 0)
+                                                    {
+                                                        <tr style="padding: 2px; margin-bottom: 5px; display: flex; flex-direction: row; align-content: space-between; justify-content: space-between; align-items: center;">
+
+                                                            <td style="width:70%">
+                                                                <a style="color: red" href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })">@item.TitleBug <small style="font-size:13px;font-style:italic">(Hết thời gian)</small> <br /><small style="font-size:11px;font-style:italic">(@item.Title - @item.Name)</small></a>
+                                                            </td>
+                                                            <td style="width: 30%; color: red">@item.deadline</td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                                 if (difference.TotalMinutes <= 2160)
+                                                    {
+                                                        <tr style="padding:2px;margin-bottom:5px;display: flex; flex-direction: row; align-content: space-between; justify-content: space-between; align-items: center;">
+
+                                                            <td style="width:70%">
+                                                                <a style="color:red" href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })">@item.TitleBug <br /><small style="font-size:11px;font-style:italic">(@item.Title - @item.Name)</small></a>
+                                                            </td>
+                                                            <td style="width: 30%; color: red ">@item.deadline</td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr style="padding: 2px; margin-bottom: 5px; display: flex; flex-direction: row; align-content: space-between; justify-content: space-between; align-items: center;">
+
+                                                            <td style="width:70%">
+                                                                <a style="color:black" href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })">@item.TitleBug  <br /><small style="font-size:11px;font-style:italic">(@item.Title - @item.Name)</small></a>
+                                                            </td>
+                                                            <td style="width:30%">@item.deadline</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <tr style="display:flex;justify-content:center;align-items:center;margin-top:7%">
+                                                <td>
+                                                    <img src="/Assets/images/empty.png" style="width:45px;height:45px" alt="">
+                                                    <span style="font-size:18px">Không có sự kiện nào</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                        Thêm các dòng khác tùy theo nhu cầu
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div style="width:20%" class="scrollable">
 
-        @if (projectList.Count() != 0)
-        {
-            var countFunctions = 0;
-            var countFunctionsNew = 0;
-            var countBugs = 0;
-            var countBugsNew = 0;
-            var countProject = 0;
-            foreach (var item in projectList)
-            {
-                countFunctions += item.countFunctions;
-                countFunctionsNew += item.countFunctionsNew;
-                countBugs += item.countBugs;
-                countBugsNew += item.countBugsNew;
-
-            }
-            countProject = projectList.Count();
-            <div class="card" style="display: flex; justify-content: space-between; padding-left: 15%; padding-right: 15%; padding-bottom: 10%; margin-top: 15%; margin-bottom: 10%; border-width: initial">
-                <span style="margin-bottom: 10%;margin-top:5%; font-size: 20px; font-weight: bold;align-self:center ">Thống kê</span>
-
-                <div style="
-                                    flex-direction: row; " class="d-flex justify-content-between ">
-                    <font style="vertical-align: inherit;font-size: 12px;font-weight:bold;">Tất cả dự án</font>
-
-                    <font style="vertical-align: inherit;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@countProject</font></font>
-                </div>
-                <div style="
-                                        flex-direction: row; " class="d-flex justify-content-between ">
-                    <font style="vertical-align: inherit; font-size: 11px; font-weight: bold;">Tất cả chức năng</font>
-
-                    <font style="vertical-align: inherit; "><font style="vertical-align: inherit;font-size: 11px;font-style: italic;">@countFunctions</font></font>
-                </div>
-                <div style="
-                                    flex-direction: row;  " class="d-flex justify-content-between ">
-                    <font style="vertical-align: inherit; font-size: 11px; font-weight: bold;">Chức năng chưa xong</font>
-
-                    <font style="vertical-align: inherit; "><font style="vertical-align: inherit;font-size: 11px;font-style: italic;">@countFunctionsNew</font></font>
-                </div>
-                <div style="
-                                    flex-direction: row; " class="d-flex justify-content-between ">
-                    <font style="vertical-align: inherit; font-size: 12px; font-weight: bold;">Tất cả lỗi</font>
-
-                    <font style="vertical-align: inherit; "><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@countBugs</font></font>
-                </div>
-                <div style="
-                                    flex-direction: row; " class="d-flex justify-content-between ">
-                    <font style="vertical-align: inherit; font-size: 12px; font-weight: bold;">Lỗi chưa duyệt</font>
-
-                    <font style="vertical-align: inherit;"><font style="vertical-align: inherit;font-size: 12px;font-style: italic;">@countBugsNew</font></font>
-                </div>
-
-            </div>
-        }
-
-
-        <div class="card" style="height:auto;padding-top:5%;border-width:initial">
-            <span style="margin-bottom: 10px; font-size: 20px; font-weight: bold;  display: flex; align-content: flex-start; justify-content: center; ">Sự kiện sắp diễn ra</span>
-            <div style="background-color: grey; width: 100%; height: 1px; margin-bottom: 10px"></div>
-            <table>
-                <thead>
-                    <tr style="display:flex;flex-direction: row;align-content: space-between;n;align-items: center;">
-                        <th style="width:70%">Tên lỗi - Dự án</th>
-                        <th style="width:30%">Thời hạn</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if (Model.Count() != 0)
-                    {
-                        foreach (var item in Model)
-                        {
-                            if (item.TitleBug != null)
-                            {
-                                string deadline = item.deadline;
-                                string now = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
-                                DateTime date1 = DateTime.ParseExact(deadline, "yyyy-MM-dd HH:mm", null);
-                                DateTime date2 = DateTime.ParseExact(now, "yyyy-MM-dd HH:mm", null);
-
-                                // Tính toán chênh lệch giữa hai ngày
-                                TimeSpan difference = date1 - date2;
-                                if (difference.TotalMinutes <= 0)
-                                {
-                                    <tr style="padding: 2px; margin-bottom: 5px; display: flex; flex-direction: row; align-content: space-between; justify-content: space-between; align-items: center;">
-
-                                        <td style="width:70%">
-                                            <a style="color: red" href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })">@item.TitleBug <small style="font-size:13px;font-style:italic">(Hết thời gian)</small> <br /><small style="font-size:11px;font-style:italic">(@item.Title - @item.Name)</small></a>
-                                        </td>
-                                        <td style="width: 30%; color: red">@item.deadline</td>
-                                    </tr>
-                                }
-                                else
-                                             if (difference.TotalMinutes <= 2160)
-                                {
-                                    <tr style="padding:2px;margin-bottom:5px;display: flex; flex-direction: row; align-content: space-between; justify-content: space-between; align-items: center;">
-
-                                        <td style="width:70%">
-                                            <a style="color:red" href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })">@item.TitleBug <br /><small style="font-size:11px;font-style:italic">(@item.Title - @item.Name)</small></a>
-                                        </td>
-                                        <td style="width: 30%; color: red ">@item.deadline</td>
-                                    </tr>
-                                }
-                                else
-                                {
-                                    <tr style="padding: 2px; margin-bottom: 5px; display: flex; flex-direction: row; align-content: space-between; justify-content: space-between; align-items: center;">
-
-                                        <td style="width:70%">
-                                            <a style="color:black" href="@Url.Action("Index", "BUGs", new { id = item.ProjectID })">@item.TitleBug  <br /><small style="font-size:11px;font-style:italic">(@item.Title - @item.Name)</small></a>
-                                        </td>
-                                        <td style="width:30%">@item.deadline</td>
-                                    </tr>
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        <tr style="display:flex;justify-content:center;align-items:center;margin-top:7%">
-                            <td>
-                                <img src="/Assets/images/empty.png" style="width:45px;height:45px" alt="">
-                                <span style="font-size:18px">Không có sự kiện nào</span>
-                            </td>
-                        </tr>
-                    }
-                    <!-- Thêm các dòng khác tùy theo nhu cầu -->
-                </tbody>
-            </table>
-
-
-        </div>
-
-    </div>
 </div>
+
 
 
 <script>
@@ -573,9 +568,6 @@ Sữa lại giao diện cho đẹp*@
             });
             formAddMember.classList.add('was-validated');
         }, false);
-
-
-
     })();
 
 
@@ -620,7 +612,7 @@ Sữa lại giao diện cho đẹp*@
                                                             </div>
                                                             <div class="toast__close">
                                                                 <i class="fas fa-times"></i>
-                                                            </div>
+</div>
                                                         `;
             main.appendChild(toast);
         }

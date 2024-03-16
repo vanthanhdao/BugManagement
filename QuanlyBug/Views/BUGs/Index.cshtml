@@ -154,7 +154,6 @@
         overflow-y: hidden;
     }
 </style>
-
 <div class="page">
 
     <!-- Body -->
@@ -176,6 +175,34 @@
                             </div>
                         </div>
                     </div>
+                    @if (kh.Status == "admin" || kh.Status == "Product Manager")
+                    {
+                        <div class="col-auto ms-auto d-print-none" style="margin-right:2%">
+                            <a class="nav-link dropdown-toggle show" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="true" style="">
+                                <span class="nav-link-title" style="font-weight:bold">
+                                    Thành viên trong dự án
+                                </span>
+                            </a>
+                            <div class="dropdown-menu " data-bs-popper="static">
+                                <div class=" d-flex justify-content-around">
+                                    <h3>Email</h3>
+                                    <h3>Vị trí</h3>
+                                </div>
+                                @foreach (var i in users)
+                                {
+                                    <a class="dropdown-item d-flex justify-content-around" href="#" role="button" aria-expanded="true">
+                                        <span style="margin-right:5%">@i.Email@if(i.UserID == @kh.UserID) {<small style="font-size:10px; font-weight:bold">(Bạn)</small>}</span>
+                                        @if (i.Status == "Product Manager")
+                                        {
+                                            <span>PM</span>}
+                                        else
+                                        {
+                                            <span>@i.Status</span>}
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
@@ -189,27 +216,7 @@
                                 <div class="overflow-auto" style="height:70vh">
                                     <div class="d-flex justify-content-between mb-3">
                                         <div class="me-3">
-                                            <a class="nav-link dropdown-toggle show" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="true">
-                                                <span class="nav-link-title">
-                                                    Chức năng
-                                                </span>
-                                            </a>
-                                            <div class="dropdown-menu " data-bs-popper="static">
-                                                <a class="dropdown-item" href="https://tabler.io/docs" target="_blank" rel="noopener">
-                                                    ToDo
-                                                </a>
-                                                <a class="dropdown-item" href="./changelog.html">
-                                                    InProgress
-                                                </a>
-                                                <a class="dropdown-item" href="https://github.com/tabler/tabler" target="_blank" rel="noopener">
-                                                    InterView
-                                                </a>
-                                                <a class="dropdown-item text-pink" href="https://github.com/sponsors/codecalm" target="_blank" rel="noopener">
-                                                    <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path></svg>
-                                                    Done
-                                                </a>
-                                            </div>
+                                            <h3 class="lh-1" id="">Chức năng</h3>
 
                                         </div>
                                         @if (kh != null && kh.Status == "admin" || kh.Status == "Product Manager")
@@ -254,7 +261,7 @@
                             <div class="card-body">
                                 <div class="overflow-auto" style="height:70vh">
                                     <div class="d-flex justify-content-between mb-3">
-                                        <h1 class="lh-1" id="">Danh sách bug</h1>
+                                        <h3 class="lh-1" id="">Danh sách bug</h3>
                                         @if (kh != null && (kh.Status == "admin" || kh.Status == "Product Manager" || kh.Status == "Tester") && firstFuction != null)
                                         {
                                             <div class="d-flex ">
@@ -412,7 +419,7 @@
                                                             </div>
 
 
-                                                            @if (kh.Status == "Tester" || kh.Status == "Product Manager")
+                                                            @if (kh.Status == "admin" || kh.Status == "Product Manager")
                                                             {
                                                                 if (bug.StatusBug == "New" || bug.StatusBug == "Dimiss" || bug.StatusBug == "Retest")
                                                                 {
@@ -577,7 +584,7 @@
                                                                         <label class="form-label">Môi trường</label>
                                                                         <input type="text" class="form-control" name="enviroment" value="@bug.Env" required>
                                                                     </div>
-                                                                </div>  
+                                                                </div>
                                                                 <div class="col-lg-6">
                                                                     <div class="mb-3">
                                                                         <label class="form-label">File đính kèm</label>
@@ -682,7 +689,20 @@
                                 <div class="overflow-auto" style="height:70vh">
                                     @if (fucTions != null)
                                     {
-                                        <div class="d-flex justify-content-center align-items-center mb-3">
+                                        <a class="nav-link dropdown-toggle show" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="true" style="">
+                                            <span class="nav-link-title" style="font-weight:bold">
+                                                Mô tả chức năng
+                                            </span>
+                                        </a>
+                                        <div class="dropdown-menu " data-bs-popper="static">
+                                            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-editfuction" role="button" aria-expanded="true">
+                                                Cập nhật
+                                            </a>
+                                            <a class="dropdown-item text-pink" data-bs-toggle="modal" data-bs-target="#modal-deletefunc" role="button" aria-expanded="true">
+                                                Xóa
+                                            </a>
+                                        </div>
+                                        <div class="d-flex justify-content-center align-items-center mb-3" style="margin-top:20px">
                                             <h1 class="me-3">
                                                 <!-- Download SVG icon from http://tabler-icons.io/i/scale -->
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-md" width="14" height="14" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M7 20l10 0"></path><path d="M6 6l6 -1l6 1"></path><path d="M12 3l0 17"></path><path d="M9 12l-3 -6l-3 6a3 3 0 0 0 6 0"></path><path d="M21 12l-3 -6l-3 6a3 3 0 0 0 6 0"></path></svg>
@@ -748,6 +768,96 @@
                                             This is not legal advice.
                                             <a href="#">Learn more about repository licenses.</a>
                                         </div>
+                                        <div class="data-idfunct" data-idfunct=@fucTions.Title></div>
+
+                                        using (Html.BeginForm("EditFunction", "BUGs", new { @id = fucTions.FunctionID, @EmailUserT = fucTions.EmailUser, @IdProject = project.ProjectID }, FormMethod.Post, new { @class = "editfunction", @novalidate = "novalidate" }))
+                                        {
+                                            <div class="modal modal-blur fade" id="modal-editfuction" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Sữa chức năng</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Tên chức năng</label>
+                                                                <input type="text" class="form-control" name="NameFunction" id="NameFunctions" placeholder="Tên chức năng" value="@fucTions.Title" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Mô tả</label>
+                                                                <textarea class="form-control" name="DescriptionFunction" id="DescriptionFunctions" rows="3" placeholder="Mô tả dự án của bạn" required>@fucTions.DescriptionFunc</textarea>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Email</label>
+                                                                        <select class="form-select" name="EmailFunction" id="EmailFunction">
+                                                                            @if (users != null)
+                                                                            {
+                                                                                foreach (var i in users.Where(x => x.Status == "Tester"))
+                                                                                {
+                                                                                    <option value="@i.Email">@i.Email</option>
+                                                                                }
+                                                                            }
+
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                                                    Hủy
+                                                                </a>
+                                                                <button type="submit" class="btn btn-primary ms-auto">
+                                                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                                    Gửi
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        using (Html.BeginForm("DeleteFunc", "BUGs", new { id = project.ProjectID, idfunc = fucTions.FunctionID }, FormMethod.Post, new { @class = "deleteBugForm", @novalidate = "novalidate" }))
+                                        {
+                                            <div class="modal modal-blur fade" id="modal-deletefunc" tabindex="-1" role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Xóa chức năng</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Tiêu đề</label>
+                                                                <input type="text" class="form-control" name="NameBug" value="@fucTions.Title" disabled>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label" id="lableComfirm">Xác nhận xóa</label>
+                                                                <input type="text" class="form-control" name="NewNameBug" oninput="updateValue(this,'@fucTions.Title')" id="inputConfirm" required>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                                                Hủy
+                                                            </a>
+                                                            <button type="submit" class="btn btn-primary ms-auto">
+                                                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
+                                                                Gửi
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+
                                     }
                                     else
                                     {
@@ -826,7 +936,9 @@
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title">Tạo lỗi mới</h5>
+                    <h5 class="modal-title">
+                        Tạo Bug
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -942,6 +1054,49 @@
         /* const forms = document.querySelectorAll('.deleteForm');*/
         const formCreatFunction = document.querySelector('.createFunctionForm');
         const formCreatBug = document.querySelector('.createBugForm');
+        const formEditFunction = document.querySelector(".editfunction");
+
+        formEditFunction.addEventListener('submit', function (e) {
+            event.preventDefault();
+            event.stopPropagation();
+            var nameFunction = document.getElementById("NameFunctions");
+            var descriptionFunction = document.getElementById("DescriptionFunctions");
+            var namefunction = document.querySelector("[data-idfunct]").getAttribute("data-idfunct");
+            $.ajax({
+                url: '/BUGs/GetDataFuncion',
+                type: 'GET',
+                success: function (data) {
+                    const checkName = data.some(element => element.Title === namefunction);
+                    const checkNameAll = data.some(element => element.Title === nameFunction.value && element.Title != namefunction);
+                    console.log(checkName)
+                    if (checkName) {
+                        nameFunction.setCustomValidity('');
+                    } else {
+                        nameFunction.setCustomValidity("This field is invalid");
+                    }
+                    if (!checkNameAll) {
+                        nameFunction.setCustomValidity('');
+
+                    } else {
+                        nameFunction.setCustomValidity("This field is invalid");
+                    }
+
+                    if (descriptionFunction != null) {
+                        descriptionFunction.setCustomValidity('');
+                    } else {
+                        descriptionFunction.setCustomValidity("This field is invalid");
+                    }
+
+                    if (formEditFunction.checkValidity()) {
+                        formEditFunction.submit();
+                    }
+                    formEditFunction.classList.add('was-validated');
+                },
+                error: function (errorThrown) {
+                    console.log('Error:', errorThrown);
+                }
+            });
+        }, false);
 
         formCreatFunction.addEventListener('submit', function (event) {
             event.preventDefault();
@@ -964,7 +1119,7 @@
                     } else {
                         nameFunction.setCustomValidity("This field is invalid");
                     }
-                    if (!checkDescription) {
+                    if (descriptionFunction != null) {
                         descriptionFunction.setCustomValidity('');
                     } else {
                         descriptionFunction.setCustomValidity("This field is invalid");
@@ -1061,233 +1216,233 @@
     }
 
 </script>
-<script>
+@*<script>
 
-    (() => {
-        'use strict';
+        (() => {
+            'use strict';
 
-        const form = document.querySelector('.author');
-        const formAddMember = document.querySelector('.addmember');
-        const formCreateBug = document.querySelector('.createbug');
-        var email = document.getElementById('email');
+            const form = document.querySelector('.author');
+            const formAddMember = document.querySelector('.addmember');
+            const formCreateBug = document.querySelector('.createbug');
+            var email = document.getElementById('email');
 
-        form.addEventListener('submit', event => {
-            event.preventDefault();
-            event.stopPropagation();
+            form.addEventListener('submit', event => {
+                event.preventDefault();
+                event.stopPropagation();
 
-            $.ajax({
-                url: '/Home/GetData',
-                type: 'GET',
-                success: function (data) {
-                    console.log('Data:', data);
-                    var projects = data;
-                    var inputEmailAuthor = document.getElementById("email");
+                $.ajax({
+                    url: '/Home/GetData',
+                    type: 'GET',
+                    success: function (data) {
+                        console.log('Data:', data);
+                        var projects = data;
+                        var inputEmailAuthor = document.getElementById("email");
 
-                    // Mỗi lần submit, reset custom validity
-                    inputEmailAuthor.setCustomValidity('');
+                        // Mỗi lần submit, reset custom validity
+                        inputEmailAuthor.setCustomValidity('');
 
-                    projects.forEach(function (project) {
-                        if (project.Email == email.value && project.Status != null) {
-                            inputEmailAuthor.setCustomValidity("This field is invalid");
-                        }
-                    });
-
-                    if (form.checkValidity()) {
-                        const dataToSend = {
-                            email: document.getElementById('email').value,
-                            role: document.getElementById('role').value,
-                        };
-
-                        $.ajax({
-                            type: "POST",
-                            url: "/Home/Authorization",
-                            data: dataToSend,
-                            success: function (response) {
-                                // Xử lý kết quả từ controller (nếu cần)
-                                console.log(response);
-                            },
-                            error: function (error) {
-                                // Xử lý lỗi nếu có
-                                console.error(error);
+                        projects.forEach(function (project) {
+                            if (project.Email == email.value && project.Status != null) {
+                                inputEmailAuthor.setCustomValidity("This field is invalid");
                             }
                         });
 
-                        toast({
-                            title: "Thành công!",
-                            message: `Chúng tôi đã gửi tới email ${dataToSend.email} để xác nhận.`,
-                            type: "success",
-                            duration: 5000
-                        });
-                    } else {
-                        toast({
-                            title: "Thất bại!",
-                            message: `Email ${email.value} đã được xác nhận.`,
-                            type: "error",
-                            duration: 5000
-                        });
-                    }
+                        if (form.checkValidity()) {
+                            const dataToSend = {
+                                email: document.getElementById('email').value,
+                                role: document.getElementById('role').value,
+                            };
 
-                },
-                error: function (error) {
-                    console.log('Error:', error);
-                }
-            });
-
-            form.classList.add('was-validated');
-        }, false);
-
-        formAddMember.addEventListener('submit', event => {
-
-            event.preventDefault();
-            event.stopPropagation();
-            var inputNameOrEmail = document.getElementById("nameOrEmail");
-            var inputNameProject = document.getElementById("nameProject");
-
-            $.ajax({
-                url: '/Home/GetDataProjectList',
-                type: 'GET',
-                success: function (data) {
-                    const checkNameOrEmail = inputNameOrEmail.value != "" ? data.some(element => element.Email === inputNameOrEmail.value) : null;
-                    const checkProjectMember = inputNameOrEmail.value != "" ? data.some(element => element.Email === inputNameOrEmail.value && element.Name === inputNameProject.value) : null;
-                    console.log(checkNameOrEmail, checkProjectMember)
-                    /* inputNameOrEmail.setCustomValidity('');*/
-                    if (checkNameOrEmail) {
-                        inputNameOrEmail.setCustomValidity('');
-                    } else {
-                        inputNameOrEmail.setCustomValidity("This field is invalid");
-                    }
-
-                    if (!checkProjectMember) {
-                        inputNameOrEmail.setCustomValidity('');
-                    } else {
-                        inputNameOrEmail.setCustomValidity("This field is invalid");
-                    }
-
-                    if (formAddMember.checkValidity()) {
-                        const dataToSend = {
-                            email: inputNameOrEmail.value,
-                            nameProject: inputNameProject.value,
-                        };
-
-                        $.ajax({
-                            type: "POST",
-                            url: "/Home/AuthorizationAddMember",
-                            data: dataToSend,
-                            success: function (response) {
-                                // Xử lý kết quả từ controller (nếu cần)
-                                console.log(response);
-                            },
-                            error: function (error) {
-                                // Xử lý lỗi nếu có
-                                console.error(error);
-                            }
-                        });
-
-                        toast({
-                            title: "Thành công!",
-                            message: `Chúng tôi đã gửi tới email ${inputNameOrEmail.value} để xác nhận.`,
-                            type: "success",
-                            duration: 5000
-                        });
-
-                        setTimeout(function () {
-                            // Load lại trang sau khi đã chờ 5 giây
-                            location.reload();
-                        }, 3000);
-                    } else {
-                        if (checkNameOrEmail == false) {
-                            toast({
-                                title: "Thất bại!",
-                                message: `Email ${inputNameOrEmail.value} chưa được cấp quyền sử dụng.`,
-                                type: "error",
-                                duration: 5000
+                            $.ajax({
+                                type: "POST",
+                                url: "/Home/Authorization",
+                                data: dataToSend,
+                                success: function (response) {
+                                    // Xử lý kết quả từ controller (nếu cần)
+                                    console.log(response);
+                                },
+                                error: function (error) {
+                                    // Xử lý lỗi nếu có
+                                    console.error(error);
+                                }
                             });
-                        } else if (checkProjectMember == true) {
+
                             toast({
-                                title: "Thất bại!",
-                                message: `Email ${inputNameOrEmail.value} đã tham gia dự án.`,
-                                type: "error",
+                                title: "Thành công!",
+                                message: `Chúng tôi đã gửi tới email ${dataToSend.email} để xác nhận.`,
+                                type: "success",
                                 duration: 5000
                             });
                         } else {
                             toast({
                                 title: "Thất bại!",
-                                message: `Email không được để trống.`,
+                                message: `Email ${email.value} đã được xác nhận.`,
                                 type: "error",
                                 duration: 5000
                             });
                         }
+
+                    },
+                    error: function (error) {
+                        console.log('Error:', error);
                     }
+                });
 
-                },
-                error: function (error) {
-                    console.log('Error:', error);
-                }
-            });
-            formAddMember.classList.add('was-validated');
-        }, false);
+                form.classList.add('was-validated');
+            }, false);
+
+            formAddMember.addEventListener('submit', event => {
+
+                event.preventDefault();
+                event.stopPropagation();
+                var inputNameOrEmail = document.getElementById("nameOrEmail");
+                var inputNameProject = document.getElementById("nameProject");
+
+                $.ajax({
+                    url: '/Home/GetDataProjectList',
+                    type: 'GET',
+                    success: function (data) {
+                        const checkNameOrEmail = inputNameOrEmail.value != "" ? data.some(element => element.Email === inputNameOrEmail.value) : null;
+                        const checkProjectMember = inputNameOrEmail.value != "" ? data.some(element => element.Email === inputNameOrEmail.value && element.Name === inputNameProject.value) : null;
+                        console.log(checkNameOrEmail, checkProjectMember)
+                        /* inputNameOrEmail.setCustomValidity('');*/
+                        if (checkNameOrEmail) {
+                            inputNameOrEmail.setCustomValidity('');
+                        } else {
+                            inputNameOrEmail.setCustomValidity("This field is invalid");
+                        }
+
+                        if (!checkProjectMember) {
+                            inputNameOrEmail.setCustomValidity('');
+                        } else {
+                            inputNameOrEmail.setCustomValidity("This field is invalid");
+                        }
+
+                        if (formAddMember.checkValidity()) {
+                            const dataToSend = {
+                                email: inputNameOrEmail.value,
+                                nameProject: inputNameProject.value,
+                            };
+
+                            $.ajax({
+                                type: "POST",
+                                url: "/Home/AuthorizationAddMember",
+                                data: dataToSend,
+                                success: function (response) {
+                                    // Xử lý kết quả từ controller (nếu cần)
+                                    console.log(response);
+                                },
+                                error: function (error) {
+                                    // Xử lý lỗi nếu có
+                                    console.error(error);
+                                }
+                            });
+
+                            toast({
+                                title: "Thành công!",
+                                message: `Chúng tôi đã gửi tới email ${inputNameOrEmail.value} để xác nhận.`,
+                                type: "success",
+                                duration: 5000
+                            });
+
+                            setTimeout(function () {
+                                // Load lại trang sau khi đã chờ 5 giây
+                                location.reload();
+                            }, 3000);
+                        } else {
+                            if (checkNameOrEmail == false) {
+                                toast({
+                                    title: "Thất bại!",
+                                    message: `Email ${inputNameOrEmail.value} chưa được cấp quyền sử dụng.`,
+                                    type: "error",
+                                    duration: 5000
+                                });
+                            } else if (checkProjectMember == true) {
+                                toast({
+                                    title: "Thất bại!",
+                                    message: `Email ${inputNameOrEmail.value} đã tham gia dự án.`,
+                                    type: "error",
+                                    duration: 5000
+                                });
+                            } else {
+                                toast({
+                                    title: "Thất bại!",
+                                    message: `Email không được để trống.`,
+                                    type: "error",
+                                    duration: 5000
+                                });
+                            }
+                        }
+
+                    },
+                    error: function (error) {
+                        console.log('Error:', error);
+                    }
+                });
+                formAddMember.classList.add('was-validated');
+            }, false);
 
 
 
-    })();
+        })();
 
 
-    function toast({ title = "", message = "", type = "info", duration = 3000 }) {
-        console.log(title)
-        const main = document.getElementById("toastmess");
-        if (main) {
-            const toast = document.createElement("div");
+        function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+            console.log(title)
+            const main = document.getElementById("toastmess");
+            if (main) {
+                const toast = document.createElement("div");
 
-            // Auto remove toast
-            const autoRemoveId = setTimeout(function () {
-                main.removeChild(toast);
-            }, duration + 1000);
-
-            // Remove toast when clicked
-            toast.onclick = function (e) {
-                if (e.target.closest(".toast__close")) {
+                // Auto remove toast
+                const autoRemoveId = setTimeout(function () {
                     main.removeChild(toast);
-                    clearTimeout(autoRemoveId);
-                }
-            };
+                }, duration + 1000);
 
-            const icons = {
-                success: "fas fa-check-circle",
-                info: "fas fa-info-circle",
-                warning: "fas fa-exclamation-circle",
-                error: "fas fa-exclamation-circle"
-            };
-            const icon = icons[type];
-            const delay = (duration / 1000).toFixed(2);
+                // Remove toast when clicked
+                toast.onclick = function (e) {
+                    if (e.target.closest(".toast__close")) {
+                        main.removeChild(toast);
+                        clearTimeout(autoRemoveId);
+                    }
+                };
 
-            toast.classList.add("toastmess", `toast--${type}`);
-            toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+                const icons = {
+                    success: "fas fa-check-circle",
+                    info: "fas fa-info-circle",
+                    warning: "fas fa-exclamation-circle",
+                    error: "fas fa-exclamation-circle"
+                };
+                const icon = icons[type];
+                const delay = (duration / 1000).toFixed(2);
 
-            toast.innerHTML = `
-                        <div class="toast__icon">
-                            <i class="${icon}"></i>
-                        </div>
-                        <div class="toast__body">
-                            <h3 class="toast__title">${title}</h3>
-                            <p class="toast__msg">${message}</p>
-                        </div>
-                        <div class="toast__close">
-                            <i class="fas fa-times"></i>
-                        </div>
-                    `;
-            main.appendChild(toast);
+                toast.classList.add("toastmess", `toast--${type}`);
+                toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+                toast.innerHTML = `
+                            <div class="toast__icon">
+                                <i class="${icon}"></i>
+                            </div>
+                            <div class="toast__body">
+                                <h3 class="toast__title">${title}</h3>
+                                <p class="toast__msg">${message}</p>
+                            </div>
+                            <div class="toast__close">
+                                <i class="fas fa-times"></i>
+                            </div>
+                        `;
+                main.appendChild(toast);
+            }
         }
-    }
 
 
-    function validateEmail(email) {
-        const re = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
-        return re.test(String(email).toLowerCase());
-    }
+        function validateEmail(email) {
+            const re = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+            return re.test(String(email).toLowerCase());
+        }
 
 
 
-</script>
+    </script>*@
 <script>
 
     (() => {
