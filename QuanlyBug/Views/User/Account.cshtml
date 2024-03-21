@@ -1,0 +1,362 @@
+﻿
+
+@using QuanlyBug.Models
+@{
+    USERS kh = (USERS)Session["TaiKhoan"];
+}
+
+@{
+    ViewBag.Title = "Account";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+
+
+
+<style>
+
+    /* ======= Toast message ======== */
+
+    #toastmess {
+        position: fixed;
+        top: 32px;
+        right: 32px;
+        z-index: 999999;
+    }
+
+    .toastmess {
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        border-radius: 2px;
+        padding: 10px 0;
+        min-width: 400px;
+        max-width: 450px;
+        border-left: 4px solid;
+        box-shadow: 0 5px 8px rgba(0, 0, 0, 0.08);
+        transition: all linear 0.3s;
+    }
+
+    @@keyframes slideInLeft {
+        from {
+            opacity: 0;
+            transform: translateX(calc(100% + 32px));
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @@keyframes fadeOut {
+        to {
+            opacity: 0;
+        }
+    }
+
+    .toast--success {
+        border-color: #47d864;
+    }
+
+        .toast--success .toast__icon {
+            color: #47d864;
+        }
+
+    .toast--info {
+        border-color: #2f86eb;
+    }
+
+        .toast--info .toast__icon {
+            color: #2f86eb;
+        }
+
+    .toast--warning {
+        border-color: #ffc021;
+    }
+
+        .toast--warning .toast__icon {
+            color: #ffc021;
+        }
+
+    .toast--error {
+        border-color: #ff623d;
+    }
+
+        .toast--error .toast__icon {
+            color: #ff623d;
+        }
+
+    .toastmess + .toastmess {
+        margin-top: 24px;
+    }
+
+    .toast__icon {
+        font-size: 24px;
+    }
+
+    .toast__icon,
+    .toast__close {
+        padding: 0 16px;
+    }
+
+    .toast__body {
+        flex-grow: 1;
+    }
+
+    .toast__title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .toast__msg {
+        font-size: 14px;
+        color: #888;
+        margin-top: 6px;
+        line-height: 1.5;
+    }
+
+    .toast__close {
+        font-size: 20px;
+        color: rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+    }
+</style>
+
+<div class="card" style="display:contents">
+    <div class="card-body">
+        <div id="toastmess"></div>
+    </div>
+</div>
+
+<div class="page-wrapper">
+    <!-- Page header -->
+    <div class="page-header d-print-none">
+        <div class="container-xl">
+            <div class="row g-2 align-items-center">
+                <div class="col">
+                    <h2 class="page-title">
+                        Thiết lập tài khoản
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page body -->
+    <div class="page-body">
+        <div class="container-xl">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-12 col-md-12 d-flex flex-column">
+                        <div class="card-body">
+                            @using (Html.BeginForm("UpdateAccount", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+                                <h2 class="mb-4">Tài khoản của bạn</h2>
+                                <h3 class="card-title">Ảnh đại diện</h3>
+                                <div class="row align-items-center">
+                                    <div class="col-auto">
+                                        @if (kh.Avatar != null)
+                                        {
+                                            <img id="avatarImage" src="data:image;base64,@Convert.ToBase64String(kh.Avatar)" alt="Description of the image">
+                                        }
+                                        else
+                                        {
+                                            <img id="avatarImage" src="~/Assets/static/avatars/000m.jpg" />
+                                        }
+                                    </div>
+                                    <div class="col-auto">
+                                        <input type="file" id="avatarInput" name="file" accept="image/*" />
+                                    </div>
+                                </div>
+                                <h3 class="card-title mt-4">Thông tin cá nhân</h3>
+                                <div class="row g-3">
+                                    <div class="col-md">
+                                        <div class="form-label">Họ và tên</div>
+                                        <input type="text" class="form-control" name="newUserName" value="@kh.Username">
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-label">Vai trò</div>
+                                        <input type="text" class="form-control" value="@kh.Status" disabled>
+                                    </div>
+                                </div>
+                                <h3 class="card-title mt-4">Email</h3>
+
+                                <div>
+                                    <div class="row g-2">
+                                        <div class="col-auto">
+                                            <input type="text" class="form-control w-auto" value="@kh.Email" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h3 class="card-title mt-4">Password</h3>
+
+                                <div>
+                                    <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-resetpassword">
+                                        Thiết lập mật khẩu
+                                    </a>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                                        Hủy
+                                    </a>
+                                    <button type="submit" class="btn btn-primary ms-auto">
+                                        Gửi
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+@using (Html.BeginForm("ResetPassword", "User", FormMethod.Post, new { @class = "resetPassform", @novalidate = "novalidate" }))
+{
+    <div class="modal modal-blur fade" id="modal-resetpassword" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thiết lập mật khẩu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu mới</label>
+                        <input type="text" class="form-control" name="NewPassword" id="NameProject" placeholder="Nhập mật khẩu mới" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nhập lại mật khẩu</label>
+                        <input class="form-control" name="ReNewPassword" id="DecriptionProject" rows="3" placeholder="Nhập lại mật khẩu" required />
+                    </div>
+                    <div class="row mb-3">
+                        <label class="form-label">Email</label>
+                        <div class="col-lg-8">
+                            <input class="form-control" name="DecriptionProject" id="emailSelect" rows="3" placeholder="Nhập Email" required />
+                        </div>
+                        <div class="col-lg-4">
+                            <a href="#" onclick="updateUrl()" id="changeStatusLink" class="btn btn-primary ms-auto">
+                                Xác nhận
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Mã xác nhận</label>
+                        <input class="form-control" name="AuthEmail" id="DecriptionProject" rows="3" placeholder="Nhập mã xác nhận" required />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Hủy
+                    </a>
+                    <button type="submit" class="btn btn-primary ms-auto">
+                        Gửi
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<script>
+
+    document.getElementById('avatarInput').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('avatarImage').src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    });
+
+    function updateUrl() {
+        var selectedEmail = document.getElementById("emailSelect").value;
+        var url = '/User/AuthUser' ;
+        const dataToSend = {
+            email: selectedEmail,     
+        };
+        if (email != "") {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: dataToSend,
+                success: function (data) {
+                },
+                error: function (error) {
+                    console.log('Error:', error);
+                }
+            });
+            toast({
+                title: "Thành công!",
+                message: `Chúng tôi đã gửi tới email ${email.value} để xác nhận.`,
+                type: "success",
+                duration: 5000
+            });
+        } else {
+            toast({
+                title: "Thất bại!",
+                message: `Email không được để trống.`,
+                type: "error",
+                duration: 5000
+            });
+        }
+   
+
+    }
+
+    function toast({ title = "", message = "", type = "info", duration = 3000 }) {
+        console.log(title)
+        const main = document.getElementById("toastmess");
+        if (main) {
+            const toast = document.createElement("div");
+
+            // Auto remove toast
+            const autoRemoveId = setTimeout(function () {
+                main.removeChild(toast);
+            }, duration + 1000);
+
+            // Remove toast when clicked
+            toast.onclick = function (e) {
+                if (e.target.closest(".toast__close")) {
+                    main.removeChild(toast);
+                    clearTimeout(autoRemoveId);
+                }
+            };
+
+            const icons = {
+                success: "fas fa-check-circle",
+                info: "fas fa-info-circle",
+                warning: "fas fa-exclamation-circle",
+                error: "fas fa-exclamation-circle"
+            };
+            const icon = icons[type];
+            const delay = (duration / 1000).toFixed(2);
+
+            toast.classList.add("toastmess", `toast--${type}`);
+            toast.style.animation = `slideInLeft ease .3s, fadeOut linear 1s ${delay}s forwards`;
+
+            toast.innerHTML = `
+                                                            <div class="toast__icon">
+                                                                <i class="${icon}"></i>
+                                                            </div>
+                                                            <div class="toast__body">
+                                                                <h3 class="toast__title">${title}</h3>
+                                                                <p class="toast__msg">${message}</p>
+                                                            </div>
+                                                            <div class="toast__close">
+                                                                <i class="fas fa-times"></i>
+</div>
+                                                        `;
+            main.appendChild(toast);
+        }
+    }
+
+</script>
+

@@ -19,23 +19,25 @@ else
 {
 
     <div class="nav-item dropdown">
-        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open 
-           
-           
-           
-           
-           
-           
-           
-           menu">
-            <span class="avatar avatar-sm" ><img src="~/Assets/static/avatars/000m.jpg" /></span>
+        <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Openmenu">
+            <span class="avatar avatar-sm">
+                @if (kh.Avatar != null)
+                {
+                    <img src="data:image;base64,@Convert.ToBase64String(kh.Avatar)" alt="Description of the image">
+                }
+                else
+                {
+                    <img src="~/Assets/static/avatars/000m.jpg" />
+                }
+
+            </span>
             <div class="d-none d-xl-block ps-2">
                 <div>@kh.Username</div>
                 <div class="mt-1 small text-muted">@kh.Email</div>
             </div>
         </a>
         <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-            <a href="./profile.html" class="dropdown-item">Trang cá nhân</a>
+            <a href="@Url.Action("Account","User")" class="dropdown-item">Cài đặt</a>
             <a href="@Url.Action("LogOut","User")" class="dropdown-item">Đăng xuất</a>
           
 

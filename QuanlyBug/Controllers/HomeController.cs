@@ -452,8 +452,7 @@ namespace QuanlyBug.Controllers
 
 
         [HttpPost]
-        public ActionResult 
-            Project(int? id, FormCollection f)
+        public ActionResult EditProject(int? id, FormCollection f)
         {
             var project = db.PROJECTS.AsEnumerable().SingleOrDefault(n => n.ProjectID == id);
             if (id == null)
