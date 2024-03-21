@@ -575,7 +575,7 @@ namespace QuanlyBug.Controllers
             var bugIds = bugsToDelete.Select(b => b.BugID).ToList();
 
             // Tìm và xóa tất cả các files có BugID trong danh sách bugIds
-            var filesToDelete = db.FILES.Where(fi => bugIds.Contains(fi.BugID));
+            var filesToDelete = db.FILES.Where(fi => bugIds.Contains((int)fi.BugID));
 
             // Xóa các files
             db.FILES.RemoveRange(filesToDelete);
