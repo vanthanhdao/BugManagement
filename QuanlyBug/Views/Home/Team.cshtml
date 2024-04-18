@@ -27,12 +27,10 @@
             <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-addmember" href="#">
                 Thêm thành viên
             </a>
-            @if (kh.Status == "admin")
-            {
-                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-authorization " href="#">
-                    Phân quyền
-                </a>
-            }
+            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-authorization " href="#">
+                Phân quyền
+            </a>
+
         </div>
     </li>
 }
@@ -65,7 +63,7 @@
                     <div class="row mb-3 align-items-end">
                         <div class="col">
                             <label class="form-label">Tên hoặc Email</label>
-                            <input type="text" class="form-control" name="nameOrEmail" id="nameOrEmail"  required>
+                            <input type="text" class="form-control" name="nameOrEmail" id="nameOrEmail" required>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -117,7 +115,10 @@
                     <div>
                         <label class="form-label">Vị trí</label>
                         <select class="form-select" id="role">
-                            <option value="Product Manager">Product Manager</option>
+                            @if (kh.Status == "admin")
+                            {
+                                <option value="Product Manager">Product Manager</option>
+                            }
                             <option value="Tester">Tester</option>
                             <option value="Dev">Developer</option>
                         </select>

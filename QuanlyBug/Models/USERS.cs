@@ -26,6 +26,7 @@ namespace QuanlyBug.Models
         public string Password { get; set; }
         public string ResetPass { get; set; }
         public string Status { get; set; }
+        public byte[] Avatar { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PROJECTMBS> PROJECTMBS { get; set; }
