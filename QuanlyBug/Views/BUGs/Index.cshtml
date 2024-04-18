@@ -183,7 +183,7 @@
                                     Thành viên trong dự án
                                 </span>
                             </a>
-                            <div class="dropdown-menu " data-bs-popper="static">
+                            <div class="dropdown-menu " data-bs-popper="static" style="padding:10px">
                                 <div class=" d-flex justify-content-around">
                                     <h3>Email</h3>
                                     <h3>Vị trí</h3>
@@ -280,7 +280,16 @@
                                     @foreach (var bug in dataBugs.Where(b => b.FunctionID == idFuction))
                                     {
                                         <div class="card card-sm" id="interfaceBug-@bug.BugID" style="margin-bottom:20px">
-                                            <div class="card-status-top bg-yellow"></div>
+                                            @if (bug.StatusBug == "Closed")
+                                            {
+
+                                                <div class="card-status-top bg-green"></div>
+                                            }
+                                            else
+                                            {
+                                                <div class="card-status-top bg-yellow"></div>
+                                            }
+
                                             <div class="card-body">
                                                 <div class="accordion-item">
                                                     <div class="accordion-header" id="heading-1">
@@ -308,12 +317,14 @@
 
                                                             <h4>Dữ liệu kiểm tra:</h4>
                                                             <div class="text-secondary mb-3" id="EmailCreater">
-                                                                <input type="text" class="form-control" name="NameProject" value="@bug.Input" disabled>
+                                                                @*<input type="text" class="form-control" name="NameProject" value="@bug.Input" disabled>*@
+                                                                <textarea type="text" class="form-control" name="NameProject" rows="3" disabled>@bug.Input</textarea>
                                                             </div>
 
                                                             <h4>Các bước tạo lỗi:</h4>
                                                             <div class="text-secondary mb-3" id="EmailCreater">
-                                                                <input type="text" class="form-control" name="NameProject" value="@bug.Reproduce" disabled>
+                                                                <textarea type="text" class="form-control" name="NameProject" rows="3" disabled>@bug.Reproduce</textarea>
+                                                                @*<input type="text" class="form-control" name="NameProject" value="@bug.Reproduce" disabled>*@
                                                             </div>
 
                                                             <h4>Kết quả mong đợi:</h4>
@@ -394,7 +405,7 @@
                                                             }
                                                             else
                                                             {
-                                                                if (bug.StatusBug == "Verified")
+                                                                if (bug.StatusBug == "Verified" || bug.StatusBug == "Retest" || bug.StatusBug == "Closed")
                                                                 {
                                                                     <div class="row">
                                                                         <h4 class="col-auto">Trạng thái bug:</h4>
@@ -484,7 +495,7 @@
 
                                                             <h4>Thông tin thêm:</h4>
                                                             <div class="text-secondary mb-3" id="EmailCreater">
-                                                                <input type="text" class="form-control" name="NameProject" value="@bug.Description" disabled>
+                                                                <textarea type="text" class="form-control" name="NameProject" rows="3" disabled>@bug.Description</textarea>
                                                             </div>
 
                                                             @if (bug.StatusBug == "New" || bug.StatusBug == "Dimiss" || bug.StatusBug == "Duplicate" || bug.StatusBug == "Rejected" || bug.StatusBug == "Not a bug" || bug.StatusBug == "Verified")
@@ -550,14 +561,14 @@
                                                                                             <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
                                                                                             </div>
                                                                                             <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
-                                                                                                <a id="changeStatusLink" href="" class="btn btn-info w-100">
+                                                                                                <a id="changeStatusLink" href="@Url.Action("ChangeStatusBug", "BUGs", new { idPro = project.ProjectID, idBug = bug.BugID, status = "Closed" })" class="btn btn-info w-100">
                                                                                                     Đồng ý
                                                                                                 </a>
                                                                                             </div>
 
                                                                                         </div>
                                                                                     }
-                                                                                    else if(bug.StatusBug == "Verified")
+                                                                                    else if (bug.StatusBug == "Verified")
                                                                                     {
                                                                                         <div class="row g-2">
                                                                                             <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
@@ -568,7 +579,7 @@
                                                                                             <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
                                                                                             </div>
                                                                                             <div class="col-4 col-sm-4 col-md-2 col-xl py-3">
-                                                                                                <a href="#" onclick="approveBug(@bug.FunctionID,@project.ProjectID,@bug.BugID)" class="btn btn-info w-100">
+                                                                                                <a href="@Url.Action("ChangeStatusBug", "BUGs", new { idPro = project.ProjectID, idBug = bug.BugID, status = "Closed" })" @*onclick="approveBug(@bug.FunctionID,@project.ProjectID,@bug.BugID)"*@ class="btn btn-info w-100">
                                                                                                     Đồng ý
                                                                                                 </a>
                                                                                             </div>
@@ -1329,8 +1340,6 @@
             inputElement.style.borderColor = "red";
         }
     }
-
-
 
 
 </script>

@@ -600,9 +600,13 @@
     <Content Include="Assets\images\client-bg.png" />
     <Content Include="Assets\images\client-image.jpg" />
     <Content Include="Assets\images\demo.jpg" />
+    <Content Include="Assets\images\empty.png" />
     <Content Include="Assets\images\footer-bg.png" />
     <Content Include="Assets\images\heading-line-dec.png" />
     <Content Include="Assets\images\logo.png" />
+    <Content Include="Assets\images\logo1.png" />
+    <Content Include="Assets\images\no-data.png" />
+    <Content Include="Assets\images\noresult1.png" />
     <Content Include="Assets\images\pricing-table-01.png" />
     <Content Include="Assets\images\pricing-table-02.png" />
     <Content Include="Assets\images\pro-table-bottom.png" />
@@ -1191,6 +1195,10 @@
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Quanlybug - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Quanlybug - Web Deploy1.pubxml" />
+    <None Include="Properties\PublishProfiles\vandaothanha-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\vandaothanha-001-site1 - FTP1.pubxml" />
+    <None Include="Properties\PublishProfiles\vandaothanha-001-site1 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\vandaothanha-001-site1 - Web Deploy1.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

@@ -66,7 +66,7 @@ namespace QuanlyBug.Controllers
             if (email != null && user != null)
             {
                 string verify = GenerateUniqueRandomKey(6);
-                var fromEmail = new MailAddress("daothanh1411@gmail.com", "Quản Lý Bug CChain");
+                var fromEmail = new MailAddress("daothanh1411@gmail.com", "FOSBUG");
                 var toEmail = new MailAddress(email);
                 string subject = "Verify Account";
                 string body =
@@ -80,11 +80,10 @@ namespace QuanlyBug.Controllers
               "<body>\r\n" +
               "<div class=\"container\">\r\n  " +
               "  <div class=\"header\">\r\n      " +
-              "  <img src=\"https://firebasestorage.googleapis.com/v0/b/fir-d9bb1.appspot.com/o/logo.png?alt=media&token=1eb8f3b7-fc35-4bb6-a80b-3abae6ff651f\" alt=\"Chain App Dev\">\r\n   " +
+              "  <img src=\"https://firebasestorage.googleapis.com/v0/b/fir-d9bb1.appspot.com/o/ladybug.png?alt=media&token=627badf1-2b28-4de0-bbf5-9045e1611b93\" alt=\"Chain App Dev\">\r\n   " +
               " </div>\r\n   " +
               " <div class=\"content\">\r\n    " +
-              "    <h2>Admin invited you to join them in Jira Software</h2>\r\n    " +
-              "    <p>Start planning and tracking work with Admin and your team. You can share your work and view what your team is doing.</p>\r\n  " +
+              "    <h2>The authentication code changes your password</h2>\r\n    " +
               "      <p>" + verify + "</p>\r\n     " +
               "  </div>\r\n " +
               "   <div class=\"footer\">\r\n        This message was sent to you by Atlassian Cloud\r\n    </div>" +
